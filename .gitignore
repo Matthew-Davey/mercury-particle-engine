@@ -3,4 +3,4 @@
 _ReSharper.*
 bin
 obj
-packages/*/*
+.lib/*/*
