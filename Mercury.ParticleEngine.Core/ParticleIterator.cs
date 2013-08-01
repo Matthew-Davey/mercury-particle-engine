@@ -1,6 +1,6 @@
 ﻿namespace Mercury.ParticleEngine
 {
-    internal unsafe struct ParticleIterator
+    public unsafe struct ParticleIterator
     {
         private readonly Particle* _buffer;
         private readonly int _size;

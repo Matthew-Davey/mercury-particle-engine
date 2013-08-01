@@ -1,16 +1,15 @@
 ﻿namespace Mercury.ParticleEngine
 {
     using System.Runtime.InteropServices;
-    using SharpDX;
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct Particle
+    public unsafe struct Particle
     {
         public float Inception;
         public float Age;
-        public Vector2 Position;
-        public Vector2 Velocity;
-        public Color4 Colour;
+        public fixed float Position[2];
+        public fixed float Velocity[2];
+        public fixed float Colour[4];
 
         static public int SizeInBytes
         {

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using SharpDX;
     using Mercury.ParticleEngine.Modifiers;
 
     public unsafe class Emitter
@@ -53,8 +52,8 @@
                 if (particle->Age > 1f)
                     break;
 
-                particle->Position.X += particle->Velocity.X;
-                particle->Position.Y += particle->Velocity.Y;
+                particle->Position[0] += particle->Velocity[0];
+                particle->Position[1] += particle->Velocity[1];
             }
             while (iterator.MoveNext(&particle));
 
@@ -75,20 +74,21 @@
 
         public void Trigger(float x, float y)
         {
-            var position = new Vector2(x, y);
             var iterator = Buffer.Release(ReleaseQuantity);
-            
             var particle = iterator.First;
 
             do
             {
-                Vector2 offset, direction;
-                Shape.GetOffsetAndDirection(out offset, out direction);
+                Shape.GenerateOffsetAndHeading(particle->Position, particle->Velocity);
 
                 particle->Age = 0f;
                 particle->Inception = _totalSeconds;
-                particle->Position = position + offset;
-                particle->Velocity = direction * ReleaseSpeed;
+                
+                particle->Position[0] += x;
+                particle->Position[1] += y;
+
+                particle->Velocity[0] *= ReleaseSpeed;
+                particle->Velocity[1] *= ReleaseSpeed;
             }
             while (iterator.MoveNext(&particle));
         }

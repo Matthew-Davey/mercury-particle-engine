@@ -1,7 +1,6 @@
 ﻿namespace Mercury.ParticleEngine
 {
     using System;
-    using SharpDX;
 
     public abstract class EmitterShape
     {
@@ -12,7 +11,7 @@
 
         protected Random Random { get; private set; }
 
-        public abstract void GetOffsetAndDirection(out Vector2 offset, out Vector2 direction);
+        public abstract unsafe void GenerateOffsetAndHeading(float* offset, float* heading);
 
         static public EmitterShape Point()
         {
@@ -21,12 +20,15 @@
 
         private sealed class PointShape : EmitterShape
         {
-            public override void GetOffsetAndDirection(out Vector2 offset, out Vector2 direction)
+            public override unsafe void GenerateOffsetAndHeading(float* offset, float* heading)
             {
-                var angle = Random.NextFloat(-MathUtil.Pi, MathUtil.Pi);
+                var angle = (float)((Math.PI * 2d) * Random.NextDouble());
 
-                offset = Vector2.Zero;
-                direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+                offset[0] = 0f;
+                offset[1] = 0f;
+
+                heading[0] = (float)Math.Cos(angle);
+                heading[1] = (float)Math.Sin(angle);
             }
         }
     }

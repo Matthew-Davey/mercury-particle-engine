@@ -38,14 +38,16 @@
             }
 
             [Fact]
-            public void WhenThereAreActiveParticles_ZerosParticleVelocity()
+            public unsafe void WhenThereAreActiveParticles_ZerosParticleVelocity()
             {
                 var subject = new Emitter(100, 1f, EmitterShape.Point())
                 {
                     ReleaseQuantity = 100
                 };
 
-                subject.Modifiers.Add(new AssertionModifier(particle => particle.Velocity.Length() < 0.0000001f));
+                subject.Modifiers.Add(new AssertionModifier(particle =>
+                        particle.Velocity[0] < 0.000001f &&
+                        particle.Velocity[1] < 0.000001f));
 
                 subject.Trigger(0f, 0f);
                 subject.Update(.1f);
