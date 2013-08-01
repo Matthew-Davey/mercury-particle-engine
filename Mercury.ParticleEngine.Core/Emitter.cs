@@ -3,23 +3,24 @@
     using System;
     using System.Collections.Generic;
     using Mercury.ParticleEngine.Modifiers;
+    using Mercury.ParticleEngine.Profiles;
 
     public unsafe class Emitter
     {
         private readonly float _term;
         private float _totalSeconds;
 
-        public Emitter(int capacity, float term, EmitterShape shape)
-            : this(capacity, TimeSpan.FromSeconds(term), shape)
+        public Emitter(int capacity, float term, Profile profile)
+            : this(capacity, TimeSpan.FromSeconds(term), profile)
         {
         }
 
-        public Emitter(int capacity, TimeSpan term, EmitterShape shape)
+        public Emitter(int capacity, TimeSpan term, Profile profile)
         {
             _term = (float)term.TotalSeconds;
 
             Buffer = new ParticleBuffer(capacity);
-            Shape = shape;
+            Profile = profile;
             Modifiers = new List<Modifier>();
         }
 
@@ -31,7 +32,7 @@
         }
 
         public IList<Modifier> Modifiers { get; private set; }
-        public EmitterShape Shape { get; private set; }
+        public Profile Profile { get; private set; }
         public int ReleaseQuantity { get; set; }
         public float ReleaseSpeed { get; set; }
 
@@ -79,7 +80,7 @@
 
             do
             {
-                Shape.GenerateOffsetAndHeading(particle->Position, particle->Velocity);
+                Profile.GetOffsetAndHeading(particle->Position, particle->Velocity);
 
                 particle->Age = 0f;
                 particle->Inception = _totalSeconds;

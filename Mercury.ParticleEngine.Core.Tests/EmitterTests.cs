@@ -3,6 +3,7 @@
     using Xunit;
     using FluentAssertions;
     using Mercury.ParticleEngine.Modifiers;
+    using Mercury.ParticleEngine.Profiles;
 
     public class EmitterTests
     {
@@ -11,7 +12,7 @@
             [Fact]
             public void WhenThereAreParticlesToExpire_DecreasesActiveParticleCount()
             {
-                var subject = new Emitter(100, 1f, EmitterShape.Point())
+                var subject = new Emitter(100, 1f, Profile.Point())
                 {
                     ReleaseQuantity = 1
                 };
@@ -26,7 +27,7 @@
             [Fact]
             public void WhenThereAreActiveParticles_UpdatesAgeOfParticles()
             {
-                var subject = new Emitter(100, 1f, EmitterShape.Point())
+                var subject = new Emitter(100, 1f, Profile.Point())
                 {
                     ReleaseQuantity = 100
                 };
@@ -40,7 +41,7 @@
             [Fact]
             public unsafe void WhenThereAreActiveParticles_ZerosParticleVelocity()
             {
-                var subject = new Emitter(100, 1f, EmitterShape.Point())
+                var subject = new Emitter(100, 1f, Profile.Point())
                 {
                     ReleaseQuantity = 100
                 };
@@ -56,7 +57,7 @@
             [Fact]
             public void WhenThereAreParticlesToExpire_DoesNotPassExpiredParticlesToModifiers()
             {
-                var subject = new Emitter(100, 1f, EmitterShape.Point())
+                var subject = new Emitter(100, 1f, Profile.Point())
                 {
                     ReleaseQuantity = 50
                 };
@@ -77,7 +78,7 @@
             [Fact]
             public void WhenEnoughHeadroom_IncreasesActiveParticlesCountByReleaseQuantity()
             {
-                var subject = new Emitter(100, 1f, EmitterShape.Point())
+                var subject = new Emitter(100, 1f, Profile.Point())
                 {
                     ReleaseQuantity = 10
                 };
@@ -90,7 +91,7 @@
             [Fact]
             public void WhenNotEnoughHeadroom_IncreasesActiveParticlesCountByRemainingParticles()
             {
-                var subject = new Emitter(15, 1f, EmitterShape.Point())
+                var subject = new Emitter(15, 1f, Profile.Point())
                 {
                     ReleaseQuantity = 10
                 };
@@ -104,7 +105,7 @@
             [Fact]
             public void WhenNoRemainingParticles_DoesNotIncreaseActiveParticlesCount()
             {
-                var subject = new Emitter(10, 1f, EmitterShape.Point())
+                var subject = new Emitter(10, 1f, Profile.Point())
                 {
                     ReleaseQuantity = 10
                 };

@@ -1,0 +1,34 @@
+﻿namespace Mercury.ParticleEngine.Profiles
+{
+    using System;
+
+    public class RingProfile : Profile
+    {
+        public float Radius { get; set; }
+        public bool Radiate { get; set; }
+
+        public override unsafe void GetOffsetAndHeading(float* offset, float* heading)
+        {
+            var angle = (float)((Math.PI * 2d) * Random.NextDouble());
+
+            offset[0] = (float)Math.Cos(angle);
+            offset[1] = (float)Math.Sin(angle);
+
+            if (Radiate)
+            {
+                heading[0] = offset[0];
+                heading[1] = offset[1];
+            }
+            else
+            {
+                angle = (float)((Math.PI * 2d) * Random.NextDouble());
+
+                heading[0] = (float)Math.Cos(angle) * Radius;
+                heading[1] = (float)Math.Sin(angle) * Radius;
+            }
+
+            offset[0] *= Radius;
+            offset[1] *= Radius;
+        }
+    }
+}
