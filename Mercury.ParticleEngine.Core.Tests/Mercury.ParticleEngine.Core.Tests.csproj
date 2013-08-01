@@ -54,6 +54,8 @@
     <Compile Include="EmitterTests.cs" />
     <Compile Include="ParticleBufferTests.cs" />
     <Compile Include="ParticleIteratorTests.cs" />
+    <Compile Include="Profiles\PointProfileTests.cs" />
+    <Compile Include="Profiles\RingProfileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
