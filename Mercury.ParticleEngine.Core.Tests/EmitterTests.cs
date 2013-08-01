@@ -116,5 +116,17 @@
                 subject.ActiveParticles.Should().Be(10);
             }
         }
+
+        public class DisposeMethod
+        {
+            [Fact]
+            public void IsIdempotent()
+            {
+                var subject = new Emitter(10, 1f, Profile.Point());
+
+                subject.Dispose();
+                subject.Dispose();
+            }
+        }
     }
 }

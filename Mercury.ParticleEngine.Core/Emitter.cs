@@ -5,7 +5,7 @@
     using Mercury.ParticleEngine.Modifiers;
     using Mercury.ParticleEngine.Profiles;
 
-    public unsafe class Emitter
+    public unsafe class Emitter : IDisposable
     {
         private readonly float _term;
         private float _totalSeconds;
@@ -92,6 +92,17 @@
                 particle->Velocity[1] *= ReleaseSpeed;
             }
             while (iterator.MoveNext(&particle));
+        }
+
+        public void Dispose()
+        {
+            Buffer.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        ~Emitter()
+        {
+            Dispose();
         }
     }
 }
