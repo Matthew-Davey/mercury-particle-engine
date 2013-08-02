@@ -51,6 +51,7 @@
     <Compile Include="Profiles\RingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParticleBuffer.cs" />
+    <Compile Include="Randu.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="RangeF.cs" />
     <Compile Include="ReleaseParameters.cs" />
