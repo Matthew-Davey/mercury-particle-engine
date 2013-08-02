@@ -9,7 +9,7 @@
         public float Age;
         public fixed float Position[2];
         public fixed float Velocity[2];
-        public fixed float Colour[4];
+        public fixed float Colour[3];
 
         static public int SizeInBytes
         {

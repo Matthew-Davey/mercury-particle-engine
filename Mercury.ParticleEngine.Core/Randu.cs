@@ -104,9 +104,16 @@
         /// Gets the next random angle value.
         /// </summary>
         /// <returns>A random angle value.</returns>
-        static internal float NextAngle()
+        static public float NextAngle()
         {
             return NextSingle((float)Math.PI * 2f) - (float)Math.PI;
+        }
+
+        static public unsafe void NextColour(float* colour, ColourRange range)
+        {
+            colour[0] = NextSingle(range.R);
+            colour[1] = NextSingle(range.G);
+            colour[2] = NextSingle(range.B);
         }
     }
 }

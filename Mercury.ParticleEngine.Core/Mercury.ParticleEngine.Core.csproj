@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Colour.cs" />
+    <Compile Include="ColourRange.cs" />
     <Compile Include="Emitter.cs" />
     <Compile Include="Profiles\PointProfile.cs" />
     <Compile Include="Profiles\Profile.cs" />
