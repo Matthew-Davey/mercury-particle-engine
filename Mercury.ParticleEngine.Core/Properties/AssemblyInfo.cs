@@ -13,3 +13,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("5.0.0.0")]
 
 [assembly: InternalsVisibleTo("Mercury.ParticleEngine.Core.Tests")]
+[assembly: InternalsVisibleTo("Mercury.ParticleEngine.SharpDX.Direct3D9")]

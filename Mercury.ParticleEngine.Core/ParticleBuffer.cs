@@ -28,6 +28,11 @@
 
         public int Count { get; private set; }
 
+        public int SizeInBytes
+        {
+            get { return Particle.SizeInBytes * Size; }
+        }
+
         public ParticleIterator Release(int releaseQuantity)
         {
             var numToRelease = Math.Min(releaseQuantity, Available);
