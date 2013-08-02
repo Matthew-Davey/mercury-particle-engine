@@ -4,3 +4,4 @@ _ReSharper.*
 bin
 obj
 .lib/*/*
+TestResults
