@@ -14,7 +14,10 @@
             {
                 var subject = new Emitter(100, 1f, Profile.Point())
                 {
-                    Parameters = new ReleaseParameters { Quantity = 1 }
+                    Parameters = new ReleaseParameters
+                    {
+                        Quantity = Range.Parse("[1,1]")
+                    }
                 };
 
                 subject.Trigger(0f, 0f);
@@ -29,26 +32,13 @@
             {
                 var subject = new Emitter(100, 1f, Profile.Point())
                 {
-                    Parameters = new ReleaseParameters { Quantity = 1 }
+                    Parameters = new ReleaseParameters
+                    {
+                        Quantity = Range.Parse("[1,1]")
+                    }
                 };
 
                 subject.Modifiers.Add(new AssertionModifier(particle => particle.Age > 0f));
-
-                subject.Trigger(0f, 0f);
-                subject.Update(.1f);
-            }
-
-            [Fact]
-            public unsafe void WhenThereAreActiveParticles_ZerosParticleVelocity()
-            {
-                var subject = new Emitter(100, 1f, Profile.Point())
-                {
-                    Parameters = new ReleaseParameters { Quantity = 1 }
-                };
-
-                subject.Modifiers.Add(new AssertionModifier(particle =>
-                        particle.Velocity[0] < 0.000001f &&
-                        particle.Velocity[1] < 0.000001f));
 
                 subject.Trigger(0f, 0f);
                 subject.Update(.1f);
@@ -59,7 +49,10 @@
             {
                 var subject = new Emitter(100, 1f, Profile.Point())
                 {
-                    Parameters = new ReleaseParameters { Quantity = 1 }
+                    Parameters = new ReleaseParameters
+                    {
+                        Quantity = Range.Parse("[1,1]")
+                    }
                 };
 
                 subject.Modifiers.Add(new AssertionModifier(particle => particle.Age <= 1f));
@@ -80,7 +73,10 @@
             {
                 var subject = new Emitter(100, 1f, Profile.Point())
                 {
-                    Parameters = new ReleaseParameters { Quantity = 10 }
+                    Parameters = new ReleaseParameters
+                    {
+                        Quantity = Range.Parse("[10,10]")
+                    }
                 };
 
                 subject.ActiveParticles.Should().Be(0);
@@ -93,7 +89,10 @@
             {
                 var subject = new Emitter(15, 1f, Profile.Point())
                 {
-                    Parameters = new ReleaseParameters { Quantity = 10 }
+                    Parameters = new ReleaseParameters
+                    {
+                        Quantity = Range.Parse("[10,10]")
+                    }
                 };
 
                 subject.Trigger(0f, 0f);
@@ -107,7 +106,10 @@
             {
                 var subject = new Emitter(10, 1f, Profile.Point())
                 {
-                    Parameters = new ReleaseParameters { Quantity = 10 }
+                    Parameters = new ReleaseParameters
+                    {
+                        Quantity = Range.Parse("[10,10]")
+                    }
                 };
 
                 subject.Trigger(0f, 0f);

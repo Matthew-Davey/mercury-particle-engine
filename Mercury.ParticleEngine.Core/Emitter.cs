@@ -69,7 +69,7 @@
 
         public void Trigger(float x, float y)
         {
-            var iterator = Buffer.Release(Parameters.Quantity);
+            var iterator = Buffer.Release(Randu.NextInteger(Parameters.Quantity));
             var particle = iterator.First;
 
             do
@@ -82,8 +82,10 @@
                 particle->Position[0] += x;
                 particle->Position[1] += y;
 
-                particle->Velocity[0] *= Parameters.Speed;
-                particle->Velocity[1] *= Parameters.Speed;
+                var speed = Randu.NextSingle(Parameters.Speed);
+
+                particle->Velocity[0] *= speed;
+                particle->Velocity[1] *= speed;
             }
             while (iterator.MoveNext(&particle));
         }
