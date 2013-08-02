@@ -24,7 +24,7 @@
                     {
                         subject.GetOffsetAndHeading(offset, heading);
 
-                        var length = Math.Sqrt((heading[0] * heading[0]) + (heading[1] * heading[1]));
+                        var length = Math.Sqrt((offset[0] * offset[0]) + (offset[1] * offset[1]));
                         length.Should().BeApproximately(10f, 0.000001f);
                     }
                 }
