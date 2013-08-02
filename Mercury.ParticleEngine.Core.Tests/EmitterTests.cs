@@ -14,7 +14,7 @@
             {
                 var subject = new Emitter(100, 1f, Profile.Point())
                 {
-                    ReleaseQuantity = 1
+                    Parameters = new ReleaseParameters { Quantity = 1 }
                 };
 
                 subject.Trigger(0f, 0f);
@@ -29,7 +29,7 @@
             {
                 var subject = new Emitter(100, 1f, Profile.Point())
                 {
-                    ReleaseQuantity = 100
+                    Parameters = new ReleaseParameters { Quantity = 1 }
                 };
 
                 subject.Modifiers.Add(new AssertionModifier(particle => particle.Age > 0f));
@@ -43,7 +43,7 @@
             {
                 var subject = new Emitter(100, 1f, Profile.Point())
                 {
-                    ReleaseQuantity = 100
+                    Parameters = new ReleaseParameters { Quantity = 1 }
                 };
 
                 subject.Modifiers.Add(new AssertionModifier(particle =>
@@ -59,7 +59,7 @@
             {
                 var subject = new Emitter(100, 1f, Profile.Point())
                 {
-                    ReleaseQuantity = 50
+                    Parameters = new ReleaseParameters { Quantity = 1 }
                 };
 
                 subject.Modifiers.Add(new AssertionModifier(particle => particle.Age <= 1f));
@@ -80,7 +80,7 @@
             {
                 var subject = new Emitter(100, 1f, Profile.Point())
                 {
-                    ReleaseQuantity = 10
+                    Parameters = new ReleaseParameters { Quantity = 10 }
                 };
 
                 subject.ActiveParticles.Should().Be(0);
@@ -93,7 +93,7 @@
             {
                 var subject = new Emitter(15, 1f, Profile.Point())
                 {
-                    ReleaseQuantity = 10
+                    Parameters = new ReleaseParameters { Quantity = 10 }
                 };
 
                 subject.Trigger(0f, 0f);
@@ -107,7 +107,7 @@
             {
                 var subject = new Emitter(10, 1f, Profile.Point())
                 {
-                    ReleaseQuantity = 10
+                    Parameters = new ReleaseParameters { Quantity = 10 }
                 };
 
                 subject.Trigger(0f, 0f);

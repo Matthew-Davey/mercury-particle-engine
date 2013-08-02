@@ -11,13 +11,8 @@
         private float _totalSeconds;
 
         public Emitter(int capacity, float term, Profile profile)
-            : this(capacity, TimeSpan.FromSeconds(term), profile)
         {
-        }
-
-        public Emitter(int capacity, TimeSpan term, Profile profile)
-        {
-            _term = (float)term.TotalSeconds;
+            _term = term;
 
             Buffer = new ParticleBuffer(capacity);
             Profile = profile;
@@ -33,8 +28,7 @@
 
         public IList<Modifier> Modifiers { get; private set; }
         public Profile Profile { get; private set; }
-        public int ReleaseQuantity { get; set; }
-        public float ReleaseSpeed { get; set; }
+        public ReleaseParameters Parameters { get; set; }
 
         public void Update(float elapsedSeconds)
         {
@@ -75,7 +69,7 @@
 
         public void Trigger(float x, float y)
         {
-            var iterator = Buffer.Release(ReleaseQuantity);
+            var iterator = Buffer.Release(Parameters.Quantity);
             var particle = iterator.First;
 
             do
@@ -88,8 +82,8 @@
                 particle->Position[0] += x;
                 particle->Position[1] += y;
 
-                particle->Velocity[0] *= ReleaseSpeed;
-                particle->Velocity[1] *= ReleaseSpeed;
+                particle->Velocity[0] *= Parameters.Speed;
+                particle->Velocity[1] *= Parameters.Speed;
             }
             while (iterator.MoveNext(&particle));
         }
