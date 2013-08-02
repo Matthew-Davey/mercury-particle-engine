@@ -90,6 +90,7 @@
                 particle->Velocity[1] *= speed;
 
                 Randu.NextColour(particle->Colour, Parameters.Colour);
+                particle->Opacity = Randu.NextSingle(Parameters.Opacity);
             }
             while (iterator.MoveNext(&particle));
         }
