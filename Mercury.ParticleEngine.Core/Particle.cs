@@ -12,12 +12,6 @@
         public fixed float Colour[3];
         public float Opacity;
 
-        static public int SizeInBytes
-        {
-            get
-            {
-                return Marshal.SizeOf(typeof(Particle));
-            }
-        }
+        static public readonly int SizeInBytes = Marshal.SizeOf(typeof(Particle));
     }
 }

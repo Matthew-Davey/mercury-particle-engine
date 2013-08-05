@@ -3,7 +3,7 @@
     using System;
     using SharpDX.Direct3D9;
 
-    public class PointSpriteRenderer
+    public class PointSpriteRenderer : IDisposable
     {
         private Device _device;
         private VertexBuffer _vertexBuffer;
@@ -13,6 +13,9 @@
         {
             if (device == null)
                 throw new ArgumentNullException("device");
+
+            if (emitter == null)
+                throw new ArgumentNullException("emitter");
 
             _device = device;
             _emitter = emitter;
@@ -25,11 +28,31 @@
             dataStream.Write(_emitter.Buffer.NativePointer, 0, _emitter.Buffer.SizeInBytes);
             _vertexBuffer.Unlock();
 
+            _device.SetRenderState(RenderState.PointSpriteEnable, true);
             _device.SetRenderState(RenderState.PointScaleEnable, true);
-            _device.SetRenderState(RenderState.PointScaleC, 10);
-            
+            _device.SetRenderState(RenderState.PointScaleC, 100);
+
             _device.SetStreamSource(0, _vertexBuffer, 0, Particle.SizeInBytes);
             _device.DrawPrimitives(PrimitiveType.PointList, 0, _emitter.Buffer.Size);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _vertexBuffer.Dispose();
+            }
+        }
+
+        ~PointSpriteRenderer()
+        {
+            Dispose(false);
         }
     }
 }
