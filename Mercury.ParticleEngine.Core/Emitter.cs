@@ -69,7 +69,7 @@
 
         public void Trigger(float x, float y)
         {
-            var numToRelease = Randu.NextInteger(Parameters.Quantity);
+            var numToRelease = FastRand.NextInteger(Parameters.Quantity);
 
             var iterator = Buffer.Release(numToRelease);
             var particle = iterator.First;
@@ -84,13 +84,13 @@
                 particle->Position[0] += x;
                 particle->Position[1] += y;
 
-                var speed = Randu.NextSingle(Parameters.Speed);
+                var speed = FastRand.NextSingle(Parameters.Speed);
 
                 particle->Velocity[0] *= speed;
                 particle->Velocity[1] *= speed;
 
-                Randu.NextColour(particle->Colour, Parameters.Colour);
-                particle->Opacity = Randu.NextSingle(Parameters.Opacity);
+                FastRand.NextColour(particle->Colour, Parameters.Colour);
+                particle->Opacity = FastRand.NextSingle(Parameters.Opacity);
             }
             while (iterator.MoveNext(&particle));
         }

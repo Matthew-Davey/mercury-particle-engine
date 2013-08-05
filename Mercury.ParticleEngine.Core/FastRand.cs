@@ -3,11 +3,9 @@
     using System;
 
     /// <summary>
-    /// Defines a random number generator which uses the RANDU algorithm to generate random values.
-    /// The RANDU algorithm does not generate evenly distributed random values, but it is fast and
-    /// it may be adequate in some scenarios.
+    /// Defines a random number generator which uses the FastRand algorithm to generate random values.
     /// </summary>
-    internal static class Randu
+    internal static class FastRand
     {
         static int _state = 1;
 
@@ -25,7 +23,8 @@
         /// <returns>A random positive integer.</returns>
         static public int NextInteger()
         {
-            return _state = ((_state << 16) + (_state << 1) + _state) & 0x7FFFFFFF;
+            _state = 214013 * _state + 2531011;
+            return (_state >> 16) & 0x7FFF;
         }
 
         /// <summary>
