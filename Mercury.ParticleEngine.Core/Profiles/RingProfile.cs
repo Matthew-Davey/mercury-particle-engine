@@ -9,20 +9,13 @@
 
         public override unsafe void GetOffsetAndHeading(float* offset, float* heading)
         {
-            Randu.NextAngle(offset);
+            Randu.NextUnitVector(heading);
 
-            if (Radiate)
-            {
-                heading[0] = offset[0];
-                heading[1] = offset[1];
-            }
-            else
-            {
-                Randu.NextAngle(heading);
-            }
+            offset[0] = heading[0] * Radius;
+            offset[1] = heading[1] * Radius;
 
-            offset[0] *= Radius;
-            offset[1] *= Radius;
+            if (!Radiate)
+                Randu.NextUnitVector(heading);
         }
     }
 }

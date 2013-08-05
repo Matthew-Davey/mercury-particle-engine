@@ -109,12 +109,12 @@
             return NextSingle((float)Math.PI * 2f) - (float)Math.PI;
         }
 
-        static public unsafe void NextAngle(float* sincos)
+        static public unsafe void NextUnitVector(float* vector)
         {
             var angle = NextAngle();
 
-            sincos[0] = (float)Math.Cos(angle);
-            sincos[1] = (float)Math.Sin(angle);
+            vector[0] = (float)Math.Cos(angle);
+            vector[1] = (float)Math.Sin(angle);
         }
 
         static public unsafe void NextColour(float* colour, ColourRange range)

@@ -9,7 +9,7 @@
             offset[0] = 0f;
             offset[1] = 0f;
 
-            Randu.NextAngle(heading);
+            Randu.NextUnitVector(heading);
         }
     }
 }
