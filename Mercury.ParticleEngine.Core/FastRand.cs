@@ -12,7 +12,7 @@
         static public void Seed(Int32 seed)
         {
             if (seed < 1)
-                throw new ArgumentOutOfRangeException("seed must be greater than zero");
+                throw new ArgumentOutOfRangeException("seed", "seed must be greater than zero");
             
             _state = seed;
         }
@@ -64,7 +64,7 @@
         /// <returns>A random single value between 0 and 1.</returns>
         static public float NextSingle()
         {
-            return NextInteger() / (float)int.MaxValue;
+            return NextInteger() / (float)Int16.MaxValue;
         }
 
         /// <summary>
@@ -105,7 +105,7 @@
         /// <returns>A random angle value.</returns>
         static public float NextAngle()
         {
-            return NextSingle((float)Math.PI * 2f) - (float)Math.PI;
+            return NextSingle((float)Math.PI * -1f, (float)Math.PI);
         }
 
         static public unsafe void NextUnitVector(float* vector)
