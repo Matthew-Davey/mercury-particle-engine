@@ -48,6 +48,11 @@ VS_OUTPUT vshader(VS_INPUT input)
 	//output.Rotation = input.Rotation;
 	output.Rotation = 0.0f;
 
+	if (input.Age == 0.0f || input.Age > 1.0f)
+	{
+		output.Size = 0.0f;
+	}
+
 	return output;
 }
 

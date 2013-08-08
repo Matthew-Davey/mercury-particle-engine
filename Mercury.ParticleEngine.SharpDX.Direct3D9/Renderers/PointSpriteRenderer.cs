@@ -50,6 +50,7 @@
             _vertexBuffer.Unlock();
 
             _device.SetRenderState(RenderState.PointSpriteEnable, true);
+            _device.SetRenderState(RenderState.PointSizeMin, 0.0f);
             _device.SetRenderState(RenderState.AlphaBlendEnable, true);
             _device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
             _device.SetRenderState(RenderState.DestinationBlend, Blend.One);
