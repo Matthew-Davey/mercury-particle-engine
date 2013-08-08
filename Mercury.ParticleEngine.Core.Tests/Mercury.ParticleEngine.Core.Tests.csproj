@@ -49,7 +49,7 @@
       <HintPath>..\.lib\xunit.1.9.1\lib\net20\xunit.dll</HintPath>
     </Reference>
     <Reference Include="xunit.extensions">
-      <HintPath>..\$\.lib\xunit.extensions.1.9.1\lib\net20\xunit.extensions.dll</HintPath>
+      <HintPath>..\.lib\xunit.extensions.1.9.1\lib\net20\xunit.extensions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
