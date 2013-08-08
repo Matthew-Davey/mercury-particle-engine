@@ -47,8 +47,10 @@
                 particle->Age = (_totalSeconds - particle->Inception) / _term;
 
                 if (particle->Age > 1f)
+                {
                     expired++;
-                    //break;
+                    continue;
+                }
 
                 particle->Position[0] += particle->Velocity[0];
                 particle->Position[1] += particle->Velocity[1];
@@ -57,8 +59,6 @@
 
             if (expired > 0)
                 Buffer.Reclaim(expired);
-            //if (iterator.Remaining > 0)
-            //    Buffer.Reclaim(iterator.Remaining);
 
             if (Buffer.Count > 0)
             {
