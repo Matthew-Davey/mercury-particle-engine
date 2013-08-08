@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.ParticleEngine.Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.ParticleEngine.SharpDX.Direct3D9", "Mercury.ParticleEngine.SharpDX.Direct3D9\Mercury.ParticleEngine.SharpDX.Direct3D9.csproj", "{ACA557D3-43A9-424F-A35A-4FB9C93FE4E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.ParticleEngine.SharpDX.Direct3D9.Sample", "Mercury.ParticleEngine.SharpDX.Direct3D9.Sample\Mercury.ParticleEngine.SharpDX.Direct3D9.Sample.csproj", "{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{ACA557D3-43A9-424F-A35A-4FB9C93FE4E3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{ACA557D3-43A9-424F-A35A-4FB9C93FE4E3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{ACA557D3-43A9-424F-A35A-4FB9C93FE4E3}.Release|x86.ActiveCfg = Release|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
