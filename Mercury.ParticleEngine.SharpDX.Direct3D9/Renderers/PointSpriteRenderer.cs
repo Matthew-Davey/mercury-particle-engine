@@ -22,7 +22,7 @@
 
             _device = device;
             _emitter = emitter;
-            _vertexBuffer = new VertexBuffer(_device, _emitter.Buffer.SizeInBytes, Usage.WriteOnly | Usage.Points, VertexFormat.None, Pool.Managed);
+            _vertexBuffer = new VertexBuffer(_device, _emitter.Buffer.SizeInBytes, Usage.Dynamic | Usage.Points | Usage.WriteOnly, VertexFormat.None, Pool.Default);
 
             var vertexElements = new[]
             {
@@ -32,7 +32,7 @@
                 VertexElement.VertexDeclarationEnd
             };
 
-            _effect = Effect.FromFile(device, "PointSprite.fx", ShaderFlags.None);
+            _effect = Effect.FromFile(device, "PointSprite.fx", ShaderFlags.PartialPrecision);
 
             _vertexDeclaration = new VertexDeclaration(device, vertexElements);
         }
@@ -45,15 +45,16 @@
             _effect.SetValue("WVPMatrix", worldViewProjection);
             _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), texture);
 
-            var dataStream = _vertexBuffer.Lock(0, 0, LockFlags.Discard);
+            var dataStream = _vertexBuffer.Lock(0, 0, LockFlags.NoDirtyUpdate);
             Utilities.CopyMemory(dataStream.DataPointer, _emitter.Buffer.NativePointer, _emitter.Buffer.SizeInBytes);
-            //dataStream.WriteRange(_emitter.Buffer.NativePointer, _emitter.Buffer.SizeInBytes);
             _vertexBuffer.Unlock();
 
             _device.SetRenderState(RenderState.PointSpriteEnable, true);
             _device.SetRenderState(RenderState.AlphaBlendEnable, true);
             _device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
             _device.SetRenderState(RenderState.DestinationBlend, Blend.One);
+
+            _device.SetRenderState(RenderState.ZWriteEnable, false);
             
             _effect.Technique = technique;
             _effect.Begin();
