@@ -17,6 +17,7 @@
             Buffer = new ParticleBuffer(capacity);
             Profile = profile;
             Modifiers = new List<Modifier>();
+            Parameters = new ReleaseParameters();
         }
 
         internal ParticleBuffer Buffer { get; private set; }
@@ -39,21 +40,25 @@
 
             var iterator = Buffer.GetIterator();
             var particle = iterator.First;
+            var expired = 0;
 
             do
             {
                 particle->Age = (_totalSeconds - particle->Inception) / _term;
 
                 if (particle->Age > 1f)
-                    break;
+                    expired++;
+                    //break;
 
                 particle->Position[0] += particle->Velocity[0];
                 particle->Position[1] += particle->Velocity[1];
             }
             while (iterator.MoveNext(&particle));
 
-            if (iterator.Remaining > 0)
-                Buffer.Reclaim(iterator.Remaining);
+            if (expired > 0)
+                Buffer.Reclaim(expired);
+            //if (iterator.Remaining > 0)
+            //    Buffer.Reclaim(iterator.Remaining);
 
             if (Buffer.Count > 0)
             {
