@@ -1,13 +1,16 @@
 ﻿namespace Mercury.ParticleEngine.Renderers
 {
     using System;
+    using SharpDX;
     using SharpDX.Direct3D9;
 
     public class PointSpriteRenderer : IDisposable
     {
-        private Device _device;
-        private VertexBuffer _vertexBuffer;
-        private Emitter _emitter;
+        private readonly Device _device;
+        private readonly VertexBuffer _vertexBuffer;
+        private readonly Emitter _emitter;
+        private readonly VertexDeclaration _vertexDeclaration;
+        private readonly Effect _effect;
 
         public PointSpriteRenderer(Device device, Emitter emitter)
         {
@@ -19,21 +22,49 @@
 
             _device = device;
             _emitter = emitter;
-            _vertexBuffer = new VertexBuffer(_device, _emitter.Buffer.SizeInBytes, Usage.Dynamic | Usage.Points, VertexFormat.None, Pool.Managed);
+            _vertexBuffer = new VertexBuffer(_device, _emitter.Buffer.SizeInBytes, Usage.WriteOnly | Usage.Points, VertexFormat.None, Pool.Managed);
+
+            var vertexElements = new[]
+            {
+                new VertexElement(0,  4, DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.TextureCoordinate, 1),
+                new VertexElement(0,  8, DeclarationType.Float2, DeclarationMethod.Default, DeclarationUsage.Position, 0),
+                new VertexElement(0, 24, DeclarationType.Float4, DeclarationMethod.Default, DeclarationUsage.Color, 0),
+                VertexElement.VertexDeclarationEnd
+            };
+
+            _effect = Effect.FromFile(device, "PointSprite.fx", ShaderFlags.None);
+
+            _vertexDeclaration = new VertexDeclaration(device, vertexElements);
         }
 
-        public void Render()
+        public void Render(Matrix worldViewProjection, Texture texture)
         {
+            var technique = _effect.GetTechnique(0);
+            var pass = _effect.GetPass(technique, 0);
+
+            _effect.SetValue("WVPMatrix", worldViewProjection);
+            _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), texture);
+
             var dataStream = _vertexBuffer.Lock(0, 0, LockFlags.Discard);
-            dataStream.Write(_emitter.Buffer.NativePointer, 0, _emitter.Buffer.SizeInBytes);
+            Utilities.CopyMemory(dataStream.DataPointer, _emitter.Buffer.NativePointer, _emitter.Buffer.SizeInBytes);
+            //dataStream.WriteRange(_emitter.Buffer.NativePointer, _emitter.Buffer.SizeInBytes);
             _vertexBuffer.Unlock();
 
             _device.SetRenderState(RenderState.PointSpriteEnable, true);
-            _device.SetRenderState(RenderState.PointScaleEnable, true);
-            _device.SetRenderState(RenderState.PointScaleC, 100);
+            _device.SetRenderState(RenderState.AlphaBlendEnable, true);
+            _device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
+            _device.SetRenderState(RenderState.DestinationBlend, Blend.One);
+            
+            _effect.Technique = technique;
+            _effect.Begin();
+            _effect.BeginPass(0);
 
             _device.SetStreamSource(0, _vertexBuffer, 0, Particle.SizeInBytes);
+            _device.VertexDeclaration = _vertexDeclaration;
             _device.DrawPrimitives(PrimitiveType.PointList, 0, _emitter.Buffer.Size);
+
+            _effect.EndPass();
+            _effect.End();
         }
 
         public void Dispose()
@@ -47,6 +78,7 @@
             if (disposing)
             {
                 _vertexBuffer.Dispose();
+                _effect.Dispose();
             }
         }
 
