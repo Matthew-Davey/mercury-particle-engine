@@ -66,7 +66,7 @@
 
                 foreach (var modifier in Modifiers)
                 {
-                    modifier.Update(ref iterator);
+                    modifier.Update(elapsedSeconds, ref iterator);
                     iterator.Reset();
                 }
             }

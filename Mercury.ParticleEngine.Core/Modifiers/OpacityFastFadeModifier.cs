@@ -2,7 +2,7 @@
 {
     public unsafe sealed class OpacityFastFadeModifier : Modifier
     {
-        protected internal override void Update(ref ParticleIterator iterator)
+        protected internal override void Update(float elapsedSeconds, ref ParticleIterator iterator)
         {
             var particle = iterator.First;
 
