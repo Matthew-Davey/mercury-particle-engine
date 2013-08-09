@@ -29,6 +29,7 @@
                 new VertexElement(0,  4, DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.TextureCoordinate, 1),
                 new VertexElement(0,  8, DeclarationType.Float2, DeclarationMethod.Default, DeclarationUsage.Position, 0),
                 new VertexElement(0, 24, DeclarationType.Float4, DeclarationMethod.Default, DeclarationUsage.Color, 0),
+                new VertexElement(0, 40, DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.PointSize, 0),
                 VertexElement.VertexDeclarationEnd
             };
 
@@ -40,7 +41,6 @@
         public void Render(Matrix worldViewProjection, Texture texture)
         {
             var technique = _effect.GetTechnique(0);
-            var pass = _effect.GetPass(technique, 0);
 
             _effect.SetValue("WVPMatrix", worldViewProjection);
             _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), texture);
@@ -51,6 +51,7 @@
 
             _device.SetRenderState(RenderState.PointSpriteEnable, true);
             _device.SetRenderState(RenderState.PointSizeMin, 0.0f);
+            _device.SetRenderState(RenderState.PointSizeMax, 512.0f);
             _device.SetRenderState(RenderState.AlphaBlendEnable, true);
             _device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
             _device.SetRenderState(RenderState.DestinationBlend, Blend.One);

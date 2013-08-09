@@ -4,9 +4,9 @@ uniform extern texture SpriteTexture;
 struct VS_INPUT
 {
 	float Age : TEXCOORD1;
-	float4 Position : POSITION0;
+	float2 Position : POSITION0;
 	float4 Color : COLOR0;
-	//float Size : PSIZE;
+	float Size : PSIZE0;
 	//float Rotation : COLOR1;
 };
 
@@ -14,7 +14,7 @@ struct VS_OUTPUT
 {
 	float4 Position : POSITION0;
 	float4 Color : COLOR0;
-	float Size : PSIZE;
+	float Size : PSIZE0;
 	float Rotation : COLOR1;
 };
 
@@ -41,10 +41,9 @@ VS_OUTPUT vshader(VS_INPUT input)
 {
 	VS_OUTPUT output = (VS_OUTPUT)0;
 	
-	output.Position = mul(input.Position, WVPMatrix);
+	output.Position = mul(float4(input.Position, 0, 1), WVPMatrix);
 	output.Color = input.Color;
-	//output.Size = input.Size;
-	output.Size = 32.0f;
+	output.Size = input.Size;
 	//output.Rotation = input.Rotation;
 	output.Rotation = 0.0f;
 

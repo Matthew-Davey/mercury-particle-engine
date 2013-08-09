@@ -96,6 +96,8 @@
 
                 FastRand.NextColour(particle->Colour, Parameters.Colour);
                 particle->Opacity = FastRand.NextSingle(Parameters.Opacity);
+
+                particle->Scale = FastRand.NextSingle(Parameters.Scale);
             }
             while (iterator.MoveNext(&particle));
         }
