@@ -34,7 +34,7 @@
                 VertexElement.VertexDeclarationEnd
             };
 
-            _effect = Effect.FromFile(device, "PointSprite.fx", ShaderFlags.PartialPrecision);
+            _effect = Effect.FromString(device, Resources.PointSpriteShader, ShaderFlags.PartialPrecision);
 
             _vertexDeclaration = new VertexDeclaration(device, vertexElements);
         }
