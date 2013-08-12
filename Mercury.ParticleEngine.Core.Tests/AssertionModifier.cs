@@ -12,7 +12,7 @@
             _predicate = predicate;
         }
 
-        internal override unsafe void Update(ref ParticleIterator iterator)
+        protected internal override unsafe void Update(float elapsedSeconds, ref ParticleIterator iterator)
         {
             var particle = iterator.First;
 
