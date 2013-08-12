@@ -5,3 +5,5 @@ bin
 obj
 .lib/*/*
 TestResults
+*.ncrunchsolution
+*.ncrunchproject
