@@ -12,6 +12,7 @@
         public fixed float Colour[3];
         public float Opacity;
         public float Scale;
+        public float Rotation;
 
         static public readonly int SizeInBytes = Marshal.SizeOf(typeof(Particle));
     }

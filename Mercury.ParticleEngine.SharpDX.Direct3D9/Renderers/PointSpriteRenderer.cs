@@ -26,10 +26,11 @@
 
             var vertexElements = new[]
             {
-                new VertexElement(0,  4, DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.TextureCoordinate, 1),
+                new VertexElement(0,  4, DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.Color, 1),
                 new VertexElement(0,  8, DeclarationType.Float2, DeclarationMethod.Default, DeclarationUsage.Position, 0),
                 new VertexElement(0, 24, DeclarationType.Float4, DeclarationMethod.Default, DeclarationUsage.Color, 0),
                 new VertexElement(0, 40, DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.PointSize, 0),
+                new VertexElement(0, 44, DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.Color, 2),
                 VertexElement.VertexDeclarationEnd
             };
 

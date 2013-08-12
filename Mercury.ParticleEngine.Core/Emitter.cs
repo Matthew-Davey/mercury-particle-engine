@@ -98,6 +98,7 @@
                 particle->Opacity = FastRand.NextSingle(Parameters.Opacity);
 
                 particle->Scale = FastRand.NextSingle(Parameters.Scale);
+                particle->Rotation = FastRand.NextSingle(Parameters.Rotation);
             }
             while (iterator.MoveNext(&particle));
         }
