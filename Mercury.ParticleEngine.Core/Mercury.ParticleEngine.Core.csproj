@@ -45,6 +45,7 @@
     <Compile Include="Colour.cs" />
     <Compile Include="ColourRange.cs" />
     <Compile Include="Emitter.cs" />
+    <Compile Include="Modifiers\DampingModifier.cs" />
     <Compile Include="Modifiers\OpacityFastFadeModifier.cs" />
     <Compile Include="Profiles\PointProfile.cs" />
     <Compile Include="Profiles\Profile.cs" />
