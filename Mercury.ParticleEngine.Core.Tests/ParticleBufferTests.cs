@@ -121,6 +121,83 @@
             }
         }
 
+        public class CopyToMethod
+        {
+            [Fact]
+            public void WhenBufferIsSequential_CopiesParticlesInOrder()
+            {
+                unsafe
+                {
+                    var subject = new ParticleBuffer(10);
+                    var iterator = subject.Release(5);
+
+                    var particle = iterator.First;
+                    
+                    do
+                    {
+                        particle->Age = 1f;
+                    }
+                    while (iterator.MoveNext(&particle));
+
+                    var destination = new Particle[10];
+
+                    fixed (Particle* buffer = destination)
+                    {
+                        subject.CopyTo((IntPtr)buffer);
+                    }
+
+                    destination[0].Age.Should().BeApproximately(1f, 0.0001f);
+                    destination[1].Age.Should().BeApproximately(1f, 0.0001f);
+                    destination[2].Age.Should().BeApproximately(1f, 0.0001f);
+                    destination[3].Age.Should().BeApproximately(1f, 0.0001f);
+                    destination[4].Age.Should().BeApproximately(1f, 0.0001f);
+                }
+            }
+
+            [Fact]
+            public void WhenBufferIsNotContiguous_CopiesParticlesInOrder()
+            {
+                unsafe
+                {
+                    var subject = new ParticleBuffer(10);
+                    var iterator = subject.Release(8);
+
+                    var particle = iterator.First;
+
+                    do
+                    {
+                        particle->Age = 1f;
+                    }
+                    while (iterator.MoveNext(&particle));
+
+                    subject.Reclaim(8);
+
+                    iterator = subject.Release(5);
+
+                    particle = iterator.First;
+
+                    do
+                    {
+                        particle->Age = 2f;
+                    }
+                    while (iterator.MoveNext(&particle));
+
+                    var destination = new Particle[10];
+
+                    fixed (Particle* buffer = destination)
+                    {
+                        subject.CopyTo((IntPtr)buffer);
+                    }
+
+                    destination[0].Age.Should().BeApproximately(2f, 0.0001f);
+                    destination[1].Age.Should().BeApproximately(2f, 0.0001f);
+                    destination[2].Age.Should().BeApproximately(2f, 0.0001f);
+                    destination[3].Age.Should().BeApproximately(2f, 0.0001f);
+                    destination[4].Age.Should().BeApproximately(2f, 0.0001f);
+                }
+            }
+        }
+
         public class DisposeMethod
         {
             [Fact]

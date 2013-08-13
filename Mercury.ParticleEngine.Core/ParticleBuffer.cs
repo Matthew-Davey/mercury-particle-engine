@@ -54,6 +54,28 @@
             return new ParticleIterator(_buffer, Size, _head, Count);
         }
 
+        public void CopyTo(IntPtr destination)
+        {
+            var tail = (_head + Count) % Size;
+
+            if (tail > _head)
+            {
+                memcpy(destination, (IntPtr)(&_buffer[_head]), (tail - _head) * Particle.SizeInBytes);
+            }
+            else
+            {
+                var split = Size - _head;
+                
+                memcpy(destination, (IntPtr)(&_buffer[_head]), split * Particle.SizeInBytes);
+                
+                destination = (IntPtr)((Particle*)destination + split);
+                memcpy(destination, (IntPtr)(& _buffer[0]), tail * Particle.SizeInBytes);
+            }
+        }
+
+        [DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
+        public static extern IntPtr memcpy(IntPtr dest, IntPtr src, int count);
+
         private bool _disposed;
 
         public void Dispose()
