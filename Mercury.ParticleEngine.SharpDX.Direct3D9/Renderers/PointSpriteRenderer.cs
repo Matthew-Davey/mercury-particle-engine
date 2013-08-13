@@ -46,8 +46,8 @@
             _effect.SetValue("WVPMatrix", worldViewProjection);
             _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), texture);
 
-            var dataStream = _vertexBuffer.Lock(0, 0, LockFlags.NoDirtyUpdate);
-            Utilities.CopyMemory(dataStream.DataPointer, _emitter.Buffer.NativePointer, _emitter.Buffer.SizeInBytes);
+            var dataStream = _vertexBuffer.Lock(0, 0, LockFlags.None);
+            _emitter.Buffer.CopyTo(dataStream.DataPointer);
             _vertexBuffer.Unlock();
 
             _device.SetRenderState(RenderState.PointSpriteEnable, true);
@@ -65,7 +65,7 @@
 
             _device.SetStreamSource(0, _vertexBuffer, 0, Particle.SizeInBytes);
             _device.VertexDeclaration = _vertexDeclaration;
-            _device.DrawPrimitives(PrimitiveType.PointList, 0, _emitter.Buffer.Size);
+            _device.DrawPrimitives(PrimitiveType.PointList, 0, _emitter.Buffer.Count);
 
             _effect.EndPass();
             _effect.End();
