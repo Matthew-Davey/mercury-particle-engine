@@ -7,7 +7,6 @@
     /// <summary>
     /// An immutable data structure encapsulating a directed fixed axis.
     /// </summary>
-    [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Axis : IEquatable<Axis>, IFormattable
     {
