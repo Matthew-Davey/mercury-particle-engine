@@ -7,15 +7,15 @@
         public float Radius { get; set; }
         public bool Radiate { get; set; }
 
-        public override unsafe void GetOffsetAndHeading(float* offset, float* heading)
+        public override unsafe void GetOffsetAndHeading(float* offset, Axis* heading)
         {
-            FastRand.NextUnitVector(heading);
+            FastRand.NextUnitVector((float*)heading);
 
-            offset[0] = heading[0] * Radius;
-            offset[1] = heading[1] * Radius;
+            offset[0] = heading->_x * Radius;
+            offset[1] = heading->_y * Radius;
 
             if (!Radiate)
-                FastRand.NextUnitVector(heading);
+                FastRand.NextUnitVector((float*)heading);
         }
     }
 }

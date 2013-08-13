@@ -6,7 +6,7 @@
         {
         }
 
-        public abstract unsafe void GetOffsetAndHeading(float* offset, float* heading);
+        public abstract unsafe void GetOffsetAndHeading(float* offset, Axis* heading);
 
         static public Profile Point()
         {
