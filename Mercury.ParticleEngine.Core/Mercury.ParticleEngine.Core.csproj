@@ -62,6 +62,7 @@
     <Compile Include="Range.cs" />
     <Compile Include="RangeF.cs" />
     <Compile Include="ReleaseParameters.cs" />
+    <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
