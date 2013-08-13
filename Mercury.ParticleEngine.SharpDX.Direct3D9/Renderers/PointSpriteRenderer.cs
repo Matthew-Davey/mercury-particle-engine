@@ -7,22 +7,19 @@
     public class PointSpriteRenderer : IDisposable
     {
         private readonly Device _device;
+        private readonly int _size;
         private readonly VertexBuffer _vertexBuffer;
-        private readonly Emitter _emitter;
         private readonly VertexDeclaration _vertexDeclaration;
         private readonly Effect _effect;
 
-        public PointSpriteRenderer(Device device, Emitter emitter)
+        public PointSpriteRenderer(Device device, int size)
         {
             if (device == null)
                 throw new ArgumentNullException("device");
 
-            if (emitter == null)
-                throw new ArgumentNullException("emitter");
-
             _device = device;
-            _emitter = emitter;
-            _vertexBuffer = new VertexBuffer(_device, _emitter.Buffer.SizeInBytes, Usage.Dynamic | Usage.Points | Usage.WriteOnly, VertexFormat.None, Pool.Default);
+            _size = size;
+            _vertexBuffer = new VertexBuffer(_device, _size * Particle.SizeInBytes, Usage.Dynamic | Usage.Points | Usage.WriteOnly, VertexFormat.None, Pool.Default);
 
             var vertexElements = new[]
             {
@@ -39,7 +36,7 @@
             _vertexDeclaration = new VertexDeclaration(device, vertexElements);
         }
 
-        public void Render(Matrix worldViewProjection, Texture texture)
+        public void Render(Emitter emitter, Matrix worldViewProjection, Texture texture)
         {
             var technique = _effect.GetTechnique(0);
 
@@ -47,7 +44,7 @@
             _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), texture);
 
             var dataStream = _vertexBuffer.Lock(0, 0, LockFlags.None);
-            _emitter.Buffer.CopyTo(dataStream.DataPointer);
+            emitter.Buffer.CopyTo(dataStream.DataPointer);
             _vertexBuffer.Unlock();
 
             _device.SetRenderState(RenderState.PointSpriteEnable, true);
@@ -65,7 +62,7 @@
 
             _device.SetStreamSource(0, _vertexBuffer, 0, Particle.SizeInBytes);
             _device.VertexDeclaration = _vertexDeclaration;
-            _device.DrawPrimitives(PrimitiveType.PointList, 0, _emitter.Buffer.Count);
+            _device.DrawPrimitives(PrimitiveType.PointList, 0, Math.Min(_size, emitter.Buffer.Count));
 
             _effect.EndPass();
             _effect.End();
