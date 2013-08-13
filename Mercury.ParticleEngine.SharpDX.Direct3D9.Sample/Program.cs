@@ -5,6 +5,7 @@
     using SharpDX;
     using SharpDX.Direct3D9;
     using SharpDX.Windows;
+    using Mercury.ParticleEngine.Modifiers;
     using Mercury.ParticleEngine.Profiles;
     using Mercury.ParticleEngine.Renderers;
 
@@ -16,7 +17,7 @@
             var form = new RenderForm("Mercury Particle Engine - SharpDX.Direct3D9 Sample");
 
             var direct3d = new Direct3D();
-            var device = new Device(direct3d, 0, DeviceType.Hardware, form.Handle, CreateFlags.HardwareVertexProcessing, new PresentParameters(form.ClientSize.Width, form.ClientSize.Height));
+            var device = new Device(direct3d, 0, DeviceType.Hardware, form.Handle, CreateFlags.HardwareVertexProcessing | CreateFlags.EnablePresentStatistics, new PresentParameters(form.ClientSize.Width, form.ClientSize.Height));
 
             var view = new Matrix(
                 1.0f, 0.0f, 0.0f, 0.0f,
@@ -24,19 +25,39 @@
                 0.0f, 0.0f, -1.0f, 0.0f,
                 0.0f, 0.0f, 0.0f, 1.0f);
             var proj = Matrix.OrthoOffCenterLH(form.ClientSize.Width * -0.5f, form.ClientSize.Width * 0.5f, form.ClientSize.Height * 0.5f, form.ClientSize.Height * -0.5f, 0f, 100f);
+            var wvp = Matrix.Identity * view * proj;
 
-            var emitter = new Emitter(50000, 3.0f, Profile.Point())
+            var emitter1 = new Emitter(5000, 2.0f, Profile.Point())
             {
                 Parameters = new ReleaseParameters
                 {
-                    Colour   = new ColourRange(new RangeF(0f, 0.3f), new RangeF(0.3f, 0.7f), new RangeF(0.8f, 1f)),
+                    Colour   = new ColourRange(new RangeF(0f, 0.5f), new RangeF(0.3f, 0.7f), new RangeF(0.8f, 1f)),
                     Opacity  = new RangeF(1f, 1f),
-                    Quantity = new Range(250, 250),
-                    Speed    = new RangeF(0f, 1f),
-                    Scale    = new RangeF(32f, 32f)
+                    Quantity = new Range(40, 40),
+                    Speed    = new RangeF(0f, 2f),
+                    Scale    = new RangeF(32f, 32f),
+                    Rotation = new RangeF(-3.14157f, 3.14157f)
                 }
             };
-            var renderer = new PointSpriteRenderer(device, emitter);
+            emitter1.Modifiers.Add(new OpacityFastFadeModifier());
+            emitter1.Modifiers.Add(new DampingModifier { DampingCoefficient = 0.5f });
+
+            var emitter2 = new Emitter(5000, 2.0f, Profile.Point())
+            {
+                Parameters = new ReleaseParameters
+                {
+                    Colour = new ColourRange(new RangeF(1f, 1f), new RangeF(0f, 0.3f), new RangeF(0f, 0.5f)),
+                    Opacity = new RangeF(1f, 1f),
+                    Quantity = new Range(40, 40),
+                    Speed = new RangeF(0f, 2f),
+                    Scale = new RangeF(32f, 32f),
+                    Rotation = new RangeF(-3.14157f, 3.14157f)
+                }
+            };
+            emitter2.Modifiers.Add(new OpacityFastFadeModifier());
+            emitter2.Modifiers.Add(new DampingModifier { DampingCoefficient = 0.5f });
+
+            var renderer = new PointSpriteRenderer(device, 5000);
 
             var texture = Texture.FromFile(device, "Particle.dds");
 
@@ -45,26 +66,34 @@
 
             RenderLoop.Run(form, () =>
                 {
+                    var elapsedTime = (float)stopwatch.Elapsed.TotalSeconds;
+
                     stopwatch.Reset();
                     stopwatch.Start();
 
-                    emitter.Trigger((float)Math.Sin(totalTime) * 350f, 0f);
-                    emitter.Update(0.01666666f);
+                    if (form.Focused)
+                    {
+                        totalTime += elapsedTime;
+
+                        emitter1.Trigger((float)Math.Sin(totalTime) * 350f, (float)Math.Cos(totalTime * 3f) * 200f);
+                        emitter2.Trigger((float)Math.Sin(totalTime) * -350f, (float)Math.Cos(totalTime * 3f) * -200f);
+                        
+                        emitter1.Update(elapsedTime);
+                        emitter2.Update(elapsedTime);
+                    }
 
 // ReSharper disable AccessToDisposedClosure
-                    device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Black, 1f, 0);
+                    device.Clear(ClearFlags.Target, Color.Black, 1f, 0);
                     device.BeginScene();
 
-                    renderer.Render(Matrix.Identity * view * proj, texture);
+                    renderer.Render(emitter1, wvp, texture);
+                    renderer.Render(emitter2, wvp, texture);
 
                     device.EndScene();
                     device.Present();
+
+                    System.Threading.Thread.Sleep(15);
 // ReSharper restore AccessToDisposedClosure
-
-                    form.Text = String.Format("{0:G} :: {1}", emitter.ActiveParticles, stopwatch.Elapsed.TotalSeconds.ToString());
-
-                    totalTime += (float)stopwatch.Elapsed.TotalSeconds;
-
                 });
 
             device.Dispose();
