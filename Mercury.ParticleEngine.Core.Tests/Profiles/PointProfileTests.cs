@@ -19,7 +19,7 @@
                     fixed (float* offset = &values[0])
                     fixed (float* heading = &values[2])
                     {
-                        subject.GetOffsetAndHeading(offset, heading);
+                        subject.GetOffsetAndHeading((Coordinate*)offset, (Axis*)heading);
 
                         offset[0].Should().Be(0f);
                         offset[1].Should().Be(0f);
@@ -38,7 +38,7 @@
                     fixed (float* offset = &values[0])
                     fixed (float* heading = &values[2])
                     {
-                        subject.GetOffsetAndHeading(offset, heading);
+                        subject.GetOffsetAndHeading((Coordinate*)offset, (Axis*)heading);
 
                         var length = Math.Sqrt((heading[0] * heading[0]) + (heading[1] * heading[1]));
                         length.Should().BeApproximately(1f, 0.000001);
