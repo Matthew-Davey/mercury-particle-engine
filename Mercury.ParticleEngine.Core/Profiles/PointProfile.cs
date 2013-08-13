@@ -4,10 +4,9 @@
 
     public class PointProfile : Profile
     {
-        public override unsafe void GetOffsetAndHeading(float* offset, Axis* heading)
+        public override unsafe void GetOffsetAndHeading(Coordinate* offset, Axis* heading)
         {
-            offset[0] = 0f;
-            offset[1] = 0f;
+            *offset = Coordinate.Origin;
 
             FastRand.NextUnitVector((float*)heading);
         }

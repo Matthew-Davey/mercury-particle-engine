@@ -81,7 +81,7 @@
 
             do
             {
-                Profile.GetOffsetAndHeading(particle->Position, (Axis*)particle->Velocity);
+                Profile.GetOffsetAndHeading((Coordinate*)particle->Position, (Axis*)particle->Velocity);
 
                 particle->Age = 0f;
                 particle->Inception = _totalSeconds;
