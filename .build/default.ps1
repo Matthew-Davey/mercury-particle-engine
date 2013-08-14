@@ -4,6 +4,12 @@ properties {
   $unitTests     = "..\Mercury.ParticleEngine.Core.Tests\bin\Debug\Mercury.ParticleEngine.Core.Tests.dll"
 }
 
+Import-Module ".\teamcity.psm1"
+
+TaskSetup {
+  TeamCity-ReportBuildProgress "Running task $($psake.context.Peek().currentTaskName)"
+}
+
 task default -depends Clean, Compile, Test
 
 task Test -depends Compile {
