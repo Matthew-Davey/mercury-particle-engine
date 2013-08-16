@@ -8,6 +8,11 @@
             Strength = strength;
         }
 
+        public LinearGravityModifier(Vector vector)
+            : this(vector.Axis, vector.Magnitude)
+        {
+        }
+
         public Axis Direction { get; set; }
         public float Strength { get; set; }
 

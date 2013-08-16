@@ -55,14 +55,13 @@
         /// <param name="vector">The vector to translate by.</param>
         /// <returns>A <see cref="Coordinate"/> representing the current instance translated by the
         /// specified vector.</returns>
-        //public Coordinate Translate(Vector vector)
-        //{
-        //    var x = _x + vector._x;
-        //    var y = _y + vector._y;
-        //    var z = _z + vector._z;
+        public Coordinate Translate(Vector vector)
+        {
+            var x = _x + vector._x;
+            var y = _y + vector._y;
 
-        //    return new Coordinate(x, y, z);
-        //}
+            return new Coordinate(x, y);
+        }
 
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
@@ -158,9 +157,9 @@
         /// <param name="vector">The second operand.</param>
         /// <returns>A <see cref="Coordinate"/> value representing the the <paramref name="coord"/>
         /// value translated by the <paramref name="vector"/> value.</returns>
-        //static public Coordinate operator +(Coordinate coord, Vector vector)
-        //{
-        //    return coord.Translate(vector);
-        //}
+        static public Coordinate operator +(Coordinate coord, Vector vector)
+        {
+            return coord.Translate(vector);
+        }
     }
 }
