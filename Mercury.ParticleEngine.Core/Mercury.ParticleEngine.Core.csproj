@@ -47,6 +47,7 @@
     <Compile Include="ColourRange.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Emitter.cs" />
+    <Compile Include="Modifiers\ColourInterpolator2.cs" />
     <Compile Include="Modifiers\DampingModifier.cs" />
     <Compile Include="Modifiers\LinearGravityModifier.cs" />
     <Compile Include="Modifiers\OpacityFastFadeModifier.cs" />
