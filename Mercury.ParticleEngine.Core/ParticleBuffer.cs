@@ -64,12 +64,12 @@
             }
             else
             {
-                var split = Size - _head;
+                var split = (Size - _head) * Particle.SizeInBytes;
                 
-                memcpy(destination, (IntPtr)(&_buffer[_head]), split * Particle.SizeInBytes);
+                memcpy(destination, (IntPtr)(&_buffer[_head]), split);
                 
-                destination = (IntPtr)((Particle*)destination + split);
-                memcpy(destination, (IntPtr)(& _buffer[0]), tail * Particle.SizeInBytes);
+                destination = (IntPtr)((byte*)destination + split);
+                memcpy(destination, NativePointer, tail * Particle.SizeInBytes);
             }
         }
 
