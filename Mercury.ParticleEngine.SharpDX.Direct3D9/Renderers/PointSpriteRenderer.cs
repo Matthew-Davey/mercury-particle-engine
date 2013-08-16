@@ -12,6 +12,8 @@
         private readonly VertexDeclaration _vertexDeclaration;
         private readonly Effect _effect;
 
+        public bool EnableFastFade { get; set; }
+
         public PointSpriteRenderer(Device device, int size)
         {
             if (device == null)
@@ -38,7 +40,12 @@
 
         public void Render(Emitter emitter, Matrix worldViewProjection, Texture texture)
         {
+            if (emitter.ActiveParticles > _size)
+                throw new Exception("Cannot render this emitter, vertex buffer not big enough");
+
             var technique = _effect.GetTechnique(0);
+
+            _effect.SetValue("FastFade", EnableFastFade);
 
             _effect.SetValue("WVPMatrix", worldViewProjection);
             _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), texture);

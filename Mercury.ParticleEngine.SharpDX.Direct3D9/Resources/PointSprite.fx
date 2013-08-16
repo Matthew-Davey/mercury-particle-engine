@@ -1,5 +1,6 @@
 uniform extern float4x4 WVPMatrix;
 uniform extern texture SpriteTexture;
+uniform extern bool FastFade;
 
 sampler Sampler = sampler_state
 {
@@ -13,10 +14,14 @@ sampler Sampler = sampler_state
     AddressV = CLAMP;
 };                        
 
-float4 vertex_main(const in float age : COLOR1, const in float2 position : POSITION0, const inout float4 color : COLOR0, inout float size : PSIZE0, const inout float rotation : COLOR2) : POSITION0
+float4 vertex_main(const in float age : COLOR1, const in float2 position : POSITION0, inout float4 color : COLOR0, inout float size : PSIZE0, const inout float rotation : COLOR2) : POSITION0
 {
 	if (age == 0.0f || age > 1.0f) {
 		size = 0.0f;
+	}
+
+	if (FastFade) {
+		color.a = 1.0f - age;
 	}
 
 	return mul(float4(position, 0, 1), WVPMatrix);
