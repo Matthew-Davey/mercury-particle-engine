@@ -9,7 +9,7 @@
         private int _iteration;
 
         public readonly Particle* First;
-        private readonly Particle* Last;
+        private readonly Particle* _last;
 
         public ParticleIterator(Particle* buffer, int size, int from, int count)
         {
@@ -21,7 +21,7 @@
             _iteration = 0;
 
             First = buffer + _from;
-            Last = (buffer + _size) -1;
+            _last = (buffer + _size) -1;
         }
 
         public int Remaining
@@ -34,7 +34,7 @@
             if (++_iteration > (Count - 1))
                 return false;
 
-            if (++(*particle) > Last)
+            if (++(*particle) > _last)
                 (*particle) -= _size;
 
             return true;
