@@ -340,5 +340,10 @@
         {
             return !x.Equals(y);
         }
+
+        static public implicit operator Range(int value)
+        {
+            return new Range(value, value);
+        }
     }
 }

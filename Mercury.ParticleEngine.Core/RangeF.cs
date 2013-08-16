@@ -344,5 +344,10 @@
         {
             return !value1.Equals(value2);
         }
+
+        public static implicit operator RangeF(float value)
+        {
+            return new RangeF(value, value);
+        }
     }
 }
