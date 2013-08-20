@@ -51,6 +51,7 @@
     <Compile Include="Modifiers\DampingModifier.cs" />
     <Compile Include="Modifiers\LinearGravityModifier.cs" />
     <Compile Include="Modifiers\OpacityFastFadeModifier.cs" />
+    <Compile Include="Modifiers\RadialGravityModifier.cs" />
     <Compile Include="Profiles\PointProfile.cs" />
     <Compile Include="Profiles\Profile.cs" />
     <Compile Include="Modifiers\Modifier.cs" />

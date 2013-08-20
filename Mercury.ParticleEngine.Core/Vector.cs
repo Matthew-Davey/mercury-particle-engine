@@ -16,6 +16,12 @@
             _y = axis._y * magnitude;
         }
 
+        public Vector(float x, float y)
+        {
+            _x = x;
+            _y = y;
+        }
+
         internal readonly Single _x;
         internal readonly Single _y;
 
@@ -24,7 +30,7 @@
         /// </summary>
         public Single Magnitude
         {
-            get { return(float)Math.Sqrt((_x * _x) + (_y * _y)); }
+            get { return (float)Math.Sqrt((_x * _x) + (_y * _y)); }
         }
 
         /// <summary>
@@ -34,6 +40,11 @@
         public Axis Axis
         {
             get { return new Axis(_x, _y); }
+        }
+
+        static public Vector operator*(Vector value, float multiplier)
+        {
+            return new Vector(value._x * multiplier, value._y * multiplier);
         }
     }
 }

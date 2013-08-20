@@ -151,9 +151,9 @@
             return !x.Equals(y);
         }
 
-        //public static Vector operator *(Axis axis, Single amplitude)
-        //{
-        //    return new Vector(axis, amplitude);
-        //}
+        public static Vector operator *(Axis axis, Single amplitude)
+        {
+            return new Vector(axis, amplitude);
+        }
     }
 }
