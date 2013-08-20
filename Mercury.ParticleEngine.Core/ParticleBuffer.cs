@@ -60,21 +60,19 @@
 
             if (tail > _head)
             {
-                memcpy(destination, (IntPtr)(&_buffer[_head]), (tail - _head) * Particle.SizeInBytes);
+                memcpy(destination, IntPtr.Add(NativePointer, _head * Particle.SizeInBytes), Count * Particle.SizeInBytes);
             }
             else
             {
                 var split = (Size - _head) * Particle.SizeInBytes;
                 
-                memcpy(destination, (IntPtr)(&_buffer[_head]), split);
-                
-                destination = (IntPtr)((byte*)destination + split);
-                memcpy(destination, NativePointer, tail * Particle.SizeInBytes);
+                memcpy(destination, IntPtr.Add(NativePointer, _head * Particle.SizeInBytes), split);
+                memcpy(IntPtr.Add(destination, split), NativePointer, tail * Particle.SizeInBytes);
             }
         }
 
         [DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
-        public static extern IntPtr memcpy(IntPtr dest, IntPtr src, int count);
+        public static extern void memcpy(IntPtr dest, IntPtr src, int count);
 
         private bool _disposed;
 
