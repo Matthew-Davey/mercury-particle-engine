@@ -18,14 +18,14 @@
 
         protected internal override unsafe void Update(float elapsedSeconds, ref ParticleIterator iterator)
         {
-            var deltaStrength = Strength * elapsedSeconds;
+            var vector = Direction * (Strength * elapsedSeconds);
 
             var particle = iterator.First;
 
             do
             {
-                particle->Velocity[0] += Direction._x * deltaStrength;
-                particle->Velocity[1] += Direction._y * deltaStrength;
+                particle->Velocity[0] *= vector._x;
+                particle->Velocity[1] *= vector._y;
             }
             while (iterator.MoveNext(&particle));
         }
