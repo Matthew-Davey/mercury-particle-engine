@@ -72,7 +72,7 @@
             }
         }
 
-        public void Trigger(float x, float y)
+        public void Trigger(Coordinate position)
         {
             var numToRelease = FastRand.NextInteger(Parameters.Quantity);
 
@@ -85,9 +85,9 @@
 
                 particle->Age = 0f;
                 particle->Inception = _totalSeconds;
-                
-                particle->Position[0] += x;
-                particle->Position[1] += y;
+
+                particle->Position[0] += position._x;
+                particle->Position[1] += position._y;
 
                 var speed = FastRand.NextSingle(Parameters.Speed);
 

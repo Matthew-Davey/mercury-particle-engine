@@ -20,7 +20,7 @@
                     }
                 };
 
-                subject.Trigger(0f, 0f);
+                subject.Trigger(new Coordinate(0f, 0f));
                 subject.ActiveParticles.Should().Be(1);
 
                 subject.Update(2f);
@@ -40,7 +40,7 @@
 
                 subject.Modifiers.Add(new AssertionModifier(particle => particle.Age > 0f));
 
-                subject.Trigger(0f, 0f);
+                subject.Trigger(new Coordinate(0f, 0f));
                 subject.Update(.1f);
             }
 
@@ -57,11 +57,11 @@
 
                 subject.Modifiers.Add(new AssertionModifier(particle => particle.Age <= 1f));
 
-                subject.Trigger(0f, 0f);
+                subject.Trigger(new Coordinate(0f, 0f));
                 subject.Update(0.5f);
-                subject.Trigger(0f, 0f);
+                subject.Trigger(new Coordinate(0f, 0f));
                 subject.Update(0.5f);
-                subject.Trigger(0f, 0f);
+                subject.Trigger(new Coordinate(0f, 0f));
                 subject.Update(0.5f);
             }
         }
@@ -80,7 +80,7 @@
                 };
 
                 subject.ActiveParticles.Should().Be(0);
-                subject.Trigger(0f, 0f);
+                subject.Trigger(new Coordinate(0f, 0f));
                 subject.ActiveParticles.Should().Be(10);
             }
 
@@ -95,9 +95,9 @@
                     }
                 };
 
-                subject.Trigger(0f, 0f);
+                subject.Trigger(new Coordinate(0f, 0f));
                 subject.ActiveParticles.Should().Be(10);
-                subject.Trigger(0f, 0f);
+                subject.Trigger(new Coordinate(0f, 0f));
                 subject.ActiveParticles.Should().Be(15);
             }
 
@@ -112,9 +112,9 @@
                     }
                 };
 
-                subject.Trigger(0f, 0f);
+                subject.Trigger(new Coordinate(0f, 0f));
                 subject.ActiveParticles.Should().Be(10);
-                subject.Trigger(0f, 0f);
+                subject.Trigger(new Coordinate(0f, 0f));
                 subject.ActiveParticles.Should().Be(10);
             }
         }

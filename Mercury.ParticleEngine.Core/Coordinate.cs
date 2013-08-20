@@ -21,8 +21,8 @@
             _y = y;
         }
 
-        private readonly Single _x;
-        private readonly Single _y;
+        internal readonly Single _x;
+        internal readonly Single _y;
 
         /// <summary>
         /// Gets the cartesian origin O.
