@@ -10,7 +10,7 @@
     [StructLayout(LayoutKind.Sequential)]
     public struct Vector
     {
-        public Vector(Axis axis, Single magnitude)
+        public Vector(Axis axis, float magnitude)
         {
             _x = axis._x * magnitude;
             _y = axis._y * magnitude;
@@ -22,13 +22,13 @@
             _y = y;
         }
 
-        internal readonly Single _x;
-        internal readonly Single _y;
+        internal readonly float _x;
+        internal readonly float _y;
 
         /// <summary>
         /// Gets the length or magnitude of the Euclidean vector.
         /// </summary>
-        public Single Magnitude
+        public float Magnitude
         {
             get { return (float)Math.Sqrt((_x * _x) + (_y * _y)); }
         }

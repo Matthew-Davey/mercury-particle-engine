@@ -15,17 +15,17 @@
         /// <summary>
         /// Gets the value of the red channel.
         /// </summary>
-        public readonly Single R;
+        public readonly float R;
 
         /// <summary>
         /// Gets the value of the green channel.
         /// </summary>
-        public readonly Single G;
+        public readonly float G;
         
         /// <summary>
         /// Gets the value of the blue channel.
         /// </summary>
-        public readonly Single B;
+        public readonly float B;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Colour"/> struct.
@@ -33,7 +33,7 @@
         /// <param name="r">The value of the red channel.</param>
         /// <param name="g">The value of the green channel.</param>
         /// <param name="b">The value of the blue channel.</param>
-        public Colour(Single r, Single g, Single b)
+        public Colour(float r, float g, float b)
         {
             R = r;
             G = g;
@@ -56,16 +56,16 @@
         ///     ]]>
         ///     </code>
         /// </example>
-        static public Colour Parse(String value)
+        static public Colour Parse(string value)
         {
-            const String regexPattern = @"^#(?<Red>[0-9A-F]{2})(?<Green>[0-9A-F]{2})(?<Blue>[0-9A-F]{2})$";
+            const string regexPattern = @"^#(?<Red>[0-9A-F]{2})(?<Green>[0-9A-F]{2})(?<Blue>[0-9A-F]{2})$";
 
             var match = Regex.Match(value, regexPattern, RegexOptions.IgnoreCase);
 
             if (!match.Success)
                 throw new FormatException("Value '" + value + "' is not in the correct format for a Colour.");
 
-            Func<String, Single> parseGroup = groupName =>
+            Func<string, float> parseGroup = groupName =>
             {
                 var groupValue = match.Groups[groupName].Value;
 
@@ -86,7 +86,7 @@
         /// <returns>
         ///     <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override Boolean Equals(Object obj)
+        public override bool Equals(object obj)
         {
             if (obj is Colour)
                 return this.Equals((Colour)obj);
@@ -101,7 +101,7 @@
         /// <returns>
         ///     <c>true</c> if the specified <see cref="Colour"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public Boolean Equals(Colour value)
+        public bool Equals(Colour value)
         {
             return R.Equals(value.R) &&
                    G.Equals(value.G) &&
@@ -114,7 +114,7 @@
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override Int32 GetHashCode()
+        public override int GetHashCode()
         {
             return R.GetHashCode() ^
                    G.GetHashCode() ^
@@ -127,7 +127,7 @@
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override String ToString()
+        public override string ToString()
         {
             return String.Format("#{0:X2}{1:X2}{2:X2}", Convert.ToByte(R * 255f),
                                                         Convert.ToByte(G * 255f),
@@ -142,7 +142,7 @@
         /// <returns>
         ///     <c>true</c> if the lvalue <see cref="Colour"/> is equal to the rvalue; otherwise, <c>false</c>.
         /// </returns>
-        static public Boolean operator ==(Colour x, Colour y)
+        static public bool operator ==(Colour x, Colour y)
         {
             return x.Equals(y);
         }
@@ -155,7 +155,7 @@
         /// <returns>
         ///     <c>true</c> if the lvalue <see cref="Colour"/> is not equal to the rvalue; otherwise, <c>false</c>.
         /// </returns>
-        static public Boolean operator !=(Colour x, Colour y)
+        static public bool operator !=(Colour x, Colour y)
         {
             return !x.Equals(y);
         }

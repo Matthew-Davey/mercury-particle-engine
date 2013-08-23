@@ -16,9 +16,9 @@
             {
                 var colour = new Colour(1f, 1f, 1f);
 
-                colour.R.Should<Single>().Be(1f);
-                colour.G.Should<Single>().Be(1f);
-                colour.B.Should<Single>().Be(1f);
+                colour.R.Should<float>().Be(1f);
+                colour.G.Should<float>().Be(1f);
+                colour.B.Should<float>().Be(1f);
             }
         }
 
@@ -41,9 +41,9 @@
 
                 var actual = Colour.Parse(hex);
 
-                actual.R.Should<Single>().Be(1f);
-                actual.G.Should<Single>().Be(1f);
-                actual.B.Should<Single>().Be(1f);
+                actual.R.Should<float>().Be(1f);
+                actual.G.Should<float>().Be(1f);
+                actual.B.Should<float>().Be(1f);
             }
         }
 
@@ -143,7 +143,7 @@
             [InlineData(0f, 0f, 0f, "#000000")]
             [InlineData(1f, 1f, 1f, "#FFFFFF")]
             [InlineData(0.5f, 0.5f, 0.5f, "#808080")]
-            public void ReturnsCorrectValue(Single r, Single g, Single b, String expected)
+            public void ReturnsCorrectValue(float r, float g, float b, String expected)
             {
                 var colour = new Colour(r, g, b);
 

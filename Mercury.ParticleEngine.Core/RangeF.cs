@@ -17,7 +17,7 @@
         /// of an interval. The template contains tokens which should be replaced with culture
         /// specific symbols.
         /// </summary>
-        private const String RegexTemplate = @"\[([\$(PositiveSign)\$(NegativeSign)]?[0-9]+(?:\$(DecimalSeparator)[0-9]*)?)\$(GroupSeparator)([\$(PositiveSign)\$(NegativeSign)]?[0-9]+(?:\$(DecimalSeparator)[0-9]*)?)\]";
+        private const string RegexTemplate = @"\[([\$(PositiveSign)\$(NegativeSign)]?[0-9]+(?:\$(DecimalSeparator)[0-9]*)?)\$(GroupSeparator)([\$(PositiveSign)\$(NegativeSign)]?[0-9]+(?:\$(DecimalSeparator)[0-9]*)?)\]";
 
         /// <summary>
         /// Gets a regex pattern which can be used to validate a string representation of an interval
@@ -28,7 +28,7 @@
         /// <exception cref="T:System.ArgumentNullException">
         /// Thrown if the value passed to the <paramref name="provider"/> parameter is <c>null</c>.
         /// </exception>
-        private static String GetFormatPattern(IFormatProvider provider)
+        private static string GetFormatPattern(IFormatProvider provider)
         {
             if (provider == null)
                 throw new ArgumentNullException("provider");
@@ -50,7 +50,7 @@
         /// Thrown if either of the values passed to the <paramref name="x"/> or <paramref name="y"/>
         /// parameters are not finite. That is, positive infinity, negative infinity, or NaN.
         /// </exception>
-        public RangeF(Single x, Single y)
+        public RangeF(float x, float y)
         {
             X = Math.Min(x, y);
             Y = Math.Max(x, y);
@@ -88,33 +88,33 @@
         /// <summary>
         /// Gets or sets the inclusive minimum value in the interval.
         /// </summary>
-        public readonly Single X;
+        public readonly float X;
 
         /// <summary>
         /// Gets or sets the inclusive maximum value in the interval.
         /// </summary>
-        public readonly Single Y;
+        public readonly float Y;
 
         /// <summary>
         /// Gets the diameter (size) of the interval.
         /// </summary>
-        public readonly Single Diameter;
+        public readonly float Diameter;
 
         /// <summary>
         /// Gets the centre of the interval.
         /// </summary>
-        public readonly Single Centre;
+        public readonly float Centre;
 
         /// <summary>
         /// Gets or sets the radius of the interval.
         /// </summary>
-        public readonly Single Radius;
+        public readonly float Radius;
 
         /// <summary>
         /// Gets a value indicating whether or not the interval is degenerate. A degenerate interval
-        /// is one which contains only a single distinct boundary (X == Y, Diameter == 0).
+        /// is one which contains only a float distinct boundary (X == Y, Diameter == 0).
         /// </summary>
-        public Boolean IsDegenerate
+        public bool IsDegenerate
         {
             get { return X.Equals(Y); }
         }
@@ -123,7 +123,7 @@
         /// Gets a value indicating whether or not the interval is proper. A proper interval is one
         /// which is neither empty or degenerate.
         /// </summary>
-        public Boolean IsProper
+        public bool IsProper
         {
             get { return !X.Equals(Y); }
         }
@@ -165,7 +165,7 @@
         /// <param name="value">The floating point value.</param>
         /// <returns><c>true</c> if the specified value is contained within the closed interval;
         /// else <c>false</c>.</returns>
-        public Boolean Contains(Single value)
+        public bool Contains(float value)
         {
             if (Single.IsInfinity(value))
                 throw new ArgumentException("value is not finite", "value", new NotFiniteNumberException(value));
@@ -190,7 +190,7 @@
         /// correct format for an ISO 31-11 closed interval, or if the numbers represented within
         /// the closed interval could not be parsed.
         /// </exception>
-        public static RangeF Parse(String value)
+        public static RangeF Parse(string value)
         {
             return Parse(value, CultureInfo.InvariantCulture);
         }
@@ -208,7 +208,7 @@
         /// correct format for an ISO 31-11 interval, or if the numbers represented within the
         /// closed interval could not be parsed.
         /// </exception>
-        public static RangeF Parse(String value, IFormatProvider format)
+        public static RangeF Parse(string value, IFormatProvider format)
         {
             if (value == null)
                 throw new ArgumentNullException("value");
@@ -243,7 +243,7 @@
         /// <returns>
         ///     <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override Boolean Equals(Object obj)
+        public override bool Equals(object obj)
         {
             if (obj != null)
                 if (obj is RangeF)
@@ -259,7 +259,7 @@
         /// <returns>
         ///     <c>true</c> if the specified <see cref="RangeF"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public Boolean Equals(RangeF value)
+        public bool Equals(RangeF value)
         {
             return X.Equals(value.X) &&
                    Y.Equals(value.Y);
@@ -271,7 +271,7 @@
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override Int32 GetHashCode()
+        public override int GetHashCode()
         {
             return X.GetHashCode() ^ Y.GetHashCode();
         }
@@ -282,7 +282,7 @@
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override String ToString()
+        public override string ToString()
         {
             return ToString("G", CultureInfo.InvariantCulture);
         }
@@ -294,7 +294,7 @@
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public String ToString(IFormatProvider formatProvider)
+        public string ToString(IFormatProvider formatProvider)
         {
             return ToString("G", formatProvider);
         }
@@ -307,7 +307,7 @@
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public String ToString(String format, IFormatProvider formatProvider)
+        public string ToString(string format, IFormatProvider formatProvider)
         {
             var numberFormat = NumberFormatInfo.GetInstance(formatProvider);
 
@@ -327,7 +327,7 @@
         /// <returns>
         ///     <c>true</c> if the lvalue <see cref="RangeF"/> is equal to the rvalue; otherwise, <c>false</c>.
         /// </returns>
-        public static Boolean operator ==(RangeF value1, RangeF value2)
+        public static bool operator ==(RangeF value1, RangeF value2)
         {
             return value1.Equals(value2);
         }
@@ -340,7 +340,7 @@
         /// <returns>
         ///     <c>true</c> if the lvalue <see cref="RangeF"/> is not equal to the rvalue; otherwise, <c>false</c>.
         /// </returns>
-        public static Boolean operator !=(RangeF value1, RangeF value2)
+        public static bool operator !=(RangeF value1, RangeF value2)
         {
             return !value1.Equals(value2);
         }

@@ -21,8 +21,8 @@
             _y = y;
         }
 
-        internal readonly Single _x;
-        internal readonly Single _y;
+        internal readonly float _x;
+        internal readonly float _y;
 
         /// <summary>
         /// Gets the cartesian origin O.
@@ -70,10 +70,10 @@
         /// <returns>
         ///   <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(Object obj)
+        public override bool Equals(object obj)
         {
             if (obj is Coordinate)
-                return this.Equals((Coordinate)obj);
+                return Equals((Coordinate)obj);
 
             return base.Equals(obj);
         }
@@ -97,7 +97,7 @@
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override Int32 GetHashCode()
+        public override int GetHashCode()
         {
             return _x.GetHashCode() ^
                    _y.GetHashCode();
@@ -109,7 +109,7 @@
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override String ToString()
+        public override string ToString()
         {
             return ToString("g", CultureInfo.InvariantCulture);
         }
@@ -122,7 +122,7 @@
         /// <param name="formatProvider">The provider to use to format the value.
         /// -or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
         /// <returns>The value of the current instance in the specified format.</returns>
-        public String ToString(String format, IFormatProvider formatProvider)
+        public string ToString(string format, IFormatProvider formatProvider)
         {
             if (formatProvider != null)
             {

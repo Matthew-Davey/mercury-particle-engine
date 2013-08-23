@@ -25,8 +25,8 @@
         /// <param name="iterator">A particle iterator object.</param>
         protected internal override unsafe void Update(float elapsedseconds, ref ParticleIterator iterator)
         {
-            Colour initialColour = this.InitialColour;
-            Colour delta = this.FinalColour - initialColour;
+            var initialColour = this.InitialColour;
+            var delta = this.FinalColour - initialColour;
             
             var particle = iterator.First;
 

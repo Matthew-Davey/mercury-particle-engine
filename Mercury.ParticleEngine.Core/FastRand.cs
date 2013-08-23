@@ -9,7 +9,7 @@
     {
         static int _state = 1;
 
-        static public void Seed(Int32 seed)
+        static public void Seed(int seed)
         {
             if (seed < 1)
                 throw new ArgumentOutOfRangeException("seed", "seed must be greater than zero");
@@ -33,7 +33,7 @@
         /// </summary>
         /// <param name="max">The maximum random integer value to return.</param>
         /// <returns>A random integer value between zero and the specified maximum value.</returns>
-        static public int NextInteger(Int32 max)
+        static public int NextInteger(int max)
         {
             return (int)(max * NextSingle());
         }
