@@ -5,7 +5,6 @@
 
     internal unsafe class ParticleBuffer : IDisposable
     {
-        private readonly Particle* _buffer;
         private int _head;
 
         public readonly IntPtr NativePointer;
@@ -14,9 +13,7 @@
         public ParticleBuffer(int size)
         {
             Size = size;
-
             NativePointer = Marshal.AllocHGlobal(Particle.SizeInBytes * Size);
-            _buffer = (Particle*)NativePointer.ToPointer();
 
             GC.AddMemoryPressure(Particle.SizeInBytes * size);
         }
@@ -40,7 +37,7 @@
             var tail = (_head + Count) % Size;
             Count += numToRelease;
 
-            return new ParticleIterator(_buffer, Size, tail, numToRelease);
+            return new ParticleIterator(NativePointer, Size, tail, numToRelease);
         }
 
         public void Reclaim(int number)
@@ -51,7 +48,7 @@
 
         public ParticleIterator GetIterator()
         {
-            return new ParticleIterator(_buffer, Size, _head, Count);
+            return new ParticleIterator(NativePointer, Size, _head, Count);
         }
 
         public void CopyTo(IntPtr destination)

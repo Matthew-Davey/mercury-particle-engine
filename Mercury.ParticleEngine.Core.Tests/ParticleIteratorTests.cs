@@ -17,7 +17,7 @@
                 {
                     fixed (Particle* particle = &particles[0])
                     {
-                        var subject = new ParticleIterator(particle, 100, 0, 100);
+                        var subject = new ParticleIterator(new IntPtr(particle), 100, 0, 100);
 
                         subject.Count.Should().Be(100);
                     }
@@ -36,7 +36,7 @@
                 {
                     fixed (Particle* particle = &particles[0])
                     {
-                        var subject = new ParticleIterator(particle, 100, 0, 100);
+                        var subject = new ParticleIterator(new IntPtr(particle), 100, 0, 100);
 
                         var iteration = 0;
                         var ptr = subject.First;
@@ -63,7 +63,7 @@
                 {
                     fixed (Particle* particle = &particles[0])
                     {
-                        var subject = new ParticleIterator(particle, 2, 0, 2);
+                        var subject = new ParticleIterator(new IntPtr(particle), 2, 0, 2);
 
                         var ptr = subject.First;
                         subject.MoveNext(&ptr).Should().BeTrue();
@@ -80,7 +80,7 @@
                 {
                     fixed (Particle* particle = &particles[0])
                     {
-                        var subject = new ParticleIterator(particle, 2, 0, 2);
+                        var subject = new ParticleIterator(new IntPtr(particle), 2, 0, 2);
 
                         var ptr = subject.First;
                         subject.MoveNext(&ptr);
@@ -99,7 +99,7 @@
                 {
                     fixed (Particle* particle = &particles[0])
                     {
-                        var subject = new ParticleIterator(particle, 2, 0, 2);
+                        var subject = new ParticleIterator(new IntPtr(particle), 2, 0, 2);
 
                         var ptr = subject.First;
                         subject.MoveNext(&ptr);
@@ -120,7 +120,7 @@
                 {
                     fixed (Particle* particle = &particles[0])
                     {
-                        var subject = new ParticleIterator(particle, 100, 0, 100);
+                        var subject = new ParticleIterator(new IntPtr(particle), 100, 0, 100);
 
                         var ptr = subject.First;
                         do { }

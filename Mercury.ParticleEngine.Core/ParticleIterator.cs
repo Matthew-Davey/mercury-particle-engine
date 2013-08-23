@@ -1,5 +1,7 @@
 ﻿namespace Mercury.ParticleEngine
 {
+    using System;
+
     public unsafe struct ParticleIterator
     {
         private readonly Particle* _buffer;
@@ -11,17 +13,17 @@
         public readonly Particle* First;
         private readonly Particle* _last;
 
-        public ParticleIterator(Particle* buffer, int size, int from, int count)
+        public ParticleIterator(IntPtr buffer, int size, int from, int count)
         {
-            _buffer = buffer;
+            _buffer = (Particle*)buffer.ToPointer();
             _size = size;
             _from = from;
             Count = count;
 
             _iteration = 0;
 
-            First = buffer + _from;
-            _last = (buffer + _size) -1;
+            First = _buffer + _from;
+            _last = (_buffer + _size) - 1;
         }
 
         public int Remaining
