@@ -41,15 +41,21 @@
             var iterator = Buffer.GetIterator();
             var particle = iterator.First;
             var expired = 0;
+            bool checkExpiry = true;
 
             do
             {
                 particle->Age = (_totalSeconds - particle->Inception) / _term;
 
-                if (particle->Age > 1f)
+                if (checkExpiry)
                 {
-                    expired++;
-                    continue;
+                    if (particle->Age > 1f)
+                    {
+                        expired++;
+                        continue;
+                    }
+                    else
+                        checkExpiry = false;
                 }
 
                 particle->Position[0] += particle->Velocity[0];
