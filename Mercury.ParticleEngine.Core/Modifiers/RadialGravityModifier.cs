@@ -19,7 +19,7 @@ namespace Mercury.ParticleEngine.Modifiers
             {
                 var offsetFromCentre = new Vector(Position._x - particle->Position[0], Position._y - particle->Position[1]);
 
-                float distanceFromCentreSquared = ((offsetFromCentre._x * offsetFromCentre._x) + (offsetFromCentre._y * offsetFromCentre._y));
+                var distanceFromCentreSquared = ((offsetFromCentre._x * offsetFromCentre._x) + (offsetFromCentre._y * offsetFromCentre._y));
 
                 if (distanceFromCentreSquared < radiusSquared)
                 {
@@ -27,7 +27,7 @@ namespace Mercury.ParticleEngine.Modifiers
                     var heading = new Vector(offsetFromCentre._x / distanceFromCentre, offsetFromCentre._y / distanceFromCentre);
                     var normalizedDistanceFromCentre = Radius / distanceFromCentre;
 
-                    heading *= normalizedDistanceFromCentre * strengthDelta;
+                    heading *= Math.Min((normalizedDistanceFromCentre * strengthDelta), 1f);
 
                     particle->Velocity[0] += heading._x;
                     particle->Velocity[1] += heading._y;

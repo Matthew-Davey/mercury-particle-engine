@@ -59,7 +59,7 @@
             _device.SetRenderState(RenderState.PointSizeMax, 512.0f);
             _device.SetRenderState(RenderState.AlphaBlendEnable, true);
             _device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
-            _device.SetRenderState(RenderState.DestinationBlend, Blend.One);
+            _device.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
 
             _device.SetRenderState(RenderState.ZWriteEnable, false);
             
