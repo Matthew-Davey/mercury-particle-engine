@@ -40,6 +40,9 @@
 
         public void Render(Emitter emitter, Matrix worldViewProjection, Texture texture)
         {
+            if (emitter.ActiveParticles == 0)
+                return;
+
             if (emitter.ActiveParticles > _size)
                 throw new Exception("Cannot render this emitter, vertex buffer not big enough");
 
