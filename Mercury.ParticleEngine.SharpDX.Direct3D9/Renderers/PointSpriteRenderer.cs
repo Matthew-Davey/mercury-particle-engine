@@ -58,8 +58,8 @@
             _device.SetRenderState(RenderState.PointSizeMin, 0.0f);
             _device.SetRenderState(RenderState.PointSizeMax, 512.0f);
             _device.SetRenderState(RenderState.AlphaBlendEnable, true);
-            _device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
-            _device.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
+
+            SetupBlend(emitter.BlendMode);
 
             _device.SetRenderState(RenderState.ZWriteEnable, false);
             
@@ -73,6 +73,37 @@
 
             _effect.EndPass();
             _effect.End();
+        }
+
+        private void SetupBlend(BlendMode blendMode)
+        {
+            switch (blendMode)
+            {
+                case BlendMode.Alpha:
+                    _device.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
+                    _device.SetRenderState(RenderState.BlendOperationAlpha, BlendOperation.Add);
+                    _device.SetRenderState(RenderState.SourceBlendAlpha, Blend.SourceAlpha);
+                    _device.SetRenderState(RenderState.DestinationBlendAlpha, Blend.InverseSourceAlpha);
+                    _device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
+                    _device.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
+                    return;
+                case BlendMode.Add:
+                    _device.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
+                    _device.SetRenderState(RenderState.BlendOperationAlpha, BlendOperation.Add);
+                    _device.SetRenderState(RenderState.SourceBlendAlpha, Blend.SourceAlpha);
+                    _device.SetRenderState(RenderState.DestinationBlendAlpha, Blend.InverseSourceAlpha);
+                    _device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
+                    _device.SetRenderState(RenderState.DestinationBlend, Blend.One);
+                    return;
+                case BlendMode.Subtract:
+                    _device.SetRenderState(RenderState.BlendOperation, BlendOperation.ReverseSubtract);
+                    _device.SetRenderState(RenderState.BlendOperationAlpha, BlendOperation.Add);
+                    _device.SetRenderState(RenderState.SourceBlendAlpha, Blend.SourceAlpha);
+                    _device.SetRenderState(RenderState.DestinationBlendAlpha, Blend.InverseSourceAlpha);
+                    _device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
+                    _device.SetRenderState(RenderState.DestinationBlend, Blend.One);
+                    return;
+            }
         }
 
         public void Dispose()

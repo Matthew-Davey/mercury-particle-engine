@@ -30,6 +30,7 @@
         public IList<Modifier> Modifiers { get; private set; }
         public Profile Profile { get; private set; }
         public ReleaseParameters Parameters { get; set; }
+        public BlendMode BlendMode { get; set; }
 
         public void Update(float elapsedSeconds)
         {

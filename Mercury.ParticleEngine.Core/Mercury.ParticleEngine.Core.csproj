@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axis.cs" />
+    <Compile Include="BlendMode.cs" />
     <Compile Include="Colour.cs" />
     <Compile Include="ColourRange.cs" />
     <Compile Include="Coordinate.cs" />
