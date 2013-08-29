@@ -8,3 +8,4 @@ TestResults
 *.ncrunchsolution
 *.ncrunchproject
 _NCrunch_Mercury.ParticleEngine
+/*.psess
