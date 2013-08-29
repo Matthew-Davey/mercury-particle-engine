@@ -43,8 +43,7 @@
 
                         do
                         {
-                            subject.Remaining.Should().Be(100 - iteration);
-                            iteration++;
+                            subject.Remaining.Should().Be(100 - iteration++);
                         }
                         while (subject.MoveNext(&ptr));
                     }
