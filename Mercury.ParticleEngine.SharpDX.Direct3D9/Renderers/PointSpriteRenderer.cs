@@ -12,7 +12,19 @@
         private readonly VertexDeclaration _vertexDeclaration;
         private readonly Effect _effect;
 
-        public bool EnableFastFade { get; set; }
+        private bool _enableFastFade;
+        public bool EnableFastFade
+        {
+            get { return _enableFastFade; }
+            set
+            {
+                if(value != _enableFastFade)
+                {
+                    _enableFastFade = value;
+                    _effect.SetValue("FastFade", _enableFastFade);
+                }
+            }
+        }
 
         public PointSpriteRenderer(Device device, int size)
         {
@@ -48,12 +60,10 @@
 
             var technique = _effect.GetTechnique(0);
 
-            _effect.SetValue("FastFade", EnableFastFade);
-
             _effect.SetValue("WVPMatrix", worldViewProjection);
             _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), texture);
 
-            var dataStream = _vertexBuffer.Lock(0, 0, LockFlags.None);
+            var dataStream = _vertexBuffer.Lock(0, emitter.ActiveParticles * Particle.SizeInBytes, LockFlags.Discard);
             emitter.Buffer.CopyTo(dataStream.DataPointer);
             _vertexBuffer.Unlock();
 
