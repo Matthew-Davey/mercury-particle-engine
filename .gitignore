@@ -9,3 +9,4 @@ TestResults
 *.ncrunchproject
 _NCrunch_Mercury.ParticleEngine
 /*.psess
+/*.vsp
