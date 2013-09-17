@@ -3,9 +3,9 @@
     using System;
     using System.Runtime.InteropServices;
 
-    internal unsafe class ParticleBuffer : IDisposable
+    internal class ParticleBuffer : IDisposable
     {
-        private int _head;
+        private int _tail;
 
         public readonly IntPtr NativePointer;
         public readonly int Size;
@@ -20,52 +20,49 @@
 
         public int Available
         {
-            get { return Size - Count; }
+            get { return Size - _tail; }
         }
 
-        public int Count { get; private set; }
+        public int Count
+        {
+            get { return _tail; }
+        }
 
         public int SizeInBytes
         {
             get { return Particle.SizeInBytes * Size; }
         }
 
-        public ParticleIterator Release(int releaseQuantity)
+        public unsafe int Release(int releaseQuantity, out Particle* first)
         {
             var numToRelease = Math.Min(releaseQuantity, Available);
 
-            var tail = (_head + Count) % Size;
-            Count += numToRelease;
+            var oldTail = _tail;
 
-            return new ParticleIterator(NativePointer, Size, tail, numToRelease);
+            _tail += numToRelease;
+
+            first = (Particle*)IntPtr.Add(NativePointer, oldTail * Particle.SizeInBytes);
+
+            return numToRelease;
         }
 
         public void Reclaim(int number)
         {
-            _head = (_head + number) % Size;
-            Count -= number;
+            _tail -= number;
+
+            memcpy(NativePointer, IntPtr.Add(NativePointer, number * Particle.SizeInBytes), _tail * Particle.SizeInBytes);
         }
 
-        public ParticleIterator GetIterator()
+        public unsafe int Iter(out Particle* first)
         {
-            return new ParticleIterator(NativePointer, Size, _head, Count);
+            first = (Particle*)NativePointer;
+
+            return _tail;
         }
 
         public void CopyTo(IntPtr destination)
         {
-            var tail = (_head + Count) % Size;
-
-            if (tail > _head)
-            {
-                memcpy(destination, IntPtr.Add(NativePointer, _head * Particle.SizeInBytes), Count * Particle.SizeInBytes);
-            }
-            else
-            {
-                var split = (Size - _head) * Particle.SizeInBytes;
-                
-                memcpy(destination, IntPtr.Add(NativePointer, _head * Particle.SizeInBytes), split);
-                memcpy(IntPtr.Add(destination, split), NativePointer, tail * Particle.SizeInBytes);
-            }
+            memcpy(destination, NativePointer, _tail * Particle.SizeInBytes);
         }
 
         [DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]

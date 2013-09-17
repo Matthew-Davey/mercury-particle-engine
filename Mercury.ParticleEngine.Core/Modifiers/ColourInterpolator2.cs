@@ -1,8 +1,5 @@
 ﻿namespace Mercury.ParticleEngine.Modifiers
 {
-    using System;
-    using System.ComponentModel;
-
     /// <summary>
     /// Defines a modifier which interpolates the colour of a particle over the course of its lifetime.
     /// </summary>
@@ -11,32 +8,25 @@
         /// <summary>
         /// Gets or sets the initial colour of particles when they are released.
         /// </summary>
-        public Colour InitialColour { get; set; }
+        public Colour InitialColour;
 
         /// <summary>
         /// Gets or sets the final colour of particles when they are retired.
         /// </summary>
-        public Colour FinalColour { get; set; }
+        public Colour FinalColour;
 
-        /// <summary>
-        /// Processes active particles.
-        /// </summary>
-        /// <param name="elapsedseconds">Elapsed time in whole and fractional seconds.</param>
-        /// <param name="iterator">A particle iterator object.</param>
-        protected internal override unsafe void Update(float elapsedseconds, ref ParticleIterator iterator)
+        protected internal override unsafe void Update(float elapsedseconds, Particle* particle, int count)
         {
-            var initialColour = this.InitialColour;
-            var delta = this.FinalColour - initialColour;
-            
-            var particle = iterator.First;
+            var delta = FinalColour - InitialColour;
 
-            do
+            while (count-- > 0)
             {
-                particle->Colour[0] = (initialColour.R + (delta.R * particle->Age));
-                particle->Colour[1] = (initialColour.G + (delta.G * particle->Age));
-                particle->Colour[2] = (initialColour.B + (delta.B * particle->Age));
+                particle->Colour[0] = (InitialColour.R + (delta.R * particle->Age));
+                particle->Colour[1] = (InitialColour.G + (delta.G * particle->Age));
+                particle->Colour[2] = (InitialColour.B + (delta.B * particle->Age));
+
+                particle++;
             }
-            while (iterator.MoveNext(&particle));
         }
     }
 }

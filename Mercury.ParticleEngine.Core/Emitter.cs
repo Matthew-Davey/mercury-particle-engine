@@ -10,9 +10,9 @@
         private readonly float _term;
         private float _totalSeconds;
 
-        public Emitter(int capacity, float term, Profile profile)
+        public Emitter(int capacity, TimeSpan term, Profile profile)
         {
-            _term = term;
+            _term = (float)term.TotalSeconds;
 
             Buffer = new ParticleBuffer(capacity);
             Profile = profile;
@@ -27,10 +27,29 @@
             get { return Buffer.Count; }
         }
 
-        public IList<Modifier> Modifiers { get; private set; }
+        public IList<Modifier> Modifiers { get; set; }
         public Profile Profile { get; private set; }
         public ReleaseParameters Parameters { get; set; }
         public BlendMode BlendMode { get; set; }
+
+        private void ReclaimExpiredParticles()
+        {
+            Particle* particle;
+            var count = Buffer.Iter(out particle);
+
+            var expired = 0;
+            
+            while (count-- > 0)
+            {
+                if ((_totalSeconds - particle->Inception) < _term)
+                    break;
+                
+                expired++;
+                particle++;
+            }
+
+            Buffer.Reclaim(expired);
+        }
 
         public void Update(float elapsedSeconds)
         {
@@ -39,42 +58,28 @@
             if (Buffer.Count == 0)
                 return;
 
-            var iterator = Buffer.GetIterator();
-            var particle = iterator.First;
-            var expired = 0;
-            bool checkExpiry = true;
+            ReclaimExpiredParticles();
 
-            do
+            var particle = (Particle*)0;
+            var count = Buffer.Iter(out particle);
+
+            while (count-- > 0)
             {
                 particle->Age = (_totalSeconds - particle->Inception) / _term;
 
-                if (checkExpiry)
-                {
-                    if (particle->Age > 1f)
-                    {
-                        expired++;
-                        continue;
-                    }
-                    else
-                        checkExpiry = false;
-                }
+                particle->Position[0] += particle->Velocity[0] * elapsedSeconds;
+                particle->Position[1] += particle->Velocity[1] * elapsedSeconds;
 
-                particle->Position[0] += particle->Velocity[0];
-                particle->Position[1] += particle->Velocity[1];
+                particle++;
             }
-            while (iterator.MoveNext(&particle));
-
-            if (expired > 0)
-                Buffer.Reclaim(expired);
 
             if (Buffer.Count > 0)
             {
-                iterator = Buffer.GetIterator();
+                count = Buffer.Iter(out particle);
 
                 foreach (var modifier in Modifiers)
                 {
-                    modifier.Update(elapsedSeconds, ref iterator);
-                    iterator.Reset();
+                    modifier.Update(elapsedSeconds, particle, count);
                 }
             }
         }
@@ -83,10 +88,10 @@
         {
             var numToRelease = FastRand.NextInteger(Parameters.Quantity);
 
-            var iterator = Buffer.Release(numToRelease);
-            var particle = iterator.First;
+            Particle* particle;
+            var count = Buffer.Release(numToRelease, out particle);
 
-            do
+            while (count-- > 0)
             {
                 Profile.GetOffsetAndHeading((Coordinate*)particle->Position, (Axis*)particle->Velocity);
 
@@ -106,8 +111,9 @@
 
                 particle->Scale = FastRand.NextSingle(Parameters.Scale);
                 particle->Rotation = FastRand.NextSingle(Parameters.Rotation);
+
+                particle++;
             }
-            while (iterator.MoveNext(&particle));
         }
 
         public void Dispose()

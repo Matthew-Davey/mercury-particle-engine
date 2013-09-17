@@ -53,11 +53,11 @@
     <Compile Include="Modifiers\LinearGravityModifier.cs" />
     <Compile Include="Modifiers\OpacityFastFadeModifier.cs" />
     <Compile Include="Modifiers\RadialGravityModifier.cs" />
+    <Compile Include="Modifiers\VelocityColourModifier.cs" />
     <Compile Include="Profiles\PointProfile.cs" />
     <Compile Include="Profiles\Profile.cs" />
     <Compile Include="Modifiers\Modifier.cs" />
     <Compile Include="Particle.cs" />
-    <Compile Include="ParticleIterator.cs" />
     <Compile Include="Profiles\RingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParticleBuffer.cs" />

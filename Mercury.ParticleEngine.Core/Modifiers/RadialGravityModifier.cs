@@ -8,32 +8,36 @@ namespace Mercury.ParticleEngine.Modifiers
         public float Radius;
         public float Strength;
 
-        protected internal override unsafe void Update(float elapsedSeconds, ref ParticleIterator iterator)
+        protected internal override unsafe void Update(float elapsedSeconds, Particle* particle, int count)
         {
-            float strengthDelta = Strength * elapsedSeconds;
+            var strengthDelta = Strength * elapsedSeconds;
             var radiusSquared = Radius * Radius;
 
-            var particle = iterator.First;
-
-            do
+            while (count-- > 0)
             {
-                var offsetFromCentre = new Vector(Position._x - particle->Position[0], Position._y - particle->Position[1]);
+                var offsetx = Position._x - particle->Position[0];
+                var offsety = Position._y - particle->Position[1];
 
-                var distanceFromCentreSquared = ((offsetFromCentre._x * offsetFromCentre._x) + (offsetFromCentre._y * offsetFromCentre._y));
+                var distanceFromCentreSquared = ((offsetx * offsetx) + (offsety * offsety));
 
                 if (distanceFromCentreSquared < radiusSquared)
                 {
                     var distanceFromCentre = (float)Math.Sqrt(distanceFromCentreSquared);
-                    var heading = new Vector(offsetFromCentre._x / distanceFromCentre, offsetFromCentre._y / distanceFromCentre);
+                    var headingx = offsetx / distanceFromCentre;
+                    var headingy = offsety / distanceFromCentre;
                     var normalizedDistanceFromCentre = Radius / distanceFromCentre;
 
-                    heading *= Math.Min((normalizedDistanceFromCentre * strengthDelta), 1f);
+                    //var strength = Math.Min((normalizedDistanceFromCentre * strengthDelta), 100f);
+                    var strength = (normalizedDistanceFromCentre * strengthDelta);
+                    headingx *= strength;
+                    headingy *= strength;
 
-                    particle->Velocity[0] += heading._x;
-                    particle->Velocity[1] += heading._y;
+                    particle->Velocity[0] += headingx;
+                    particle->Velocity[1] += headingy;
                 }
+
+                particle++;
             }
-            while (iterator.MoveNext(&particle));
         }
     }
 }

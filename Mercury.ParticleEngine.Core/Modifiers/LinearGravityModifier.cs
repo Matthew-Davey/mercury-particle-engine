@@ -16,18 +16,17 @@
         public Axis Direction { get; set; }
         public float Strength { get; set; }
 
-        protected internal override unsafe void Update(float elapsedSeconds, ref ParticleIterator iterator)
+        protected internal override unsafe void Update(float elapsedSeconds, Particle* particle, int count)
         {
             var vector = Direction * (Strength * elapsedSeconds);
 
-            var particle = iterator.First;
-
-            do
+            while (count-- > 0)
             {
-                particle->Velocity[0] *= vector._x;
-                particle->Velocity[1] *= vector._y;
+                particle->Velocity[0] += vector._x;
+                particle->Velocity[1] += vector._y;
+
+                particle++;
             }
-            while (iterator.MoveNext(&particle));
         }
     }
 }

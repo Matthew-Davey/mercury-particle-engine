@@ -1,5 +1,6 @@
 ﻿namespace Mercury.ParticleEngine
 {
+    using System;
     using Xunit;
     using FluentAssertions;
     using Mercury.ParticleEngine.Modifiers;
@@ -12,11 +13,11 @@
             [Fact]
             public void WhenThereAreParticlesToExpire_DecreasesActiveParticleCount()
             {
-                var subject = new Emitter(100, 1f, Profile.Point())
+                var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point())
                 {
                     Parameters = new ReleaseParameters
                     {
-                        Quantity = Range.Parse("[1,1]")
+                        Quantity = 1
                     }
                 };
 
@@ -30,11 +31,11 @@
             [Fact]
             public void WhenThereAreActiveParticles_UpdatesAgeOfParticles()
             {
-                var subject = new Emitter(100, 1f, Profile.Point())
+                var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point())
                 {
                     Parameters = new ReleaseParameters
                     {
-                        Quantity = Range.Parse("[1,1]")
+                        Quantity = 1
                     }
                 };
 
@@ -47,11 +48,11 @@
             [Fact]
             public void WhenThereAreParticlesToExpire_DoesNotPassExpiredParticlesToModifiers()
             {
-                var subject = new Emitter(100, 1f, Profile.Point())
+                var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point())
                 {
                     Parameters = new ReleaseParameters
                     {
-                        Quantity = Range.Parse("[1,1]")
+                        Quantity = 1
                     }
                 };
 
@@ -64,6 +65,16 @@
                 subject.Trigger(new Coordinate(0f, 0f));
                 subject.Update(0.5f);
             }
+
+            [Fact]
+            public void WhenThereAreNoActiveParticles_GracefullyDoesNothing()
+            {
+                var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point());
+
+                subject.Update(0.5f);
+
+                subject.ActiveParticles.Should().Be(0);
+            }
         }
 
         public class TriggerMethod
@@ -71,11 +82,11 @@
             [Fact]
             public void WhenEnoughHeadroom_IncreasesActiveParticlesCountByReleaseQuantity()
             {
-                var subject = new Emitter(100, 1f, Profile.Point())
+                var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point())
                 {
                     Parameters = new ReleaseParameters
                     {
-                        Quantity = Range.Parse("[10,10]")
+                        Quantity = 10
                     }
                 };
 
@@ -87,11 +98,11 @@
             [Fact]
             public void WhenNotEnoughHeadroom_IncreasesActiveParticlesCountByRemainingParticles()
             {
-                var subject = new Emitter(15, 1f, Profile.Point())
+                var subject = new Emitter(15, TimeSpan.FromSeconds(1), Profile.Point())
                 {
                     Parameters = new ReleaseParameters
                     {
-                        Quantity = Range.Parse("[10,10]")
+                        Quantity = 10
                     }
                 };
 
@@ -104,11 +115,11 @@
             [Fact]
             public void WhenNoRemainingParticles_DoesNotIncreaseActiveParticlesCount()
             {
-                var subject = new Emitter(10, 1f, Profile.Point())
+                var subject = new Emitter(10, TimeSpan.FromSeconds(1), Profile.Point())
                 {
                     Parameters = new ReleaseParameters
                     {
-                        Quantity = Range.Parse("[10,10]")
+                        Quantity = 10
                     }
                 };
 
@@ -124,7 +135,7 @@
             [Fact]
             public void IsIdempotent()
             {
-                var subject = new Emitter(10, 1f, Profile.Point());
+                var subject = new Emitter(10, TimeSpan.FromSeconds(1), Profile.Point());
 
                 subject.Dispose();
                 subject.Dispose();

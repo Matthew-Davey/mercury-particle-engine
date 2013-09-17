@@ -20,7 +20,13 @@
             public void WhenSomeParticlesReleased_ReturnsAvailableCount()
             {
                 var subject = new ParticleBuffer(100);
-                subject.Release(10);
+
+                unsafe
+                {
+                    Particle* particle;
+                    subject.Release(10, out particle);
+                }
+
                 subject.Available.Should().Be(90);
             }
 
@@ -28,7 +34,12 @@
             public void WhenAllParticlesReleased_ReturnsZero()
             {
                 var subject = new ParticleBuffer(100);
-                subject.Release(100);
+
+                unsafe
+                {
+                    Particle* particle;
+                    subject.Release(100, out particle);
+                }
 
                 subject.Available.Should().Be(0);
             }
@@ -47,7 +58,13 @@
             public void WhenSomeParticlesReleased_ReturnsCount()
             {
                 var subject = new ParticleBuffer(100);
-                subject.Release(10);
+                
+                unsafe
+                {
+                    Particle* particle;
+                    subject.Release(10, out particle);
+                }
+                
                 subject.Count.Should().Be(10);
             }
 
@@ -55,7 +72,12 @@
             public void WhenAllParticlesReleased_ReturnsZero()
             {
                 var subject = new ParticleBuffer(100);
-                subject.Release(100);
+
+                unsafe
+                {
+                    Particle* particle;
+                    subject.Release(100, out particle);
+                }
 
                 subject.Count.Should().Be(100);
             }
@@ -64,21 +86,30 @@
         public class ReleaseMethod
         {
             [Fact]
-            public void WhenPassedReasonableQuantity_ReturnsIterator()
+            public void WhenPassedReasonableQuantity_ReturnsNumberReleased()
             {
                 var subject = new ParticleBuffer(100);
-                var iterator = subject.Release(50);
 
-                iterator.Count.Should().Be(50);
+                unsafe
+                {
+                    Particle* particle;
+                    var count = subject.Release(50, out particle);
+                    
+                    count.Should().Be(50);
+                }
             }
 
             [Fact]
-            public void WhenPassedImpossibleQuantity_ReturnsPartialIterator()
+            public void WhenPassedImpossibleQuantity_ReturnsNumberActuallyReleased()
             {
                 var subject = new ParticleBuffer(100);
-                var iterator = subject.Release(200);
 
-                iterator.Count.Should().Be(100);
+                unsafe
+                {
+                    Particle* particle;
+                    var count = subject.Release(200, out particle);
+                    count.Should().Be(100);
+                }
             }
         }
 
@@ -88,7 +119,12 @@
             public void WhenPassedReasonableNumber_ReclaimsParticles()
             {
                 var subject = new ParticleBuffer(100);
-                subject.Release(100);
+                
+                unsafe
+                {
+                    Particle* particle;
+                    subject.Release(100, out particle);
+                }
 
                 subject.Count.Should().Be(100);
 
@@ -98,26 +134,52 @@
             }
         }
 
-        public class GetIteratorMethod
+        public class IterMethod
         {
             [Fact]
-            public void WhenThereAreNoActiveParticles_ReturnsNopIterator()
+            public void WhenThereAreNoActiveParticles_ReturnsZeroCount()
             {
                 var subject = new ParticleBuffer(100);
-                var iterator = subject.GetIterator();
 
-                iterator.Count.Should().Be(0);
+                unsafe
+                {
+                    Particle* particle;
+                    var count = subject.Iter(out particle);
+                    
+                    count.Should().Be(0);
+                }
             }
 
             [Fact]
-            public void WhenThereAreActiveParticles_ReturnsIteratorOverActiveParticles()
+            public void WhenThereAreActiveParticles_ReturnsNumberOfActiveParticles()
             {
                 var subject = new ParticleBuffer(100);
-                subject.Release(50);
+                
+                unsafe
+                {
+                    Particle* particle;
+                    subject.Release(50, out particle);
 
-                var iterator = subject.GetIterator();
+                    var count = subject.Iter(out particle);
 
-                iterator.Count.Should().Be(50);
+                    count.Should().Be(50);
+                }
+            }
+
+            [Fact]
+            public void SetParticlePointerToBufferOrigin()
+            {
+                var subject = new ParticleBuffer(100);
+
+                unsafe
+                {
+                    Particle* particle;
+                    subject.Release(50, out particle);
+
+                    subject.Iter(out particle);
+
+                    new IntPtr(particle).ToInt64().Should().Be(subject.NativePointer.ToInt64());
+                }
             }
         }
 
@@ -129,15 +191,15 @@
                 unsafe
                 {
                     var subject = new ParticleBuffer(10);
-                    var iterator = subject.Release(5);
+                    Particle* particle;
+                    var count = subject.Release(5, out particle);
 
-                    var particle = iterator.First;
-                    
                     do
                     {
                         particle->Age = 1f;
+                        particle++;
                     }
-                    while (iterator.MoveNext(&particle));
+                    while (count-- > 0);
 
                     var destination = new Particle[10];
 
@@ -151,49 +213,6 @@
                     destination[2].Age.Should().BeApproximately(1f, 0.0001f);
                     destination[3].Age.Should().BeApproximately(1f, 0.0001f);
                     destination[4].Age.Should().BeApproximately(1f, 0.0001f);
-                }
-            }
-
-            [Fact]
-            public void WhenBufferIsNotContiguous_CopiesParticlesInOrder()
-            {
-                unsafe
-                {
-                    var subject = new ParticleBuffer(10);
-                    var iterator = subject.Release(8);
-
-                    var particle = iterator.First;
-
-                    do
-                    {
-                        particle->Age = 1f;
-                    }
-                    while (iterator.MoveNext(&particle));
-
-                    subject.Reclaim(8);
-
-                    iterator = subject.Release(5);
-
-                    particle = iterator.First;
-
-                    do
-                    {
-                        particle->Age = 2f;
-                    }
-                    while (iterator.MoveNext(&particle));
-
-                    var destination = new Particle[10];
-
-                    fixed (Particle* buffer = destination)
-                    {
-                        subject.CopyTo((IntPtr)buffer);
-                    }
-
-                    destination[0].Age.Should().BeApproximately(2f, 0.0001f);
-                    destination[1].Age.Should().BeApproximately(2f, 0.0001f);
-                    destination[2].Age.Should().BeApproximately(2f, 0.0001f);
-                    destination[3].Age.Should().BeApproximately(2f, 0.0001f);
-                    destination[4].Age.Should().BeApproximately(2f, 0.0001f);
                 }
             }
         }

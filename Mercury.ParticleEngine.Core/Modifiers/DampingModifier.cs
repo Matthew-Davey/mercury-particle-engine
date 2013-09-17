@@ -4,17 +4,17 @@
     {
         public float DampingCoefficient;
 
-        protected internal unsafe override void Update(float elapsedSeconds, ref ParticleIterator iterator)
+        protected internal unsafe override void Update(float elapsedSeconds, Particle* particle, int count)
         {
-            var particle = iterator.First;
             var deltaDampingCoefficient = 1f - (DampingCoefficient * elapsedSeconds);
 
-            do
+            while (count-- > 0)
             {
                 particle->Velocity[0] *= deltaDampingCoefficient;
                 particle->Velocity[1] *= deltaDampingCoefficient;
+                
+                particle++;
             }
-            while (iterator.MoveNext(&particle));
         }
     }
 }

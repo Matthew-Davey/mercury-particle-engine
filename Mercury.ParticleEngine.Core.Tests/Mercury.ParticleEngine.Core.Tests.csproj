@@ -57,8 +57,8 @@
     <Compile Include="AssertionModifier.cs" />
     <Compile Include="ColourTests.cs" />
     <Compile Include="EmitterTests.cs" />
+    <Compile Include="Modifiers\ColourInterpolator2Tests.cs" />
     <Compile Include="ParticleBufferTests.cs" />
-    <Compile Include="ParticleIteratorTests.cs" />
     <Compile Include="Profiles\PointProfileTests.cs" />
     <Compile Include="Profiles\RingProfileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

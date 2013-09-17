@@ -2,6 +2,6 @@
 {
     public abstract class Modifier
     {
-        protected internal abstract void Update(float elapsedSeconds, ref ParticleIterator iterator);
+        protected internal abstract unsafe void Update(float elapsedSeconds, Particle* particle, int count);
     }
 }

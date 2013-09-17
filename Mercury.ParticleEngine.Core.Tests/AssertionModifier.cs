@@ -12,15 +12,14 @@
             _predicate = predicate;
         }
 
-        protected internal override unsafe void Update(float elapsedSeconds, ref ParticleIterator iterator)
+        protected internal override unsafe void Update(float elapsedSeconds, Particle* particle, int count)
         {
-            var particle = iterator.First;
-
-            do
+            while (count-- > 0)
             {
                 _predicate(*particle).Should().BeTrue();
+
+                particle++;
             }
-            while (iterator.MoveNext(&particle));
         }
     }
 }
