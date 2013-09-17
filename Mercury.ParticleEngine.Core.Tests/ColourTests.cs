@@ -1,7 +1,6 @@
 ﻿namespace Mercury.ParticleEngine
 {
     using System;
-    using System.Runtime.Serialization;
     using FluentAssertions;
     using Xunit;
     using Xunit.Extensions;
@@ -109,7 +108,9 @@
             {
                 var colour = new Colour(1f, 1f, 1f);
 
+// ReSharper disable SuspiciousTypeConversion.Global
                 colour.Equals(DateTime.Now).Should().BeFalse();
+// ReSharper restore SuspiciousTypeConversion.Global
             }
         }
 

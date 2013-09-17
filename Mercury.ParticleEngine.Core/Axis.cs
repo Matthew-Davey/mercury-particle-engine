@@ -137,7 +137,7 @@
         {
             if (formatProvider != null)
             {
-                var formatter = formatProvider.GetFormat(this.GetType()) as ICustomFormatter;
+                var formatter = formatProvider.GetFormat(GetType()) as ICustomFormatter;
 
                 if (formatter != null)
                     return formatter.Format(format, this, formatProvider);

@@ -1,7 +1,5 @@
 ﻿namespace Mercury.ParticleEngine.Profiles
 {
-    using System;
-
     public class RingProfile : Profile
     {
         public float Radius { get; set; }

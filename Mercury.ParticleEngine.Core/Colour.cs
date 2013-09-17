@@ -89,7 +89,7 @@
         public override bool Equals(object obj)
         {
             if (obj is Colour)
-                return this.Equals((Colour)obj);
+                return Equals((Colour)obj);
 
             return base.Equals(obj);
         }
