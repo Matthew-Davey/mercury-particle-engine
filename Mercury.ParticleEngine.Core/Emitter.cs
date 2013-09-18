@@ -112,6 +112,8 @@
                 particle->Scale = FastRand.NextSingle(Parameters.Scale);
                 particle->Rotation = FastRand.NextSingle(Parameters.Rotation);
 
+                particle->Mass = FastRand.NextSingle(Parameters.Mass);
+
                 particle++;
             }
         }
