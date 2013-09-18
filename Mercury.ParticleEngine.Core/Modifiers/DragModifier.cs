@@ -1,6 +1,6 @@
 ﻿namespace Mercury.ParticleEngine.Modifiers
 {
-    public class DampingModifier : Modifier
+    public class DragModifier : Modifier
     {
         public float DampingCoefficient;
 

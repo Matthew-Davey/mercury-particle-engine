@@ -65,7 +65,7 @@
                     InitialColour = new Colour(.8f, .3f, 0f),
                     FinalColour = new Colour(.5f, .1f, 1f)
                 },
-                new DampingModifier
+                new DragModifier
                 {
                     DampingCoefficient = .25f
                 }
