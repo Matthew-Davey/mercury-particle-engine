@@ -21,9 +21,9 @@
 
             while (count-- > 0)
             {
-                particle->Colour[0] = (InitialColour.R + (delta.R * particle->Age));
-                particle->Colour[1] = (InitialColour.G + (delta.G * particle->Age));
-                particle->Colour[2] = (InitialColour.B + (delta.B * particle->Age));
+                particle->Colour[0] = (InitialColour.H + (delta.H * particle->Age));
+                particle->Colour[1] = (InitialColour.S + (delta.S * particle->Age));
+                particle->Colour[2] = (InitialColour.L + (delta.L * particle->Age));
 
                 particle++;
             }

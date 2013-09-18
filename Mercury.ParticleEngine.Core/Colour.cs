@@ -1,9 +1,7 @@
 ﻿namespace Mercury.ParticleEngine
 {
     using System;
-    using System.Globalization;
     using System.Runtime.InteropServices;
-    using System.Text.RegularExpressions;
 
     /// <summary>
     /// An immutable data structure representing a 24bit colour composed of separate red, green and blue channels.
@@ -13,70 +11,31 @@
     public struct Colour : IEquatable<Colour>
     {
         /// <summary>
-        /// Gets the value of the red channel.
+        /// Gets the value of the hue channel.
         /// </summary>
-        public readonly float R;
+        public readonly float H;
 
         /// <summary>
-        /// Gets the value of the green channel.
+        /// Gets the value of the saturation channel.
         /// </summary>
-        public readonly float G;
+        public readonly float S;
         
         /// <summary>
-        /// Gets the value of the blue channel.
+        /// Gets the value of the lightness channel.
         /// </summary>
-        public readonly float B;
+        public readonly float L;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Colour"/> struct.
         /// </summary>
-        /// <param name="r">The value of the red channel.</param>
-        /// <param name="g">The value of the green channel.</param>
-        /// <param name="b">The value of the blue channel.</param>
-        public Colour(float r, float g, float b)
+        /// <param name="h">The value of the hue channel.</param>
+        /// <param name="s">The value of the saturation channel.</param>
+        /// <param name="l">The value of the lightness channel.</param>
+        public Colour(float h, float s, float l)
         {
-            R = r;
-            G = g;
-            B = b;
-        }
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="T:Mercury.ParticleEngine.Colour"/> structure
-        /// by parsing its string representation.
-        /// </summary>
-        /// <param name="value">A <see cref="T:System.String"/> representing a colour.</param>
-        /// <returns>A new colour structure.</returns>
-        /// <exception cref="T:System.FormatException">
-        /// Thrown if the input string was not in the correct format to represent a colour.
-        /// </exception>
-        /// <example>
-        ///     <code lang="C#">
-        ///     <![CDATA[
-        ///     var colour = Colour.Parse("#FED3D3");
-        ///     ]]>
-        ///     </code>
-        /// </example>
-        static public Colour Parse(string value)
-        {
-            const string regexPattern = @"^#(?<Red>[0-9A-F]{2})(?<Green>[0-9A-F]{2})(?<Blue>[0-9A-F]{2})$";
-
-            var match = Regex.Match(value, regexPattern, RegexOptions.IgnoreCase);
-
-            if (!match.Success)
-                throw new FormatException("Value '" + value + "' is not in the correct format for a Colour.");
-
-            Func<string, float> parseGroup = groupName =>
-            {
-                var groupValue = match.Groups[groupName].Value;
-
-                return Byte.Parse(groupValue, NumberStyles.HexNumber) / 255f;
-            };
-
-            var r = parseGroup("Red");
-            var g = parseGroup("Green");
-            var b = parseGroup("Blue");
-
-            return new Colour(r, g, b);
+            H = h;
+            S = s;
+            L = l;
         }
 
         /// <summary>
@@ -103,9 +62,9 @@
         /// </returns>
         public bool Equals(Colour value)
         {
-            return R.Equals(value.R) &&
-                   G.Equals(value.G) &&
-                   B.Equals(value.B);
+            return H.Equals(value.H) &&
+                   S.Equals(value.S) &&
+                   L.Equals(value.L);
         }
 
         /// <summary>
@@ -116,9 +75,9 @@
         /// </returns>
         public override int GetHashCode()
         {
-            return R.GetHashCode() ^
-                   G.GetHashCode() ^
-                   B.GetHashCode();
+            return H.GetHashCode() ^
+                   S.GetHashCode() ^
+                   L.GetHashCode();
         }
 
         /// <summary>
@@ -129,9 +88,7 @@
         /// </returns>
         public override string ToString()
         {
-            return String.Format("#{0:X2}{1:X2}{2:X2}", Convert.ToByte(R * 255f),
-                                                        Convert.ToByte(G * 255f),
-                                                        Convert.ToByte(B * 255f));
+            return String.Format("{0}°,{1:P0},{2:P0}", H, S, L);
         }
 
         /// <summary>
@@ -162,7 +119,7 @@
 
         static public Colour operator -(Colour x, Colour y)
         {
-            return new Colour(x.R - y.R, x.G - y.G, x.B - y.B);
+            return new Colour(x.H - y.H, x.S - y.S, x.L - y.L);
         }
     }
 }

@@ -17,8 +17,8 @@
         [STAThread]
         static void Main()
         {
-            const int width = 320;
-            const int height = 240;
+            const int width = 1024;
+            const int height = 768;
             const bool windowed = true;
 
             const int budget = 100000;
@@ -53,7 +53,7 @@
 
             var modifiers = new List<Modifier>
             {
-                new RadialGravityModifier
+                new VortexModifier
                 {
                     Position = Coordinate.Origin,
                     Radius = 1500f,
@@ -62,8 +62,8 @@
                 new ColourInterpolator2
                 {
                     //InitialColour = new Colour(0f, 0f, 0f),
-                    InitialColour = new Colour(.8f, .3f, 0f),
-                    FinalColour = new Colour(.5f, .1f, 1f)
+                    InitialColour = new Colour(220f, .5f, .2f),
+                    FinalColour = new Colour(280f, .5f, .4f)
                 },
                 new DragModifier
                 {
@@ -114,7 +114,7 @@
                     var frameTime = ((float)totalTimer.Elapsed.TotalSeconds) - totalTime;
                     totalTime = (float)totalTimer.Elapsed.TotalSeconds;
 
-                    modifiers.OfType<RadialGravityModifier>().Single().Position = new Coordinate(
+                    modifiers.OfType<VortexModifier>().Single().Position = new Coordinate(
                         (float)Math.Sin(totalTime * 2f) * (width * 0.1f),
                         (float)Math.Cos(totalTime * 3f) * (height * 0.1f)
                     );

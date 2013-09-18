@@ -18,17 +18,17 @@
 
                 if (velocity2 >= velocityThreshold2)
                 {
-                    particle->Colour[0] = VelocityColour.R;
-                    particle->Colour[1] = VelocityColour.G;
-                    particle->Colour[2] = VelocityColour.B;
+                    particle->Colour[0] = VelocityColour.H;
+                    particle->Colour[1] = VelocityColour.S;
+                    particle->Colour[2] = VelocityColour.L;
                 }
                 else
                 {
                     var t = (float)Math.Sqrt(velocity2) / VelocityThreshold;
 
-                    particle->Colour[0] = ((VelocityColour.R - StationaryColour.R) * t) + StationaryColour.R;
-                    particle->Colour[1] = ((VelocityColour.G - StationaryColour.G) * t) + StationaryColour.G;
-                    particle->Colour[2] = ((VelocityColour.B - StationaryColour.B) * t) + StationaryColour.B;
+                    particle->Colour[0] = ((VelocityColour.H - StationaryColour.H) * t) + StationaryColour.H;
+                    particle->Colour[1] = ((VelocityColour.S - StationaryColour.S) * t) + StationaryColour.S;
+                    particle->Colour[2] = ((VelocityColour.L - StationaryColour.L) * t) + StationaryColour.L;
                 }
 
                 particle++;

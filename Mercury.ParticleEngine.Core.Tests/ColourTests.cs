@@ -15,9 +15,9 @@
             {
                 var colour = new Colour(1f, 1f, 1f);
 
-                colour.R.Should<float>().Be(1f);
-                colour.G.Should<float>().Be(1f);
-                colour.B.Should<float>().Be(1f);
+                colour.H.Should<float>().Be(1f);
+                colour.S.Should<float>().Be(1f);
+                colour.L.Should<float>().Be(1f);
             }
         }
 
@@ -40,9 +40,9 @@
 
                 var actual = Colour.Parse(hex);
 
-                actual.R.Should<float>().Be(1f);
-                actual.G.Should<float>().Be(1f);
-                actual.B.Should<float>().Be(1f);
+                actual.H.Should<float>().Be(1f);
+                actual.S.Should<float>().Be(1f);
+                actual.L.Should<float>().Be(1f);
             }
         }
 
