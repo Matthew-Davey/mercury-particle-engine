@@ -48,7 +48,8 @@
                     Quantity = 1,
                     Speed    = new RangeF(0f, 200f),
                     Scale    = 1f,
-                    Rotation = 0f
+                    Rotation = 0f,
+                    Mass     = 10f
                 };
 
             var modifiers = new List<Modifier>
@@ -56,18 +57,23 @@
                 new VortexModifier
                 {
                     Position = Coordinate.Origin,
-                    Radius = 1500f,
-                    Strength = 250f
+                    Mass = 500f
                 },
-                new ColourInterpolator2
+                //new ColourInterpolator2
+                //{
+                //    //InitialColour = new Colour(0f, 0f, 0f),
+                //    InitialColour = new Colour(220f, .5f, .2f),
+                //    FinalColour = new Colour(280f, .5f, .4f)
+                //},
+                new VelocityColourModifier
                 {
-                    //InitialColour = new Colour(0f, 0f, 0f),
-                    InitialColour = new Colour(220f, .5f, .2f),
-                    FinalColour = new Colour(280f, .5f, .4f)
+                    StationaryColour = new Colour(180f, 0.5f, 0.1f),
+                    VelocityColour = new Colour(0f, 1f, 0.25f),
+                    VelocityThreshold = 800f
                 },
                 new DragModifier
                 {
-                    DampingCoefficient = .25f
+                    DampingCoefficient = 0.5f
                 }
             };
 

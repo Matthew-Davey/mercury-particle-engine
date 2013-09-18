@@ -5,36 +5,29 @@ namespace Mercury.ParticleEngine.Modifiers
     public class VortexModifier : Modifier
     {
         public Coordinate Position;
-        public float Radius;
-        public float Strength;
+        public float Mass;
 
         protected internal override unsafe void Update(float elapsedSeconds, Particle* particle, int count)
         {
-            var strengthDelta = Strength * elapsedSeconds;
-            var radiusSquared = Radius * Radius;
-
             while (count-- > 0)
             {
-                var offsetx = Position._x - particle->Position[0];
-                var offsety = Position._y - particle->Position[1];
+                double distx = Position._x - particle->Position[0];
+                double disty = Position._y - particle->Position[1];
 
-                var distanceFromCentreSquared = ((offsetx * offsetx) + (offsety * offsety));
+                var distance = Math.Sqrt((distx * distx) + (disty * disty));
 
-                if (distanceFromCentreSquared < radiusSquared)
-                {
-                    var distanceFromCentre = (float)Math.Sqrt(distanceFromCentreSquared);
-                    var headingx = offsetx / distanceFromCentre;
-                    var headingy = offsety / distanceFromCentre;
-                    var normalizedDistanceFromCentre = Radius / distanceFromCentre;
+                var m = (10000d * Mass * particle->Mass) / (distance * distance);
 
-                    //var strength = Math.Min((normalizedDistanceFromCentre * strengthDelta), 100f);
-                    var strength = (normalizedDistanceFromCentre * strengthDelta);
-                    headingx *= strength;
-                    headingy *= strength;
+                m = Math.Min(m, 1500d);
 
-                    particle->Velocity[0] += headingx;
-                    particle->Velocity[1] += headingy;
-                }
+                distx /= distance;
+                disty /= distance;
+
+                distx *= m * elapsedSeconds;
+                disty *= m * elapsedSeconds;
+
+                particle->Velocity[0] += (float)distx;
+                particle->Velocity[1] += (float)disty;
 
                 particle++;
             }
