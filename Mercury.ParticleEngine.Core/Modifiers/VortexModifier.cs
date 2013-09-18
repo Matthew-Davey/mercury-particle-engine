@@ -2,7 +2,7 @@ namespace Mercury.ParticleEngine.Modifiers
 {
     using System;
 
-    public class RadialGravityModifier : Modifier
+    public class VortexModifier : Modifier
     {
         public Coordinate Position;
         public float Radius;

@@ -52,7 +52,7 @@
     <Compile Include="Modifiers\DragModifier.cs" />
     <Compile Include="Modifiers\LinearGravityModifier.cs" />
     <Compile Include="Modifiers\OpacityFastFadeModifier.cs" />
-    <Compile Include="Modifiers\RadialGravityModifier.cs" />
+    <Compile Include="Modifiers\VortexModifier.cs" />
     <Compile Include="Modifiers\VelocityColourModifier.cs" />
     <Compile Include="Profiles\PointProfile.cs" />
     <Compile Include="Profiles\Profile.cs" />
