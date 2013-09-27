@@ -2,17 +2,16 @@
 {
     public class DragModifier : Modifier
     {
-        public float DampingCoefficient;
+        public float DragCoefficient = 0.47f;
+        public float Density = .5f;
 
         protected internal unsafe override void Update(float elapsedSeconds, Particle* particle, int count)
         {
-            var deltaDampingCoefficient = 1f - (DampingCoefficient * elapsedSeconds);
-
             while (count-- > 0)
             {
-                particle->Velocity[0] *= deltaDampingCoefficient;
-                particle->Velocity[1] *= deltaDampingCoefficient;
-                
+                particle->Velocity[0] += (particle->Velocity[0] * -DragCoefficient * Density * particle->Mass * elapsedSeconds);
+                particle->Velocity[1] += (particle->Velocity[1] * -DragCoefficient * Density * particle->Mass * elapsedSeconds);
+
                 particle++;
             }
         }
