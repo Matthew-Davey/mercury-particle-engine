@@ -2,15 +2,18 @@
 {
     public struct ColourRange
     {
-        public ColourRange(RangeF r, RangeF g, RangeF b)
+        public ColourRange(Colour min, Colour max)
         {
-            R = r;
-            G = g;
-            B = b;
+            Min = min;
+            Max = max;
         }
 
-        public readonly RangeF R;
-        public readonly RangeF G;
-        public readonly RangeF B;
+        public readonly Colour Min;
+        public readonly Colour Max;
+
+        static public implicit operator ColourRange(Colour value)
+        {
+            return new ColourRange(value, value);
+        }
     }
 }

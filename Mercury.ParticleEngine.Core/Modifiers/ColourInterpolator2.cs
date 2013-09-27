@@ -17,7 +17,9 @@
 
         protected internal override unsafe void Update(float elapsedseconds, Particle* particle, int count)
         {
-            var delta = FinalColour - InitialColour;
+            var delta = new Colour(FinalColour.H - InitialColour.H,
+                                   FinalColour.S - InitialColour.S,
+                                   FinalColour.L - InitialColour.L);
 
             while (count-- > 0)
             {

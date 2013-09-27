@@ -21,39 +21,14 @@
             }
         }
 
-        public class ParseMethod
-        {
-            [Fact]
-            [Trait("Type", "Colour")]
-            public void WhenGivenInvalidString_ThrowsFormatException()
-            {
-                Action invocation = () => Colour.Parse("invalid");
-
-                invocation.ShouldThrow<FormatException>();
-            }
-
-            [Fact]
-            [Trait("Type", "Colour")]
-            public void WhenGivenValidString_ReturnsNewColour()
-            {
-                const String hex = "#FFFFFF";
-
-                var actual = Colour.Parse(hex);
-
-                actual.H.Should<float>().Be(1f);
-                actual.S.Should<float>().Be(1f);
-                actual.L.Should<float>().Be(1f);
-            }
-        }
-
         public class EqualsColourMethod
         {
             [Fact]
             [Trait("Type", "Colour")]
             public void WhenGivenEqualValues_ReturnsTrue()
             {
-                var x = Colour.Parse("#FFFFFF");
-                var y = Colour.Parse("#FFFFFF");
+                var x = new Colour(360f, 1f, 1f);
+                var y = new Colour(360f, 1f, 1f);
 
                 x.Equals(y).Should().BeTrue();
             }
@@ -62,8 +37,8 @@
             [Trait("Type", "Colour")]
             public void WhenGivenDifferentValues_ReturnsFalse()
             {
-                var x = Colour.Parse("#000000");
-                var y = Colour.Parse("#FFFFFF");
+                var x = new Colour(0f, 1f, 0f);
+                var y = new Colour(360f, 1f, 1f);
 
                 x.Equals(y).Should().BeFalse();
             }
@@ -75,7 +50,7 @@
             [Trait("Type", "Colour")]
             public void WhenGivenNull_ReturnsFalse()
             {
-                var colour = new Colour(1f, 1f, 1f);
+                var colour = new Colour(360f, 1f, 1f);
 
                 colour.Equals(null).Should().BeFalse();
             }
@@ -84,9 +59,9 @@
             [Trait("Type", "Colour")]
             public void WhenGivenEqualColour_ReturnsTrue()
             {
-                var x = Colour.Parse("#FFFFFF");
+                var x = new Colour(360f, 1f, 1f);
 
-                Object y = Colour.Parse("#FFFFFF");
+                Object y = new Colour(360f, 1f, 1f);
 
                 x.Equals(y).Should().BeTrue();
             }
@@ -95,9 +70,9 @@
             [Trait("Type", "Colour")]
             public void WhenGivenDifferentColour_ReturnsFalse()
             {
-                var x = Colour.Parse("#FFFFFF");
+                var x = new Colour(360f, 1f, 1f);
 
-                Object y = Colour.Parse("#000000");
+                Object y = new Colour(0f, 1f, 0f);
 
                 x.Equals(y).Should().BeFalse();
             }
@@ -106,7 +81,7 @@
             [Trait("Type", "Colour")]
             public void WhenGivenObjectOfAntotherType_ReturnsFalse()
             {
-                var colour = new Colour(1f, 1f, 1f);
+                var colour = new Colour(360f, 1f, 1f);
 
 // ReSharper disable SuspiciousTypeConversion.Global
                 colour.Equals(DateTime.Now).Should().BeFalse();
@@ -120,8 +95,8 @@
             [Trait("Type", "Colour")]
             public void WhenObjectsAreDifferent_YieldsDifferentHashCodes()
             {
-                var x = new Colour(0f, 0f, 0f);
-                var y = new Colour(1f, 1f, 1f);
+                var x = new Colour(0f, 1f, 0f);
+                var y = new Colour(360f, 1f, 1f);
 
                 x.GetHashCode().Should().NotBe(y.GetHashCode());
             }
@@ -130,8 +105,8 @@
             [Trait("Type", "Colour")]
             public void WhenObjectsAreSame_YieldsIdenticalHashCodes()
             {
-                var x = new Colour(0.5f, 0.5f, 0.5f);
-                var y = new Colour(0.5f, 0.5f, 0.5f);
+                var x = new Colour(180f, 0.5f, 0.5f);
+                var y = new Colour(180f, 0.5f, 0.5f);
 
                 x.GetHashCode().Should().Be(y.GetHashCode());
             }
@@ -141,12 +116,12 @@
         {
             [Theory]
             [Trait("Type", "Colour")]
-            [InlineData(0f, 0f, 0f, "#000000")]
-            [InlineData(1f, 1f, 1f, "#FFFFFF")]
-            [InlineData(0.5f, 0.5f, 0.5f, "#808080")]
-            public void ReturnsCorrectValue(float r, float g, float b, String expected)
+            [InlineData(0f, 0f, 0f, "0°,0 %,0 %")]
+            [InlineData(360f, 1f, 1f, "360°,100 %,100 %")]
+            [InlineData(180f, 0.5f, 0.5f, "180°,50 %,50 %")]
+            public void ReturnsCorrectValue(float h, float s, float l, String expected)
             {
-                var colour = new Colour(r, g, b);
+                var colour = new Colour(h, s, l);
 
                 colour.ToString().Should().Be(expected);
             }

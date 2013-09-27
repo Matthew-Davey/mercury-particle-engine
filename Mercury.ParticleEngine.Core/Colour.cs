@@ -116,10 +116,5 @@
         {
             return !x.Equals(y);
         }
-
-        static public Colour operator -(Colour x, Colour y)
-        {
-            return new Colour(x.H - y.H, x.S - y.S, x.L - y.L);
-        }
     }
 }
