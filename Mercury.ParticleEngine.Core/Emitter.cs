@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Mercury.ParticleEngine.Modifiers;
     using Mercury.ParticleEngine.Profiles;
 
@@ -77,10 +78,7 @@
             {
                 count = Buffer.Iter(out particle);
 
-                foreach (var modifier in Modifiers)
-                {
-                    modifier.Update(elapsedSeconds, particle, count);
-                }
+                Parallel.ForEach(Modifiers, modifier => modifier.Update(elapsedSeconds, particle, count));
             }
         }
 
@@ -106,13 +104,12 @@
                 particle->Velocity[0] *= speed;
                 particle->Velocity[1] *= speed;
 
-                FastRand.NextColour(particle->Colour, Parameters.Colour);
-                particle->Opacity = FastRand.NextSingle(Parameters.Opacity);
-
-                particle->Scale = FastRand.NextSingle(Parameters.Scale);
+                FastRand.NextColour((Colour*)particle->Colour, Parameters.Colour);
+                
+                particle->Opacity  = FastRand.NextSingle(Parameters.Opacity);
+                particle->Scale    = FastRand.NextSingle(Parameters.Scale);
                 particle->Rotation = FastRand.NextSingle(Parameters.Rotation);
-
-                particle->Mass = FastRand.NextSingle(Parameters.Mass);
+                particle->Mass     = FastRand.NextSingle(Parameters.Mass);
 
                 particle++;
             }

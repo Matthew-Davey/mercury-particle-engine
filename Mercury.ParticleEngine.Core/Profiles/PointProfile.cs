@@ -6,7 +6,7 @@
         {
             *offset = Coordinate.Origin;
 
-            FastRand.NextUnitVector((float*)heading);
+            FastRand.NextUnitVector((Vector*)heading);
         }
     }
 }

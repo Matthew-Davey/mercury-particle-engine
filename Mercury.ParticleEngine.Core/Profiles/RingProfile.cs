@@ -7,12 +7,12 @@
 
         public override unsafe void GetOffsetAndHeading(Coordinate* offset, Axis* heading)
         {
-            FastRand.NextUnitVector((float*)heading);
+            FastRand.NextUnitVector((Vector*)heading);
 
             *offset = new Coordinate(heading->_x * Radius, heading->_y * Radius);
 
             if (!Radiate)
-                FastRand.NextUnitVector((float*)heading);
+                FastRand.NextUnitVector((Vector*)heading);
         }
     }
 }

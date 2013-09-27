@@ -108,19 +108,18 @@
             return NextSingle((float)Math.PI * -1f, (float)Math.PI);
         }
 
-        static public unsafe void NextUnitVector(float* vector)
+        static public unsafe void NextUnitVector(Vector* vector)
         {
             var angle = NextAngle();
 
-            vector[0] = (float)Math.Cos(angle);
-            vector[1] = (float)Math.Sin(angle);
+            *vector = new Vector((float)Math.Cos(angle), (float)Math.Sin(angle));
         }
 
-        static public unsafe void NextColour(float* colour, ColourRange range)
+        static public unsafe void NextColour(Colour* colour, ColourRange range)
         {
-            colour[0] = NextSingle(range.R);
-            colour[1] = NextSingle(range.G);
-            colour[2] = NextSingle(range.B);
+            *colour = new Colour(NextSingle(range.Min.H, range.Max.H),
+                                 NextSingle(range.Min.S, range.Max.S),
+                                 NextSingle(range.Min.L, range.Max.L));
         }
     }
 }
