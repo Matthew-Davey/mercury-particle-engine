@@ -6,6 +6,7 @@ namespace Mercury.ParticleEngine.Modifiers
     {
         public Coordinate Position;
         public float Mass;
+        public float MaxSpeed;
 
         protected internal override unsafe void Update(float elapsedSeconds, Particle* particle, int count)
         {
@@ -18,13 +19,13 @@ namespace Mercury.ParticleEngine.Modifiers
 
                 var m = (10000d * Mass * particle->Mass) / (distance * distance);
 
-                m = Math.Min(m, 1500d);
+                m = Math.Max(Math.Min(m, MaxSpeed), -MaxSpeed) * elapsedSeconds;
 
                 distx /= distance;
                 disty /= distance;
 
-                distx *= m * elapsedSeconds;
-                disty *= m * elapsedSeconds;
+                distx *= m;
+                disty *= m;
 
                 particle->Velocity[0] += (float)distx;
                 particle->Velocity[1] += (float)disty;
