@@ -22,8 +22,8 @@
 
             while (count-- > 0)
             {
-                particle->Velocity[0] += vector._x;
-                particle->Velocity[1] += vector._y;
+                particle->Velocity[0] += vector._x * particle->Mass;
+                particle->Velocity[1] += vector._y * particle->Mass;
 
                 particle++;
             }
