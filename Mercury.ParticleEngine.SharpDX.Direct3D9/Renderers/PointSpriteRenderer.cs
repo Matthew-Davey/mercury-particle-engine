@@ -1,6 +1,7 @@
 ﻿namespace Mercury.ParticleEngine.Renderers
 {
     using System;
+    using System.Runtime.InteropServices;
     using SharpDX;
     using SharpDX.Direct3D9;
 
@@ -37,11 +38,11 @@
 
             var vertexElements = new[]
             {
-                new VertexElement(0,  4, DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.Color, 1),
-                new VertexElement(0,  8, DeclarationType.Float2, DeclarationMethod.Default, DeclarationUsage.Position, 0),
-                new VertexElement(0, 24, DeclarationType.Float4, DeclarationMethod.Default, DeclarationUsage.Color, 0),
-                new VertexElement(0, 40, DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.PointSize, 0),
-                new VertexElement(0, 44, DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.Color, 2),
+                new VertexElement(0, (short)Marshal.OffsetOf(typeof(Particle), "Age"),      DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.Color, 1),
+                new VertexElement(0, (short)Marshal.OffsetOf(typeof(Particle), "Position"), DeclarationType.Float2, DeclarationMethod.Default, DeclarationUsage.Position, 0),
+                new VertexElement(0, (short)Marshal.OffsetOf(typeof(Particle), "Colour"),   DeclarationType.Float4, DeclarationMethod.Default, DeclarationUsage.Color, 0),
+                new VertexElement(0, (short)Marshal.OffsetOf(typeof(Particle), "Scale"),    DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.PointSize, 0),
+                new VertexElement(0, (short)Marshal.OffsetOf(typeof(Particle), "Rotation"), DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.Color, 2),
                 VertexElement.VertexDeclarationEnd
             };
 
@@ -63,13 +64,12 @@
             _effect.SetValue("WVPMatrix", worldViewProjection);
             _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), texture);
 
-            var dataStream = _vertexBuffer.Lock(0, emitter.ActiveParticles * Particle.SizeInBytes, LockFlags.Discard);
-            emitter.Buffer.CopyTo(dataStream.DataPointer);
-            _vertexBuffer.Unlock();
+            using (var dataStream = _vertexBuffer.Lock(0, emitter.ActiveParticles * Particle.SizeInBytes, LockFlags.Discard))
+            {
+                emitter.Buffer.CopyTo(dataStream.DataPointer);
+            }
 
             _device.SetRenderState(RenderState.PointSpriteEnable, true);
-            _device.SetRenderState(RenderState.PointSizeMin, 0.0f);
-            _device.SetRenderState(RenderState.PointSizeMax, 512.0f);
             _device.SetRenderState(RenderState.AlphaBlendEnable, true);
 
             SetupBlend(emitter.BlendMode);
@@ -77,12 +77,12 @@
             _device.SetRenderState(RenderState.ZWriteEnable, false);
             
             _effect.Technique = technique;
-            _effect.Begin();
+            _effect.Begin(FX.DoNotSaveState);
             _effect.BeginPass(0);
 
             _device.SetStreamSource(0, _vertexBuffer, 0, Particle.SizeInBytes);
             _device.VertexDeclaration = _vertexDeclaration;
-            _device.DrawPrimitives(PrimitiveType.PointList, 0, Math.Min(_size, emitter.Buffer.Count));
+            _device.DrawPrimitives(PrimitiveType.PointList, 0, emitter.Buffer.Count);
 
             _effect.EndPass();
             _effect.End();
