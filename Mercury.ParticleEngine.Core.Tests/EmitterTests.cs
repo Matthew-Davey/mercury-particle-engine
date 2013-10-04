@@ -29,23 +29,6 @@
             }
 
             [Fact]
-            public void WhenThereAreActiveParticles_UpdatesAgeOfParticles()
-            {
-                var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point())
-                {
-                    Parameters = new ReleaseParameters
-                    {
-                        Quantity = 1
-                    }
-                };
-
-                subject.Modifiers.Add(new AssertionModifier(particle => particle.Age > 0f));
-
-                subject.Trigger(new Coordinate(0f, 0f));
-                subject.Update(.1f);
-            }
-
-            [Fact]
             public void WhenThereAreParticlesToExpire_DoesNotPassExpiredParticlesToModifiers()
             {
                 var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point())
