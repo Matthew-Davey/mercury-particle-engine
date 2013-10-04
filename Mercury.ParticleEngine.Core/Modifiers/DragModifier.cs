@@ -9,8 +9,10 @@
         {
             while (count-- > 0)
             {
-                particle->Velocity[0] += (particle->Velocity[0] * -DragCoefficient * Density * particle->Mass * elapsedSeconds);
-                particle->Velocity[1] += (particle->Velocity[1] * -DragCoefficient * Density * particle->Mass * elapsedSeconds);
+                var drag = -DragCoefficient * Density * particle->Mass * elapsedSeconds;
+
+                particle->Velocity[0] += (particle->Velocity[0] * drag);
+                particle->Velocity[1] += (particle->Velocity[1] * drag);
 
                 particle++;
             }
