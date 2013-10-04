@@ -8,9 +8,6 @@
 
     public unsafe class Emitter : IDisposable
     {
-        private readonly float _term;
-        private float _totalSeconds;
-
         public Emitter(int capacity, TimeSpan term, Profile profile)
         {
             _term = (float)term.TotalSeconds;
@@ -18,8 +15,12 @@
             Buffer = new ParticleBuffer(capacity);
             Profile = profile;
             Modifiers = new List<Modifier>();
+            ModifierExecutionStrategy = ModifierExecutionStrategy.Parallel;
             Parameters = new ReleaseParameters();
         }
+
+        private readonly float _term;
+        private float _totalSeconds;
 
         internal ParticleBuffer Buffer { get; private set; }
 
@@ -29,6 +30,7 @@
         }
 
         public IList<Modifier> Modifiers { get; set; }
+        public ModifierExecutionStrategy ModifierExecutionStrategy { get; set; }
         public Profile Profile { get; private set; }
         public ReleaseParameters Parameters { get; set; }
         public BlendMode BlendMode { get; set; }
@@ -61,24 +63,12 @@
 
             ReclaimExpiredParticles();
 
-            var particle = (Particle*)0;
-            var count = Buffer.Iter(out particle);
-
-            while (count-- > 0)
-            {
-                particle->Age = (_totalSeconds - particle->Inception) / _term;
-
-                particle->Position[0] += particle->Velocity[0] * elapsedSeconds;
-                particle->Position[1] += particle->Velocity[1] * elapsedSeconds;
-
-                particle++;
-            }
-
             if (Buffer.Count > 0)
             {
-                count = Buffer.Iter(out particle);
+                var particle = (Particle*)0;
+                var count = Buffer.Iter(out particle);
 
-                Parallel.ForEach(Modifiers, modifier => modifier.Update(elapsedSeconds, particle, count));
+                ModifierExecutionStrategy.ExecuteModifiers(Modifiers, elapsedSeconds, particle, count);
             }
         }
 
