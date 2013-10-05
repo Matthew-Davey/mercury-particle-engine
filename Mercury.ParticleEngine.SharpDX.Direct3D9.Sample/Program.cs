@@ -17,8 +17,8 @@
         [STAThread]
         static void Main()
         {
-            var worldSize = new DrawingPoint(1024, 768);
-            var renderSize = new DrawingPoint(1920, 1080);
+            var worldSize = new Size2(1024, 768);
+            var renderSize = new Size2(1920, 1080);
             const bool windowed = false;
 
             const int numParticles = 1000000;
@@ -27,25 +27,25 @@
 
             var form = new RenderForm("Mercury Particle Engine - SharpDX.Direct3D9 Sample")
             {
-                Size = new System.Drawing.Size(renderSize.X, renderSize.Y)
+                Size = new System.Drawing.Size(renderSize.Width, renderSize.Height)
             };
 
             var direct3d = new Direct3D();
-            var device = new Device(direct3d, 0, DeviceType.Hardware, form.Handle, CreateFlags.HardwareVertexProcessing, new PresentParameters(renderSize.X, renderSize.Y) { PresentationInterval = PresentInterval.Immediate, Windowed = windowed });
+            var device = new Device(direct3d, 0, DeviceType.Hardware, form.Handle, CreateFlags.HardwareVertexProcessing, new PresentParameters(renderSize.Width, renderSize.Height) { PresentationInterval = PresentInterval.Immediate, Windowed = windowed });
 
             var view = new Matrix(
                 1.0f, 0.0f, 0.0f, 0.0f,
                 0.0f, -1.0f, 0.0f, 0.0f,
                 0.0f, 0.0f, -1.0f, 0.0f,
                 0.0f, 0.0f, 0.0f, 1.0f);
-            var proj = Matrix.OrthoOffCenterLH(worldSize.X * -0.5f, worldSize.X * 0.5f, worldSize.Y * 0.5f, worldSize.Y * -0.5f, 0f, 1f);
+            var proj = Matrix.OrthoOffCenterLH(worldSize.Width * -0.5f, worldSize.Width * 0.5f, worldSize.Height * 0.5f, worldSize.Height * -0.5f, 0f, 1f);
             var wvp = Matrix.Identity * view * proj;
 
             var emitters = new Emitter[numEmitters];
 
             for (int i = 0; i < numEmitters; i++)
             {
-                emitters[i] = new Emitter(budget, TimeSpan.FromSeconds(600), Profile.BoxFill(worldSize.X, worldSize.Y))
+                emitters[i] = new Emitter(budget, TimeSpan.FromSeconds(600), Profile.BoxFill(worldSize.Width, worldSize.Height))
                 {
                     Parameters = new ReleaseParameters
                     {
@@ -82,8 +82,8 @@
                         {
                             RestitutionCoefficient = 0.75f,
                             Position = Coordinate.Origin,
-                            Width    = worldSize.X,
-                            Height   = worldSize.Y
+                            Width    = worldSize.Width,
+                            Height   = worldSize.Height
                         },
                     }
                 };
@@ -131,7 +131,7 @@
                         Task.Factory.StartNew(() =>
                         {
                             var mouseVector = new Vector3(mousePosition.X, mousePosition.Y, 0f);
-                            var unprojected = Vector3.Unproject(mouseVector, 0, 0, renderSize.X, renderSize.Y, 0f, 1f, wvp);
+                            var unprojected = Vector3.Unproject(mouseVector, 0, 0, renderSize.Width, renderSize.Height, 0f, 1f, wvp);
 
                             Parallel.ForEach(emitters, emitter => ((VortexModifier)emitter.Modifiers[2]).Position = new Coordinate(unprojected.X, unprojected.Y));
 
