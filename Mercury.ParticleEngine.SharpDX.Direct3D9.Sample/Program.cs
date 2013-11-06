@@ -59,10 +59,7 @@
                         Mass = new RangeF(8f, 12f)
                     },
                     BlendMode = BlendMode.Add,
-                    Modifiers = new List<Modifier>
-                    {
-                        new MoveModifier(),
-                        new DragModifier
+                    ReclaimInterval = 600f
                 };
 
                 emitters[i].Modifiers.Add(new DragModifier

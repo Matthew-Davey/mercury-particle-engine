@@ -35,6 +35,10 @@
         public ReleaseParameters Parameters { get; set; }
         public BlendMode BlendMode { get; set; }
 
+        public float ReclaimInterval { get; set; }
+
+        private float _secondsSinceLastReclaim;
+
         private void ReclaimExpiredParticles()
         {
             Particle* particle;
@@ -57,11 +61,16 @@
         public void Update(float elapsedSeconds)
         {
             _totalSeconds += elapsedSeconds;
+            _secondsSinceLastReclaim += elapsedSeconds;
 
             if (Buffer.Count == 0)
                 return;
 
-            ReclaimExpiredParticles();
+            if (_secondsSinceLastReclaim > ReclaimInterval)
+            {
+                ReclaimExpiredParticles();
+                _secondsSinceLastReclaim = 0;
+            }
 
             if (Buffer.Count > 0)
             {
