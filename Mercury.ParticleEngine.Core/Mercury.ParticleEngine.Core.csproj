@@ -48,7 +48,9 @@
     <Compile Include="ColourRange.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Emitter.cs" />
+    <Compile Include="Modifiers\ModifierCollection.cs" />
     <Compile Include="ModifierExecutionStrategy.cs" />
+    <Compile Include="Modifiers\ModifierSlot.cs" />
     <Compile Include="Modifiers\AgeModifier.cs" />
     <Compile Include="Modifiers\ColourInterpolator2.cs" />
     <Compile Include="Modifiers\ContainerModifier.cs" />

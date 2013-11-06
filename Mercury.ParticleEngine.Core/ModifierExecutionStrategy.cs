@@ -5,27 +5,27 @@
 
     public abstract class ModifierExecutionStrategy
     {
-        public abstract unsafe void ExecuteModifiers(IList<Modifier> modifiers, float elapsedSeconds, Particle* particle, int count);
+        internal abstract unsafe void ExecuteModifiers(ModifierCollection modifiers, float elapsedSeconds, Particle* particle, int count);
 
         static public ModifierExecutionStrategy Serial = new SerialModifierExecutionStrategy();
         static public ModifierExecutionStrategy Parallel = new ParallelModifierExecutionStrategy();
 
         internal class SerialModifierExecutionStrategy : ModifierExecutionStrategy
         {
-            public override unsafe void ExecuteModifiers(IList<Modifier> modifiers, float elapsedSeconds, Particle* particle, int count)
+            internal override unsafe void ExecuteModifiers(ModifierCollection modifiers, float elapsedSeconds, Particle* particle, int count)
             {
-                foreach (var modifier in modifiers)
+                foreach (var slot in modifiers.Slots)
                 {
-                    modifier.Update(elapsedSeconds, particle, count);
+                    slot.Update(elapsedSeconds, particle, count);
                 }
             }
         }
 
         internal class ParallelModifierExecutionStrategy : ModifierExecutionStrategy
         {
-            public override unsafe void ExecuteModifiers(IList<Modifier> modifiers, float elapsedSeconds, Particle* particle, int count)
+            internal override unsafe void ExecuteModifiers(ModifierCollection modifiers, float elapsedSeconds, Particle* particle, int count)
             {
-                System.Threading.Tasks.Parallel.ForEach(modifiers, modifier => modifier.Update(elapsedSeconds, particle, count));
+                System.Threading.Tasks.Parallel.ForEach(modifiers.Slots, slot => slot.Update(elapsedSeconds, particle, count));
             }
         }
     }

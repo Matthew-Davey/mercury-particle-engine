@@ -14,7 +14,7 @@
 
             Buffer = new ParticleBuffer(capacity);
             Profile = profile;
-            Modifiers = new List<Modifier>();
+            Modifiers = new ModifierCollection();
             ModifierExecutionStrategy = ModifierExecutionStrategy.Parallel;
             Parameters = new ReleaseParameters();
         }
@@ -29,7 +29,7 @@
             get { return Buffer.Count; }
         }
 
-        public IList<Modifier> Modifiers { get; set; }
+        public ModifierCollection Modifiers { get; set; }
         public ModifierExecutionStrategy ModifierExecutionStrategy { get; set; }
         public Profile Profile { get; private set; }
         public ReleaseParameters Parameters { get; set; }

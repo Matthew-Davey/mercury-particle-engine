@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using SharpDX;
     using SharpDX.Direct3D9;
     using SharpDX.Windows;
@@ -62,31 +63,33 @@
                     {
                         new MoveModifier(),
                         new DragModifier
-                        {
-                            DragCoefficient = .47f,
-                            Density         = .15f
-                        },
-                        new VortexModifier
-                        {
-                            Position = Coordinate.Origin,
-                            Mass     = 200f,
-                            MaxSpeed = 1000f
-                        },
-                        new VelocityHueModifier
-                        {
-                            StationaryHue     = 220f,
-                            VelocityHue       = 300f,
-                            VelocityThreshold = 800f
-                        },
-                        new ContainerModifier
+                };
+
+                emitters[i].Modifiers.Add(new DragModifier
+                {
+                    DragCoefficient = .47f,
+                    Density         = .15f
+                }, 1f / 15f, 1f / 15f);
+                emitters[i].Modifiers.Add(new VortexModifier
+                {
+                    Position = Coordinate.Origin,
+                    Mass = 200f,
+                    MaxSpeed = 1000f
+                }, 1f / 30f, 1f / 30f);
+                emitters[i].Modifiers.Add(new VelocityHueModifier
+                {
+                    StationaryHue = 220f,
+                    VelocityHue = 300f,
+                    VelocityThreshold = 800f
+                }, 1f / 15f);
+                emitters[i].Modifiers.Add(new ContainerModifier
                         {
                             RestitutionCoefficient = 0.75f,
                             Position = Coordinate.Origin,
                             Width    = worldSize.Width,
                             Height   = worldSize.Height
-                        },
-                    }
-                };
+                        }, 1f / 30f, 1f / 60f);
+                emitters[i].Modifiers.Add(new MoveModifier(), 1f / 60f);
             };
 
             var renderer = new PointSpriteRenderer(device, budget)
@@ -133,7 +136,7 @@
                             var mouseVector = new Vector3(mousePosition.X, mousePosition.Y, 0f);
                             var unprojected = Vector3.Unproject(mouseVector, 0, 0, renderSize.Width, renderSize.Height, 0f, 1f, wvp);
 
-                            Parallel.ForEach(emitters, emitter => ((VortexModifier)emitter.Modifiers[2]).Position = new Coordinate(unprojected.X, unprojected.Y));
+                            Parallel.ForEach(emitters, emitter => ((VortexModifier)emitter.Modifiers.ElementAt(1)).Position = new Coordinate(unprojected.X, unprojected.Y));
 
                             updateTimer.Restart();
                             Parallel.ForEach(emitters, emitter => emitter.Update(frameTime));
