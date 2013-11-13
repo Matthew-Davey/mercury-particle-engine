@@ -134,55 +134,6 @@
             }
         }
 
-        public class IterMethod
-        {
-            [Fact]
-            public void WhenThereAreNoActiveParticles_ReturnsZeroCount()
-            {
-                var subject = new ParticleBuffer(100);
-
-                unsafe
-                {
-                    Particle* particle;
-                    var count = subject.Iter(out particle);
-                    
-                    count.Should().Be(0);
-                }
-            }
-
-            [Fact]
-            public void WhenThereAreActiveParticles_ReturnsNumberOfActiveParticles()
-            {
-                var subject = new ParticleBuffer(100);
-                
-                unsafe
-                {
-                    Particle* particle;
-                    subject.Release(50, out particle);
-
-                    var count = subject.Iter(out particle);
-
-                    count.Should().Be(50);
-                }
-            }
-
-            [Fact]
-            public void SetParticlePointerToBufferOrigin()
-            {
-                var subject = new ParticleBuffer(100);
-
-                unsafe
-                {
-                    Particle* particle;
-                    subject.Release(50, out particle);
-
-                    subject.Iter(out particle);
-
-                    new IntPtr(particle).ToInt64().Should().Be(subject.NativePointer.ToInt64());
-                }
-            }
-        }
-
         public class CopyToMethod
         {
             [Fact]

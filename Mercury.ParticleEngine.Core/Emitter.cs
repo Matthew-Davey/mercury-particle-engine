@@ -41,8 +41,8 @@
 
         private void ReclaimExpiredParticles()
         {
-            Particle* particle;
-            var count = Buffer.Iter(out particle);
+            var particle = (Particle*)Buffer.NativePointer;
+            var count = Buffer.Count;
 
             var expired = 0;
             
@@ -74,8 +74,8 @@
 
             if (Buffer.Count > 0)
             {
-                var particle = (Particle*)0;
-                var count = Buffer.Iter(out particle);
+                var particle = (Particle*)Buffer.NativePointer;
+                var count = Buffer.Count;
 
                 ModifierExecutionStrategy.ExecuteModifiers(Modifiers, elapsedSeconds, particle, count);
             }

@@ -53,13 +53,6 @@
             memcpy(NativePointer, IntPtr.Add(NativePointer, number * Particle.SizeInBytes), _tail * Particle.SizeInBytes);
         }
 
-        public unsafe int Iter(out Particle* first)
-        {
-            first = (Particle*)NativePointer;
-
-            return _tail;
-        }
-
         public void CopyTo(IntPtr destination)
         {
             memcpy(destination, NativePointer, _tail * Particle.SizeInBytes);
