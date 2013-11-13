@@ -66,27 +66,27 @@
                 {
                     DragCoefficient = .47f,
                     Density         = .15f
-                }, 1f / 15f, 1f / 15f);
+                }, 15f);
                 emitters[i].Modifiers.Add(new VortexModifier
                 {
                     Position = Coordinate.Origin,
                     Mass = 200f,
                     MaxSpeed = 1000f
-                }, 1f / 30f, 1f / 30f);
+                }, 30f);
                 emitters[i].Modifiers.Add(new VelocityHueModifier
                 {
                     StationaryHue = 220f,
                     VelocityHue = 300f,
                     VelocityThreshold = 800f
-                }, 1f / 15f);
+                }, 15f);
                 emitters[i].Modifiers.Add(new ContainerModifier
                         {
                             RestitutionCoefficient = 0.75f,
                             Position = Coordinate.Origin,
                             Width    = worldSize.Width,
                             Height   = worldSize.Height
-                        }, 1f / 30f, 1f / 60f);
-                emitters[i].Modifiers.Add(new MoveModifier(), 1f / 60f);
+                        }, 30f);
+                emitters[i].Modifiers.Add(new MoveModifier(), 60f);
             };
 
             var renderer = new PointSpriteRenderer(device, budget)

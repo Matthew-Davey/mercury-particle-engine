@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    
     public class ModifierCollection : IEnumerable<Modifier>
     {
         public ModifierCollection()
@@ -14,12 +15,12 @@
         public IEnumerator<Modifier> GetEnumerator()
         {
             return Slots.Select(slot => slot.Modifier)
-                             .GetEnumerator();
+                        .GetEnumerator();
         }
 
-        public void Add(Modifier modifier, float interval = 0f, float delay = 0f)
+        public void Add(Modifier modifier, float frequency = 60f)
         {
-            Slots.Add(new ModifierSlot(modifier, interval, delay));
+            Slots.Add(new ModifierSlot(modifier, frequency));
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()

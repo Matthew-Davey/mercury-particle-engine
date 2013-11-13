@@ -1,29 +1,24 @@
 ﻿namespace Mercury.ParticleEngine.Modifiers
 {
-    using Mercury.ParticleEngine.Modifiers;
-
     internal class ModifierSlot
     {
         public Modifier Modifier { get; set; }
 
-        public float Interval { get; set; }
-
-        public float Delay { get; set; }
+        public float Frequency { get; set; }
 
         private float _secondsSinceLastUpdate;
 
-        public ModifierSlot(Modifier modifier, float interval = 0f, float delay = 0f)
+        public ModifierSlot(Modifier modifier, float frequency = 60f)
         {
             Modifier = modifier;
-            Interval = interval;
-            Delay = delay;
+            Frequency = frequency;
         }
 
         public unsafe void Update(float elapsedSeconds, Particle* particle, int count)
         {
             _secondsSinceLastUpdate += elapsedSeconds;
 
-            if (_secondsSinceLastUpdate > Interval)
+            if (_secondsSinceLastUpdate > (1f / Frequency))
             {
                 Modifier.Update(_secondsSinceLastUpdate, particle, count);
 
