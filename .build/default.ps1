@@ -1,5 +1,5 @@
 properties {
-  $solutionPath  = "..\Mercury.ParticleEngine.sln"
+  $solutionPath  = "..\Mercury.ParticleEngine.proj"
   $xunitConsole  = ".\xunit.console.clr4.x86.exe"
   $unitTests     = "..\Mercury.ParticleEngine.Core.Tests\bin\Debug\Mercury.ParticleEngine.Core.Tests.dll"
 }
@@ -20,7 +20,7 @@ task Test -depends Compile {
 
 task Compile -depends Clean {
   Exec {
-    msbuild $solutionPath /t:Rebuild /m /tv:4.0 /p:Configuration=Debug
+    msbuild $solutionPath /t:Build /m /tv:4.0 /p:Configuration=Debug
   }
 }
 
