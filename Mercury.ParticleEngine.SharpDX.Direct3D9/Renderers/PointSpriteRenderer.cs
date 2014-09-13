@@ -1,12 +1,10 @@
-﻿namespace Mercury.ParticleEngine.Renderers
-{
+﻿namespace Mercury.ParticleEngine.Renderers {
     using System;
     using System.Runtime.InteropServices;
     using SharpDX;
     using SharpDX.Direct3D9;
 
-    public class PointSpriteRenderer : IDisposable
-    {
+    public class PointSpriteRenderer : IDisposable {
         private readonly Device _device;
         private readonly int _size;
         private readonly VertexBuffer _vertexBuffer;
@@ -14,21 +12,17 @@
         private readonly Effect _effect;
 
         private bool _enableFastFade;
-        public bool EnableFastFade
-        {
+        public bool EnableFastFade {
             get { return _enableFastFade; }
-            set
-            {
-                if(value != _enableFastFade)
-                {
+            set {
+                if(value != _enableFastFade) {
                     _enableFastFade = value;
                     _effect.SetValue("FastFade", _enableFastFade);
                 }
             }
         }
 
-        public PointSpriteRenderer(Device device, int size)
-        {
+        public PointSpriteRenderer(Device device, int size) {
             if (device == null)
                 throw new ArgumentNullException("device");
 
@@ -36,8 +30,7 @@
             _size = size;
             _vertexBuffer = new VertexBuffer(_device, _size * Particle.SizeInBytes, Usage.Dynamic | Usage.Points | Usage.WriteOnly, VertexFormat.None, Pool.Default);
 
-            var vertexElements = new[]
-            {
+            var vertexElements = new[] {
                 new VertexElement(0, (short)Marshal.OffsetOf(typeof(Particle), "Age"),      DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.Color, 1),
                 new VertexElement(0, (short)Marshal.OffsetOf(typeof(Particle), "Position"), DeclarationType.Float2, DeclarationMethod.Default, DeclarationUsage.Position, 0),
                 new VertexElement(0, (short)Marshal.OffsetOf(typeof(Particle), "Colour"),   DeclarationType.Float4, DeclarationMethod.Default, DeclarationUsage.Color, 0),
@@ -51,8 +44,7 @@
             _vertexDeclaration = new VertexDeclaration(device, vertexElements);
         }
 
-        public void Render(Emitter emitter, Matrix worldViewProjection, Texture texture)
-        {
+        public void Render(Emitter emitter, Matrix worldViewProjection, Texture texture) {
             if (emitter.ActiveParticles == 0)
                 return;
 
@@ -64,8 +56,7 @@
             _effect.SetValue("WVPMatrix", worldViewProjection);
             _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), texture);
 
-            using (var dataStream = _vertexBuffer.Lock(0, emitter.ActiveParticles * Particle.SizeInBytes, LockFlags.Discard))
-            {
+            using (var dataStream = _vertexBuffer.Lock(0, emitter.ActiveParticles * Particle.SizeInBytes, LockFlags.Discard)) {
                 emitter.Buffer.CopyTo(dataStream.DataPointer);
             }
 
@@ -88,10 +79,8 @@
             _effect.End();
         }
 
-        private void SetupBlend(BlendMode blendMode)
-        {
-            switch (blendMode)
-            {
+        private void SetupBlend(BlendMode blendMode) {
+            switch (blendMode) {
                 case BlendMode.Alpha:
                     _device.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
                     _device.SetRenderState(RenderState.BlendOperationAlpha, BlendOperation.Add);
@@ -119,23 +108,19 @@
             }
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        protected void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected void Dispose(bool disposing) {
+            if (disposing) {
                 _vertexBuffer.Dispose();
                 _effect.Dispose();
             }
         }
 
-        ~PointSpriteRenderer()
-        {
+        ~PointSpriteRenderer() {
             Dispose(false);
         }
     }

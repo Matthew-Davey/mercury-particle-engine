@@ -1,28 +1,23 @@
-﻿namespace Mercury.ParticleEngine
-{
+﻿namespace Mercury.ParticleEngine {
     using System;
     using Xunit;
     using FluentAssertions;
 
-    public class ParticleBufferTests
-    {
+    public class ParticleBufferTests {
         public class AvailableProperty
         {
             [Fact]
-            public void WhenNoParticlesReleased_ReturnsBufferSize()
-            {
+            public void WhenNoParticlesReleased_ReturnsBufferSize() {
                 var subject = new ParticleBuffer(100);
 
                 subject.Available.Should().Be(100);
             }
 
             [Fact]
-            public void WhenSomeParticlesReleased_ReturnsAvailableCount()
-            {
+            public void WhenSomeParticlesReleased_ReturnsAvailableCount() {
                 var subject = new ParticleBuffer(100);
 
-                unsafe
-                {
+                unsafe {
                     Particle* particle;
                     subject.Release(10, out particle);
                 }
@@ -31,12 +26,10 @@
             }
 
             [Fact]
-            public void WhenAllParticlesReleased_ReturnsZero()
-            {
+            public void WhenAllParticlesReleased_ReturnsZero() {
                 var subject = new ParticleBuffer(100);
 
-                unsafe
-                {
+                unsafe {
                     Particle* particle;
                     subject.Release(100, out particle);
                 }
@@ -45,22 +38,18 @@
             }
         }
 
-        public class CountProperty
-        {
+        public class CountProperty {
             [Fact]
-            public void WhenNoParticlesReleased_ReturnsZero()
-            {
+            public void WhenNoParticlesReleased_ReturnsZero() {
                 var subject = new ParticleBuffer(100);
                 subject.Count.Should().Be(0);
             }
 
             [Fact]
-            public void WhenSomeParticlesReleased_ReturnsCount()
-            {
+            public void WhenSomeParticlesReleased_ReturnsCount() {
                 var subject = new ParticleBuffer(100);
                 
-                unsafe
-                {
+                unsafe {
                     Particle* particle;
                     subject.Release(10, out particle);
                 }
@@ -69,12 +58,10 @@
             }
 
             [Fact]
-            public void WhenAllParticlesReleased_ReturnsZero()
-            {
+            public void WhenAllParticlesReleased_ReturnsZero() {
                 var subject = new ParticleBuffer(100);
 
-                unsafe
-                {
+                unsafe {
                     Particle* particle;
                     subject.Release(100, out particle);
                 }
@@ -86,12 +73,10 @@
         public class ReleaseMethod
         {
             [Fact]
-            public void WhenPassedReasonableQuantity_ReturnsNumberReleased()
-            {
+            public void WhenPassedReasonableQuantity_ReturnsNumberReleased() {
                 var subject = new ParticleBuffer(100);
 
-                unsafe
-                {
+                unsafe {
                     Particle* particle;
                     var count = subject.Release(50, out particle);
                     
@@ -100,12 +85,10 @@
             }
 
             [Fact]
-            public void WhenPassedImpossibleQuantity_ReturnsNumberActuallyReleased()
-            {
+            public void WhenPassedImpossibleQuantity_ReturnsNumberActuallyReleased() {
                 var subject = new ParticleBuffer(100);
 
-                unsafe
-                {
+                unsafe {
                     Particle* particle;
                     var count = subject.Release(200, out particle);
                     count.Should().Be(100);
@@ -113,15 +96,12 @@
             }
         }
 
-        public class ReclaimMethod
-        {
+        public class ReclaimMethod {
             [Fact]
-            public void WhenPassedReasonableNumber_ReclaimsParticles()
-            {
+            public void WhenPassedReasonableNumber_ReclaimsParticles() {
                 var subject = new ParticleBuffer(100);
                 
-                unsafe
-                {
+                unsafe {
                     Particle* particle;
                     subject.Release(100, out particle);
                 }
@@ -134,19 +114,15 @@
             }
         }
 
-        public class CopyToMethod
-        {
+        public class CopyToMethod {
             [Fact]
-            public void WhenBufferIsSequential_CopiesParticlesInOrder()
-            {
-                unsafe
-                {
+            public void WhenBufferIsSequential_CopiesParticlesInOrder() {
+                unsafe {
                     var subject = new ParticleBuffer(10);
                     Particle* particle;
                     var count = subject.Release(5, out particle);
 
-                    do
-                    {
+                    do {
                         particle->Age = 1f;
                         particle++;
                     }
@@ -154,8 +130,7 @@
 
                     var destination = new Particle[10];
 
-                    fixed (Particle* buffer = destination)
-                    {
+                    fixed (Particle* buffer = destination) {
                         subject.CopyTo((IntPtr)buffer);
                     }
 
@@ -168,11 +143,9 @@
             }
         }
 
-        public class DisposeMethod
-        {
+        public class DisposeMethod {
             [Fact]
-            public void IsIdempotent()
-            {
+            public void IsIdempotent() {
                 var subject = new ParticleBuffer(100);
                 subject.Dispose();
                 subject.Dispose();

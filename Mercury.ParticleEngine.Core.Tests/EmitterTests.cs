@@ -1,22 +1,16 @@
-﻿namespace Mercury.ParticleEngine
-{
+﻿namespace Mercury.ParticleEngine {
     using System;
     using Xunit;
     using FluentAssertions;
     using Mercury.ParticleEngine.Modifiers;
     using Mercury.ParticleEngine.Profiles;
 
-    public class EmitterTests
-    {
-        public class UpdateMethod
-        {
+    public class EmitterTests {
+        public class UpdateMethod {
             [Fact]
-            public void WhenThereAreParticlesToExpire_DecreasesActiveParticleCount()
-            {
-                var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point())
-                {
-                    Parameters = new ReleaseParameters
-                    {
+            public void WhenThereAreParticlesToExpire_DecreasesActiveParticleCount() {
+                var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point()) {
+                    Parameters = new ReleaseParameters {
                         Quantity = 1
                     }
                 };
@@ -29,12 +23,9 @@
             }
 
             [Fact]
-            public void WhenThereAreParticlesToExpire_DoesNotPassExpiredParticlesToModifiers()
-            {
-                var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point())
-                {
-                    Parameters = new ReleaseParameters
-                    {
+            public void WhenThereAreParticlesToExpire_DoesNotPassExpiredParticlesToModifiers() {
+                var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point()) {
+                    Parameters = new ReleaseParameters {
                         Quantity = 1
                     }
                 };
@@ -50,8 +41,7 @@
             }
 
             [Fact]
-            public void WhenThereAreNoActiveParticles_GracefullyDoesNothing()
-            {
+            public void WhenThereAreNoActiveParticles_GracefullyDoesNothing() {
                 var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point());
 
                 subject.Update(0.5f);
@@ -60,15 +50,11 @@
             }
         }
 
-        public class TriggerMethod
-        {
+        public class TriggerMethod {
             [Fact]
-            public void WhenEnoughHeadroom_IncreasesActiveParticlesCountByReleaseQuantity()
-            {
-                var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point())
-                {
-                    Parameters = new ReleaseParameters
-                    {
+            public void WhenEnoughHeadroom_IncreasesActiveParticlesCountByReleaseQuantity() {
+                var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point()) {
+                    Parameters = new ReleaseParameters {
                         Quantity = 10
                     }
                 };
@@ -79,12 +65,9 @@
             }
 
             [Fact]
-            public void WhenNotEnoughHeadroom_IncreasesActiveParticlesCountByRemainingParticles()
-            {
-                var subject = new Emitter(15, TimeSpan.FromSeconds(1), Profile.Point())
-                {
-                    Parameters = new ReleaseParameters
-                    {
+            public void WhenNotEnoughHeadroom_IncreasesActiveParticlesCountByRemainingParticles() {
+                var subject = new Emitter(15, TimeSpan.FromSeconds(1), Profile.Point()) {
+                    Parameters = new ReleaseParameters {
                         Quantity = 10
                     }
                 };
@@ -96,12 +79,9 @@
             }
 
             [Fact]
-            public void WhenNoRemainingParticles_DoesNotIncreaseActiveParticlesCount()
-            {
-                var subject = new Emitter(10, TimeSpan.FromSeconds(1), Profile.Point())
-                {
-                    Parameters = new ReleaseParameters
-                    {
+            public void WhenNoRemainingParticles_DoesNotIncreaseActiveParticlesCount() {
+                var subject = new Emitter(10, TimeSpan.FromSeconds(1), Profile.Point()) {
+                    Parameters = new ReleaseParameters {
                         Quantity = 10
                     }
                 };
@@ -113,11 +93,9 @@
             }
         }
 
-        public class DisposeMethod
-        {
+        public class DisposeMethod {
             [Fact]
-            public void IsIdempotent()
-            {
+            public void IsIdempotent() {
                 var subject = new Emitter(10, TimeSpan.FromSeconds(1), Profile.Point());
 
                 subject.Dispose();

@@ -1,17 +1,13 @@
-namespace Mercury.ParticleEngine.Modifiers
-{
+namespace Mercury.ParticleEngine.Modifiers {
     using System;
 
-    public class VortexModifier : Modifier
-    {
+    public class VortexModifier : Modifier {
         public Coordinate Position;
         public float Mass;
         public float MaxSpeed;
 
-        protected internal override unsafe void Update(float elapsedSeconds, Particle* particle, int count)
-        {
-            while (count-- > 0)
-            {
+        protected internal override unsafe void Update(float elapsedSeconds, Particle* particle, int count) {
+            while (count-- > 0) {
                 var distx = Position._x - particle->Position[0];
                 var disty = Position._y - particle->Position[1];
 

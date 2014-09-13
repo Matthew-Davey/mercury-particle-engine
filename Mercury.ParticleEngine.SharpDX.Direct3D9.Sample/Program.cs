@@ -1,8 +1,6 @@
-﻿namespace Mercury.ParticleEngine
-{
+﻿namespace Mercury.ParticleEngine {
     using System;
     using System.Diagnostics;
-    using System.Linq;
     using SharpDX;
     using SharpDX.Direct3D9;
     using SharpDX.Windows;
@@ -11,19 +9,16 @@
     using Mercury.ParticleEngine.Renderers;
     using System.Windows.Input;
 
-    static class Program
-    {
+    static class Program {
         [STAThread]
-        static void Main()
-        {
+        static void Main() {
             var worldSize = new Size2(1024, 768);
             var renderSize = new Size2(1920, 1080);
             const bool windowed = false;
 
             const int numParticles = 5000;
 
-            var form = new RenderForm("Mercury Particle Engine - SharpDX.Direct3D9 Sample")
-            {
+            var form = new RenderForm("Mercury Particle Engine - SharpDX.Direct3D9 Sample") {
                 Size = new System.Drawing.Size(renderSize.Width, renderSize.Height)
             };
 
@@ -38,10 +33,8 @@
             var proj = Matrix.OrthoOffCenterLH(worldSize.Width * -0.5f, worldSize.Width * 0.5f, worldSize.Height * 0.5f, worldSize.Height * -0.5f, 0f, 1f);
             var wvp = Matrix.Identity * view * proj;
 
-            var emitter = new Emitter(numParticles, TimeSpan.FromSeconds(3), Profile.Point())
-            {
-                Parameters = new ReleaseParameters
-                {
+            var emitter = new Emitter(numParticles, TimeSpan.FromSeconds(3), Profile.Point()) {
+                Parameters = new ReleaseParameters {
                     Colour = new Colour(240f, 1f, 0.6f),
                     Opacity = 0.6f,
                     Quantity = 10,
@@ -52,14 +45,12 @@
                 },
                 BlendMode = BlendMode.Add,
                 Modifiers = new ModifierCollection {
-                    new DragModifier
-                    {
+                    new DragModifier {
                         Frequency       = 60f,
                         DragCoefficient = .47f,
                         Density         = .15f
                     },
-                    new ColourInterpolator2
-                    {
+                    new ColourInterpolator2 {
                         Frequency = 10f,
                         InitialColour = new Colour(240f, 1f, 0.6f),
                         FinalColour = new Colour(50f, 1f, 0.6f)
@@ -67,15 +58,13 @@
                 }
             };
 
-            var renderer = new PointSpriteRenderer(device, numParticles)
-            {
+            var renderer = new PointSpriteRenderer(device, numParticles) {
                 EnableFastFade = true
             };
 
 			var texture = Texture.FromFile(device, "Particle.dds");
 
-            var fontDescription = new FontDescription
-            {
+            var fontDescription = new FontDescription {
                 Height         = 16,
                 FaceName       = "Consolas",
                 PitchAndFamily = FontPitchAndFamily.Mono,
@@ -90,15 +79,9 @@
 
             var totalTime = 0f;
 
-            //foreach (var emitter in emitters)
-            //{
-            //    emitter.Trigger(Coordinate.Origin);
-            //}
-
             float updateTime = 0f;
 
-            RenderLoop.Run(form, () =>
-                {
+            RenderLoop.Run(form, () => {
                     // ReSharper disable AccessToDisposedClosure
                     var frameTime = ((float)totalTimer.Elapsed.TotalSeconds) - totalTime;
                     totalTime = (float)totalTimer.Elapsed.TotalSeconds;

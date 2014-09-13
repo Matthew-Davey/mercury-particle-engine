@@ -1,5 +1,4 @@
-﻿namespace Mercury.ParticleEngine
-{
+﻿namespace Mercury.ParticleEngine {
     using System;
     using System.Globalization;
     using System.Runtime.InteropServices;
@@ -9,8 +8,7 @@
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Colour : IEquatable<Colour>
-    {
+    public struct Colour : IEquatable<Colour> {
         /// <summary>
         /// Gets the value of the hue channel.
         /// </summary>
@@ -32,8 +30,7 @@
         /// <param name="h">The value of the hue channel.</param>
         /// <param name="s">The value of the saturation channel.</param>
         /// <param name="l">The value of the lightness channel.</param>
-        public Colour(float h, float s, float l)
-        {
+        public Colour(float h, float s, float l) {
             H = h;
             S = s;
             L = l;
@@ -46,8 +43,7 @@
         /// <returns>
         ///     <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
-        {
+        public override bool Equals(object obj) {
             if (obj is Colour)
                 return Equals((Colour)obj);
 
@@ -61,8 +57,7 @@
         /// <returns>
         ///     <c>true</c> if the specified <see cref="Colour"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public bool Equals(Colour value)
-        {
+        public bool Equals(Colour value) {
             return H.Equals(value.H) &&
                    S.Equals(value.S) &&
                    L.Equals(value.L);
@@ -74,8 +69,7 @@
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
-        {
+        public override int GetHashCode() {
             return H.GetHashCode() ^
                    S.GetHashCode() ^
                    L.GetHashCode();
@@ -87,8 +81,7 @@
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
+        public override string ToString() {
             return String.Format(CultureInfo.InvariantCulture, "{0}°,{1:P0},{2:P0}", H, S, L);
         }
 
@@ -100,8 +93,7 @@
         /// <returns>
         ///     <c>true</c> if the lvalue <see cref="Colour"/> is equal to the rvalue; otherwise, <c>false</c>.
         /// </returns>
-        static public bool operator ==(Colour x, Colour y)
-        {
+        static public bool operator ==(Colour x, Colour y) {
             return x.Equals(y);
         }
 
@@ -113,8 +105,7 @@
         /// <returns>
         ///     <c>true</c> if the lvalue <see cref="Colour"/> is not equal to the rvalue; otherwise, <c>false</c>.
         /// </returns>
-        static public bool operator !=(Colour x, Colour y)
-        {
+        static public bool operator !=(Colour x, Colour y) {
             return !x.Equals(y);
         }
     }

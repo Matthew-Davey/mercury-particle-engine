@@ -1,40 +1,33 @@
-﻿namespace Mercury.ParticleEngine
-{
+﻿namespace Mercury.ParticleEngine {
     using System;
     using System.Runtime.InteropServices;
 
-    internal class ParticleBuffer : IDisposable
-    {
+    internal class ParticleBuffer : IDisposable {
         private int _tail;
 
         public readonly IntPtr NativePointer;
         public readonly int Size;
 
-        public ParticleBuffer(int size)
-        {
+        public ParticleBuffer(int size) {
             Size = size;
             NativePointer = Marshal.AllocHGlobal(Particle.SizeInBytes * Size);
 
             GC.AddMemoryPressure(Particle.SizeInBytes * size);
         }
 
-        public int Available
-        {
+        public int Available {
             get { return Size - _tail; }
         }
 
-        public int Count
-        {
+        public int Count {
             get { return _tail; }
         }
 
-        public int SizeInBytes
-        {
+        public int SizeInBytes {
             get { return Particle.SizeInBytes * Size; }
         }
 
-        public unsafe int Release(int releaseQuantity, out Particle* first)
-        {
+        public unsafe int Release(int releaseQuantity, out Particle* first) {
             var numToRelease = Math.Min(releaseQuantity, Available);
 
             var oldTail = _tail;
@@ -46,15 +39,13 @@
             return numToRelease;
         }
 
-        public void Reclaim(int number)
-        {
+        public void Reclaim(int number) {
             _tail -= number;
 
             memcpy(NativePointer, IntPtr.Add(NativePointer, number * Particle.SizeInBytes), _tail * Particle.SizeInBytes);
         }
 
-        public void CopyTo(IntPtr destination)
-        {
+        public void CopyTo(IntPtr destination) {
             memcpy(destination, NativePointer, _tail * Particle.SizeInBytes);
         }
 
@@ -63,10 +54,8 @@
 
         private bool _disposed;
 
-        public void Dispose()
-        {
-            if (!_disposed)
-            {
+        public void Dispose() {
+            if (!_disposed) {
                 Marshal.FreeHGlobal(NativePointer);
                 _disposed = true;
 
@@ -76,8 +65,7 @@
             GC.SuppressFinalize(this);
         }
 
-        ~ParticleBuffer()
-        {
+        ~ParticleBuffer() {
             Dispose();
         }
     }

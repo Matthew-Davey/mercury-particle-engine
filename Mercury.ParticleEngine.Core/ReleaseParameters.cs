@@ -1,9 +1,6 @@
-﻿namespace Mercury.ParticleEngine
-{
-    public class ReleaseParameters
-    {
-        public ReleaseParameters()
-        {
+﻿namespace Mercury.ParticleEngine {
+    public class ReleaseParameters {
+        public ReleaseParameters() {
             Quantity = 1;
             Speed    = RangeF.Parse("[-1.0,1.0]");
             Colour   = new ColourRange(new Colour(0f, 0.5f, 0.5f), new Colour(360f, 0.5f, 0.5f));

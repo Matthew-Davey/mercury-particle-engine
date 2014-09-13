@@ -1,25 +1,20 @@
-﻿namespace Mercury.ParticleEngine.Modifiers
-{
+﻿namespace Mercury.ParticleEngine.Modifiers {
     using System;
 
-    public abstract class Modifier
-    {
+    public abstract class Modifier {
         const float DefaultModifierFrequency = 60.0f;
 
         private float _frequency;
         private float _cycleTime;
         private int _particlesUpdatedThisCycle;
 
-        protected Modifier()
-        {
+        protected Modifier() {
             Frequency = DefaultModifierFrequency;
         }
 
-        public float Frequency
-        {
+        public float Frequency {
             get { return _frequency; }
-            set
-            {
+            set {
                 if (value > 0.0f == false)
                     throw new ArgumentOutOfRangeException("Frequency", "Frequency must be greater than zero.");
 
@@ -28,8 +23,7 @@
             }
         }
 
-        internal unsafe void InternalUpdate(float elapsedSeconds, Particle* buffer, int count)
-        {
+        internal unsafe void InternalUpdate(float elapsedSeconds, Particle* buffer, int count) {
             var particlesRemaining = count - _particlesUpdatedThisCycle;
 
             var particlesToUpdate = (int)Math.Ceiling((elapsedSeconds / _cycleTime) * count);

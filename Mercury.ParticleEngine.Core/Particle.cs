@@ -1,10 +1,8 @@
-﻿namespace Mercury.ParticleEngine
-{
+﻿namespace Mercury.ParticleEngine {
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public unsafe struct Particle
-    {
+    public unsafe struct Particle {
         public float Inception;
         public float Age;
         public fixed float Position[2];

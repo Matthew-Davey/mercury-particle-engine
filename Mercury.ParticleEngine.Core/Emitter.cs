@@ -1,13 +1,10 @@
-﻿namespace Mercury.ParticleEngine
-{
+﻿namespace Mercury.ParticleEngine {
     using System;
     using Mercury.ParticleEngine.Modifiers;
     using Mercury.ParticleEngine.Profiles;
 
-    public unsafe class Emitter : IDisposable
-    {
-        public Emitter(int capacity, TimeSpan term, Profile profile)
-        {
+    public unsafe class Emitter : IDisposable {
+        public Emitter(int capacity, TimeSpan term, Profile profile) {
             _term = (float)term.TotalSeconds;
 
             Buffer = new ParticleBuffer(capacity);
@@ -22,8 +19,7 @@
 
         internal ParticleBuffer Buffer { get; private set; }
 
-        public int ActiveParticles
-        {
+        public int ActiveParticles {
             get { return Buffer.Count; }
         }
 
@@ -37,15 +33,13 @@
 
         private float _secondsSinceLastReclaim;
 
-        private void ReclaimExpiredParticles()
-        {
+        private void ReclaimExpiredParticles() {
             var particle = (Particle*)Buffer.NativePointer;
             var count = Buffer.Count;
 
             var expired = 0;
 
-            while (count-- > 0)
-            {
+            while (count-- > 0) {
                 if ((_totalSeconds - particle->Inception) < _term)
                     break;
 
@@ -56,27 +50,23 @@
             Buffer.Reclaim(expired);
         }
 
-        public void Update(float elapsedSeconds)
-        {
+        public void Update(float elapsedSeconds) {
             _totalSeconds += elapsedSeconds;
             _secondsSinceLastReclaim += elapsedSeconds;
 
             if (Buffer.Count == 0)
                 return;
 
-            if (_secondsSinceLastReclaim > ReclaimInterval)
-            {
+            if (_secondsSinceLastReclaim > ReclaimInterval) {
                 ReclaimExpiredParticles();
                 _secondsSinceLastReclaim = 0;
             }
 
-            if (Buffer.Count > 0)
-            {
+            if (Buffer.Count > 0) {
                 var particle = (Particle*)Buffer.NativePointer;
                 var count = Buffer.Count;
 
-                while (count-- > 0)
-                {
+                while (count-- > 0) {
                     particle->Age = (_totalSeconds - particle->Inception) / _term;
 
                     particle->Position[0] += particle->Velocity[0] * elapsedSeconds;
@@ -89,15 +79,13 @@
             }
         }
 
-        public void Trigger(Coordinate position)
-        {
+        public void Trigger(Coordinate position) {
             var numToRelease = FastRand.NextInteger(Parameters.Quantity);
 
             Particle* particle;
             var count = Buffer.Release(numToRelease, out particle);
 
-            while (count-- > 0)
-            {
+            while (count-- > 0) {
                 Profile.GetOffsetAndHeading((Coordinate*)particle->Position, (Axis*)particle->Velocity);
 
                 particle->Age = 0f;
@@ -122,14 +110,12 @@
             }
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             Buffer.Dispose();
             GC.SuppressFinalize(this);
         }
 
-        ~Emitter()
-        {
+        ~Emitter() {
             Dispose();
         }
     }
