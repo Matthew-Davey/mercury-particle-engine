@@ -48,14 +48,11 @@
     <Compile Include="Emitter.cs" />
     <Compile Include="Modifiers\ModifierCollection.cs" />
     <Compile Include="ModifierExecutionStrategy.cs" />
-    <Compile Include="Modifiers\ModifierSlot.cs" />
-    <Compile Include="Modifiers\AgeModifier.cs" />
     <Compile Include="Modifiers\ColourInterpolator2.cs" />
     <Compile Include="Modifiers\ContainerModifier.cs" />
     <Compile Include="Modifiers\DragModifier.cs" />
     <Compile Include="Modifiers\HueInterpolator2.cs" />
     <Compile Include="Modifiers\LinearGravityModifier.cs" />
-    <Compile Include="Modifiers\MoveModifier.cs" />
     <Compile Include="Modifiers\OpacityFastFadeModifier.cs" />
     <Compile Include="Modifiers\VelocityHueModifier.cs" />
     <Compile Include="Modifiers\VortexModifier.cs" />

@@ -1,8 +1,6 @@
 ﻿namespace Mercury.ParticleEngine
 {
     using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using Mercury.ParticleEngine.Modifiers;
     using Mercury.ParticleEngine.Profiles;
 
@@ -45,12 +43,12 @@
             var count = Buffer.Count;
 
             var expired = 0;
-            
+
             while (count-- > 0)
             {
                 if ((_totalSeconds - particle->Inception) < _term)
                     break;
-                
+
                 expired++;
                 particle++;
             }
@@ -77,7 +75,17 @@
                 var particle = (Particle*)Buffer.NativePointer;
                 var count = Buffer.Count;
 
-                ModifierExecutionStrategy.ExecuteModifiers(Modifiers, elapsedSeconds, particle, count);
+                while (count-- > 0)
+                {
+                    particle->Age = (_totalSeconds - particle->Inception) / _term;
+
+                    particle->Position[0] += particle->Velocity[0] * elapsedSeconds;
+                    particle->Position[1] += particle->Velocity[1] * elapsedSeconds;
+
+                    particle++;
+                }
+
+                ModifierExecutionStrategy.ExecuteModifiers(Modifiers, elapsedSeconds, (Particle*)Buffer.NativePointer, Buffer.Count);
             }
         }
 
@@ -104,7 +112,7 @@
                 particle->Velocity[1] *= speed;
 
                 FastRand.NextColour((Colour*)particle->Colour, Parameters.Colour);
-                
+
                 particle->Opacity  = FastRand.NextSingle(Parameters.Opacity);
                 particle->Scale    = FastRand.NextSingle(Parameters.Scale);
                 particle->Rotation = FastRand.NextSingle(Parameters.Rotation);

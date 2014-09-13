@@ -1,7 +1,7 @@
 ﻿namespace Mercury.ParticleEngine
 {
-    using System.Collections.Generic;
     using Mercury.ParticleEngine.Modifiers;
+    using TPL = System.Threading.Tasks;
 
     public abstract class ModifierExecutionStrategy
     {
@@ -14,9 +14,9 @@
         {
             internal override unsafe void ExecuteModifiers(ModifierCollection modifiers, float elapsedSeconds, Particle* particle, int count)
             {
-                foreach (var slot in modifiers.Slots)
+                foreach (var modifier in modifiers)
                 {
-                    slot.Update(elapsedSeconds, particle, count);
+                    modifier.InternalUpdate(elapsedSeconds, particle, count);
                 }
             }
         }
@@ -25,7 +25,7 @@
         {
             internal override unsafe void ExecuteModifiers(ModifierCollection modifiers, float elapsedSeconds, Particle* particle, int count)
             {
-                System.Threading.Tasks.Parallel.ForEach(modifiers.Slots, slot => slot.Update(elapsedSeconds, particle, count));
+                TPL.Parallel.ForEach(modifiers, modifier => modifier.InternalUpdate(elapsedSeconds, particle, count));
             }
         }
     }

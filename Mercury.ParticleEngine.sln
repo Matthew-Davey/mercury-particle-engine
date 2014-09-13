@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.21730.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.ParticleEngine.Core", "Mercury.ParticleEngine.Core\Mercury.ParticleEngine.Core.csproj", "{E7B59AF1-5CCF-472B-906A-62BF48E520A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.ParticleEngine.Core.Tests", "Mercury.ParticleEngine.Core.Tests\Mercury.ParticleEngine.Core.Tests.csproj", "{E9B007E5-A803-46A3-AEF5-05DE0B56A5AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.ParticleEngine.SharpDX.Direct3D9", "Mercury.ParticleEngine.SharpDX.Direct3D9\Mercury.ParticleEngine.SharpDX.Direct3D9.csproj", "{ACA557D3-43A9-424F-A35A-4FB9C93FE4E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.ParticleEngine.SharpDX.Direct3D9.Sample", "Mercury.ParticleEngine.SharpDX.Direct3D9.Sample\Mercury.ParticleEngine.SharpDX.Direct3D9.Sample.csproj", "{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7B59AF1-5CCF-472B-906A-62BF48E520A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7B59AF1-5CCF-472B-906A-62BF48E520A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7B59AF1-5CCF-472B-906A-62BF48E520A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7B59AF1-5CCF-472B-906A-62BF48E520A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9B007E5-A803-46A3-AEF5-05DE0B56A5AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9B007E5-A803-46A3-AEF5-05DE0B56A5AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9B007E5-A803-46A3-AEF5-05DE0B56A5AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9B007E5-A803-46A3-AEF5-05DE0B56A5AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACA557D3-43A9-424F-A35A-4FB9C93FE4E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACA557D3-43A9-424F-A35A-4FB9C93FE4E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACA557D3-43A9-424F-A35A-4FB9C93FE4E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACA557D3-43A9-424F-A35A-4FB9C93FE4E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

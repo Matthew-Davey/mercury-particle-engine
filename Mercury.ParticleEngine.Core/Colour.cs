@@ -1,6 +1,7 @@
 ﻿namespace Mercury.ParticleEngine
 {
     using System;
+    using System.Globalization;
     using System.Runtime.InteropServices;
 
     /// <summary>
@@ -88,7 +89,7 @@
         /// </returns>
         public override string ToString()
         {
-            return String.Format("{0}°,{1:P0},{2:P0}", H, S, L);
+            return String.Format(CultureInfo.InvariantCulture, "{0}°,{1:P0},{2:P0}", H, S, L);
         }
 
         /// <summary>

@@ -1,26 +1,24 @@
 ﻿namespace Mercury.ParticleEngine.Modifiers
 {
     using System.Collections.Generic;
-    using System.Linq;
     
     public class ModifierCollection : IEnumerable<Modifier>
     {
         public ModifierCollection()
         {
-            Slots = new List<ModifierSlot>();
+            Modifiers = new List<Modifier>();
         }
 
-        internal IList<ModifierSlot> Slots { get; private set; }
+        internal IList<Modifier> Modifiers { get; private set; }
 
         public IEnumerator<Modifier> GetEnumerator()
         {
-            return Slots.Select(slot => slot.Modifier)
-                        .GetEnumerator();
+            return Modifiers.GetEnumerator();
         }
 
-        public void Add(Modifier modifier, float frequency = 60f)
+        public void Add(Modifier modifier)
         {
-            Slots.Add(new ModifierSlot(modifier, frequency));
+            Modifiers.Add(modifier);
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
