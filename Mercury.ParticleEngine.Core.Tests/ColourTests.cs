@@ -102,9 +102,9 @@
         {
             [Theory]
             [Trait("Type", "Colour")]
-            [InlineData(0f, 0f, 0f, "0°,0%,0%")]
-            [InlineData(360f, 1f, 1f, "360°,100%,100%")]
-            [InlineData(180f, 0.5f, 0.5f, "180°,50%,50%")]
+            [InlineData(0f, 0f, 0f, "0°,0 %,0 %")]
+            [InlineData(360f, 1f, 1f, "360°,100 %,100 %")]
+            [InlineData(180f, 0.5f, 0.5f, "180°,50 %,50 %")]
             public void ReturnsCorrectValue(float h, float s, float l, String expected) {
                 var colour = new Colour(h, s, l);
 
