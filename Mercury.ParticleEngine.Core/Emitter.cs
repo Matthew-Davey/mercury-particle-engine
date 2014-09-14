@@ -12,6 +12,7 @@
             Modifiers = new ModifierCollection();
             ModifierExecutionStrategy = ModifierExecutionStrategy.Parallel;
             Parameters = new ReleaseParameters();
+            ReclaimFrequency = 60f;
         }
 
         private readonly float _term;
@@ -29,8 +30,7 @@
         public ReleaseParameters Parameters { get; set; }
         public BlendMode BlendMode { get; set; }
 
-        public float ReclaimInterval { get; set; }
-
+        public float ReclaimFrequency { get; set; }
         private float _secondsSinceLastReclaim;
 
         private void ReclaimExpiredParticles() {
@@ -57,9 +57,9 @@
             if (Buffer.Count == 0)
                 return;
 
-            if (_secondsSinceLastReclaim > ReclaimInterval) {
+            if (_secondsSinceLastReclaim > (1f / ReclaimFrequency)) {
                 ReclaimExpiredParticles();
-                _secondsSinceLastReclaim = 0;
+                _secondsSinceLastReclaim -= (1f / ReclaimFrequency);
             }
 
             if (Buffer.Count > 0) {

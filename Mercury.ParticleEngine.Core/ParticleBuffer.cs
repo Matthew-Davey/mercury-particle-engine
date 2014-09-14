@@ -10,9 +10,9 @@
 
         public ParticleBuffer(int size) {
             Size = size;
-            NativePointer = Marshal.AllocHGlobal(Particle.SizeInBytes * Size);
+            NativePointer = Marshal.AllocHGlobal(SizeInBytes);
 
-            GC.AddMemoryPressure(Particle.SizeInBytes * size);
+            GC.AddMemoryPressure(SizeInBytes);
         }
 
         public int Available {
@@ -25,6 +25,10 @@
 
         public int SizeInBytes {
             get { return Particle.SizeInBytes * Size; }
+        }
+
+        public int ActiveSizeInBytes {
+            get { return Particle.SizeInBytes * _tail; }
         }
 
         public unsafe int Release(int releaseQuantity, out Particle* first) {
@@ -42,11 +46,11 @@
         public void Reclaim(int number) {
             _tail -= number;
 
-            memcpy(NativePointer, IntPtr.Add(NativePointer, number * Particle.SizeInBytes), _tail * Particle.SizeInBytes);
+            memcpy(NativePointer, IntPtr.Add(NativePointer, number * Particle.SizeInBytes), ActiveSizeInBytes);
         }
 
         public void CopyTo(IntPtr destination) {
-            memcpy(destination, NativePointer, _tail * Particle.SizeInBytes);
+            memcpy(destination, NativePointer, ActiveSizeInBytes);
         }
 
         [DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]

@@ -4,7 +4,7 @@
     using System.Runtime.InteropServices;
 
     /// <summary>
-    /// An immutable data structure representing a 24bit colour composed of separate red, green and blue channels.
+    /// An immutable data structure representing a 24bit colour composed of separate hue, saturation and lightness channels.
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
