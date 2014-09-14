@@ -66,20 +66,15 @@
                 emitter.Buffer.CopyTo(dataStream.DataPointer);
             }
 
-            _device.SetRenderState(RenderState.PointSpriteEnable, true);
-            _device.SetRenderState(RenderState.AlphaBlendEnable, true);
-
             SetupBlend(emitter.BlendMode);
 
-            _device.SetRenderState(RenderState.ZWriteEnable, false);
-            
             _effect.Technique = technique;
             _effect.Begin(FX.DoNotSaveState);
             _effect.BeginPass(0);
 
             _device.SetStreamSource(0, _vertexBuffer, 0, Particle.SizeInBytes);
             _device.VertexDeclaration = _vertexDeclaration;
-            _device.DrawPrimitives(PrimitiveType.PointList, 0, emitter.Buffer.Count);
+            _device.DrawPrimitives(PrimitiveType.PointList, 0, emitter.ActiveParticles);
 
             _effect.EndPass();
             _effect.End();

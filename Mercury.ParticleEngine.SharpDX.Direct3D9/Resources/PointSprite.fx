@@ -58,6 +58,15 @@ technique PointSprite_2_0
 {
     pass P0
     {
+		CullMode = NONE;
+		PointSpriteEnable = TRUE;
+		PointScaleEnable = FALSE;
+		PointSize_Min = 1.0f;
+		PointSize_Max = 1024.0f;
+
+		AlphaBlendEnable = TRUE;
+		ZWriteEnable = FALSE;
+
         vertexShader = compile vs_3_0 vertex_main();
         pixelShader = compile ps_3_0 pixel_main();
     }
