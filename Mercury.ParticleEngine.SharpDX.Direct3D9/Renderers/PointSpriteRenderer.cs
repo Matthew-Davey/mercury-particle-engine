@@ -10,7 +10,6 @@
         private readonly int _size;
         private readonly IReadOnlyDictionary<String, Texture> _textureLookup;
         private readonly VertexBuffer _vertexBuffer;
-        private readonly DataStream _vertexBufferMemory;
         private readonly VertexDeclaration _vertexDeclaration;
         private readonly Effect _effect;
 
@@ -36,7 +35,6 @@
             _size = size;
             _textureLookup = textureLookup;
             _vertexBuffer = new VertexBuffer(_device, _size * Particle.SizeInBytes, Usage.Dynamic | Usage.Points | Usage.WriteOnly, VertexFormat.None, Pool.Default);
-            _vertexBufferMemory = _vertexBuffer.Lock(0, size * Particle.SizeInBytes, LockFlags.None);
 
             var vertexElements = new[] {
                 new VertexElement(0, (short)Marshal.OffsetOf(typeof(Particle), "Age"),      DeclarationType.Float1, DeclarationMethod.Default, DeclarationUsage.Color, 1),
@@ -59,10 +57,14 @@
             if (emitter.ActiveParticles > _size)
                 throw new Exception("Cannot render this emitter, vertex buffer not big enough");
 
+            var technique = _effect.GetTechnique(0);
+
             _effect.SetValue("WVPMatrix", worldViewProjection);
             _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), _textureLookup[emitter.TextureKey]);
 
-            emitter.Buffer.CopyTo(_vertexBufferMemory.DataPointer);
+            using (var dataStream = _vertexBuffer.Lock(0, emitter.ActiveParticles * Particle.SizeInBytes, LockFlags.Discard)) {
+                emitter.Buffer.CopyTo(dataStream.DataPointer);
+            }
 
             _device.SetRenderState(RenderState.PointSpriteEnable, true);
             _device.SetRenderState(RenderState.AlphaBlendEnable, true);
@@ -70,8 +72,8 @@
             SetupBlend(emitter.BlendMode);
 
             _device.SetRenderState(RenderState.ZWriteEnable, false);
-
-            _effect.Technique = _effect.GetTechnique(0);
+            
+            _effect.Technique = technique;
             _effect.Begin(FX.DoNotSaveState);
             _effect.BeginPass(0);
 
@@ -119,7 +121,6 @@
 
         protected void Dispose(bool disposing) {
             if (disposing) {
-                _vertexBufferMemory.Dispose();
                 _vertexBuffer.Dispose();
                 _effect.Dispose();
             }
