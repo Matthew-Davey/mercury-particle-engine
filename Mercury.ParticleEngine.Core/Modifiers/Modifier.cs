@@ -25,12 +25,13 @@
 
         internal unsafe void InternalUpdate(float elapsedSeconds, Particle* buffer, int count) {
             var particlesRemaining = count - _particlesUpdatedThisCycle;
+            var particlesToUpdate = Math.Min(particlesRemaining, (int)Math.Ceiling((elapsedSeconds / _cycleTime) * count));
 
-            var particlesToUpdate = (int)Math.Ceiling((elapsedSeconds / _cycleTime) * count);
+            if (particlesToUpdate > 0) {
+                Update(_cycleTime, buffer + _particlesUpdatedThisCycle, particlesToUpdate);
 
-            Update(elapsedSeconds, buffer + _particlesUpdatedThisCycle, Math.Min(particlesRemaining, particlesToUpdate));
-
-            _particlesUpdatedThisCycle += particlesToUpdate;
+                _particlesUpdatedThisCycle += particlesToUpdate;
+            }
 
             if (_particlesUpdatedThisCycle >= count)
                 _particlesUpdatedThisCycle = 0;
