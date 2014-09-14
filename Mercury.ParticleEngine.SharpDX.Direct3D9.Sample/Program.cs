@@ -49,6 +49,7 @@
                 TextureKey = "Cloud",
                 Modifiers = new ModifierCollection {
                     new DragModifier {
+                        Frequency = 10f,
                         DragCoefficient = 0.47f,
                         Density = 0.125f
                     },
@@ -58,9 +59,11 @@
                         FinalScale = 256f
                     },
                     new RotationModifier {
+                        Frequency = 60f,
                         RotationRate = 1f
                     },
                     new OpacityInterpolator2 {
+                        Frequency = 25f,
                         InitialOpacity = 0.3f,
                         FinalOpacity = 0.0f
                     }
