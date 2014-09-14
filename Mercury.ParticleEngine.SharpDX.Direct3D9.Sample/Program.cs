@@ -14,10 +14,10 @@
         [STAThread]
         static void Main() {
             var worldSize = new Size2(1024, 768);
-            var renderSize = new Size2(1920, 1080);
-            const bool windowed = false;
+            var renderSize = new Size2(1024, 768);
+            const bool windowed = true;
 
-            const int numParticles = 5000;
+            const int numParticles = 2000000;
 
             var form = new RenderForm("Mercury Particle Engine - SharpDX.Direct3D9 Sample") {
                 Size = new System.Drawing.Size(renderSize.Width, renderSize.Height)
@@ -36,37 +36,48 @@
 
             var emitter = new Emitter(numParticles, TimeSpan.FromSeconds(3), Profile.Point()) {
                 Parameters = new ReleaseParameters {
-                    Colour = new Colour(240f, 1f, 0.6f),
-                    Opacity = 0.6f,
-                    Quantity = 10,
+                    Colour = new Colour(0f, 0f, 0.6f),
+                    Opacity = 1f,
+                    Quantity = 5,
                     Speed = new RangeF(0f, 100f),
-                    Scale = 64f,
-                    Rotation = 0f,
+                    Scale = 32f,
+                    Rotation = new RangeF((float)-Math.PI, (float)Math.PI),
                     Mass = new RangeF(8f, 12f)
                 },
-                BlendMode = BlendMode.Add,
-                TextureKey = "Particle",
+                ReclaimFrequency = 5f,
+                BlendMode = BlendMode.Alpha,
+                TextureKey = "Cloud",
                 Modifiers = new ModifierCollection {
                     new DragModifier {
-                        Frequency       = 60f,
-                        DragCoefficient = .47f,
-                        Density         = .15f
+                        DragCoefficient = 0.47f,
+                        Density = 0.125f
                     },
-                    new ColourInterpolator2 {
-                        Frequency = 10f,
-                        InitialColour = new Colour(240f, 1f, 0.6f),
-                        FinalColour = new Colour(50f, 1f, 0.6f)
+                    new ScaleInterpolator2 {
+                        Frequency = 60f,
+                        InitialScale = 32f,
+                        FinalScale = 256f
+                    },
+                    new RotationModifier {
+                        RotationRate = 1f
+                    },
+                    new OpacityInterpolator2 {
+                        InitialOpacity = 0.3f,
+                        FinalOpacity = 0.0f
                     }
-                }
+                },
+                ModifierExecutionStrategy = ModifierExecutionStrategy.Serial
             };
 
             var textureLookup = new Dictionary<String, Texture> {
                 { "Particle", Texture.FromFile(device, "Particle.dds") },
-                { "Pixel", Texture.FromFile(device, "Pixel.dds") }
+                { "Pixel",    Texture.FromFile(device, "Pixel.dds") },
+                { "Flame",    Texture.FromFile(device, "Flame.png") },
+                { "Splash",   Texture.FromFile(device, "Splash.png") },
+                { "Cloud",    Texture.FromFile(device, "Cloud001.png") }
             };
 
             var renderer = new PointSpriteRenderer(device, numParticles, textureLookup) {
-                EnableFastFade = true
+                //EnableFastFade = true
             };
 
             var fontDescription = new FontDescription {
