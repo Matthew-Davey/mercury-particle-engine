@@ -1,5 +1,6 @@
 ﻿namespace Mercury.ParticleEngine {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using SharpDX;
     using SharpDX.Direct3D9;
@@ -44,6 +45,7 @@
                     Mass = new RangeF(8f, 12f)
                 },
                 BlendMode = BlendMode.Add,
+                TextureKey = "Particle",
                 Modifiers = new ModifierCollection {
                     new DragModifier {
                         Frequency       = 60f,
@@ -58,11 +60,14 @@
                 }
             };
 
-            var renderer = new PointSpriteRenderer(device, numParticles) {
-                EnableFastFade = true
+            var textureLookup = new Dictionary<String, Texture> {
+                { "Particle", Texture.FromFile(device, "Particle.dds") },
+                { "Pixel", Texture.FromFile(device, "Pixel.dds") }
             };
 
-			var texture = Texture.FromFile(device, "Particle.dds");
+            var renderer = new PointSpriteRenderer(device, numParticles, textureLookup) {
+                EnableFastFade = true
+            };
 
             var fontDescription = new FontDescription {
                 Height         = 16,
@@ -104,7 +109,7 @@
                     device.BeginScene();
 
                     renderTimer.Restart();
-                    renderer.Render(emitter, wvp, texture);
+                    renderer.Render(emitter, wvp);
                     renderTimer.Stop();
                     var renderTime = (float)renderTimer.Elapsed.TotalSeconds;
 

@@ -29,6 +29,7 @@
         public Profile Profile { get; private set; }
         public ReleaseParameters Parameters { get; set; }
         public BlendMode BlendMode { get; set; }
+        public String TextureKey { get; set; }
 
         public float ReclaimFrequency { get; set; }
         private float _secondsSinceLastReclaim;

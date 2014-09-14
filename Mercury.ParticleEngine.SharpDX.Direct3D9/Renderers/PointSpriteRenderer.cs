@@ -1,5 +1,6 @@
 ﻿namespace Mercury.ParticleEngine.Renderers {
     using System;
+    using System.Collections.Generic;
     using System.Runtime.InteropServices;
     using SharpDX;
     using SharpDX.Direct3D9;
@@ -7,6 +8,7 @@
     public class PointSpriteRenderer : IDisposable {
         private readonly Device _device;
         private readonly int _size;
+        private readonly IReadOnlyDictionary<String, Texture> _textureLookup;
         private readonly VertexBuffer _vertexBuffer;
         private readonly DataStream _vertexBufferMemory;
         private readonly VertexDeclaration _vertexDeclaration;
@@ -23,12 +25,16 @@
             }
         }
 
-        public PointSpriteRenderer(Device device, int size) {
+        public PointSpriteRenderer(Device device, int size, IReadOnlyDictionary<String, Texture> textureLookup) {
             if (device == null)
                 throw new ArgumentNullException("device");
 
+            if (textureLookup == null)
+                throw new ArgumentNullException("textureLookup");
+
             _device = device;
             _size = size;
+            _textureLookup = textureLookup;
             _vertexBuffer = new VertexBuffer(_device, _size * Particle.SizeInBytes, Usage.Dynamic | Usage.Points | Usage.WriteOnly, VertexFormat.None, Pool.Default);
             _vertexBufferMemory = _vertexBuffer.Lock(0, size * Particle.SizeInBytes, LockFlags.None);
 
@@ -46,7 +52,7 @@
             _vertexDeclaration = new VertexDeclaration(device, vertexElements);
         }
 
-        public void Render(Emitter emitter, Matrix worldViewProjection, Texture texture) {
+        public void Render(Emitter emitter, Matrix worldViewProjection) {
             if (emitter.ActiveParticles == 0)
                 return;
 
@@ -54,7 +60,7 @@
                 throw new Exception("Cannot render this emitter, vertex buffer not big enough");
 
             _effect.SetValue("WVPMatrix", worldViewProjection);
-            _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), texture);
+            _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), _textureLookup[emitter.TextureKey]);
 
             emitter.Buffer.CopyTo(_vertexBufferMemory.DataPointer);
 
