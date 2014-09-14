@@ -54,6 +54,9 @@
     <Compile Include="Modifiers\HueInterpolator2.cs" />
     <Compile Include="Modifiers\LinearGravityModifier.cs" />
     <Compile Include="Modifiers\OpacityFastFadeModifier.cs" />
+    <Compile Include="Modifiers\OpacityInterpolator2.cs" />
+    <Compile Include="Modifiers\RotationModifier.cs" />
+    <Compile Include="Modifiers\ScaleInterpolator2.cs" />
     <Compile Include="Modifiers\VelocityHueModifier.cs" />
     <Compile Include="Modifiers\VortexModifier.cs" />
     <Compile Include="Modifiers\VelocityColourModifier.cs" />
