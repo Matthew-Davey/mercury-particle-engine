@@ -63,7 +63,16 @@
             _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), _textureLookup[emitter.TextureKey]);
 
             using (var dataStream = _vertexBuffer.Lock(0, emitter.ActiveParticles * Particle.SizeInBytes, LockFlags.Discard)) {
-                emitter.Buffer.CopyTo(dataStream.DataPointer);
+                switch (emitter.RenderingOrder) {
+                    case RenderingOrder.FrontToBack: {
+                            emitter.Buffer.CopyTo(dataStream.DataPointer);
+                            break;
+                        }
+                    case RenderingOrder.BackToFront: {
+                            emitter.Buffer.CopyToReverse(dataStream.DataPointer);
+                            break;
+                        }
+                }
             }
 
             SetupBlend(emitter.BlendMode);

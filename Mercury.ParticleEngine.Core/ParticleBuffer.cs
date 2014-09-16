@@ -53,6 +53,14 @@
             memcpy(destination, NativePointer, ActiveSizeInBytes);
         }
 
+        public void CopyToReverse(IntPtr destination) {
+            int offset = 0;
+            for (var i = ActiveSizeInBytes - Particle.SizeInBytes; i > 0; i -= Particle.SizeInBytes) {
+                memcpy(IntPtr.Add(destination, offset), IntPtr.Add(NativePointer, i), Particle.SizeInBytes);
+                offset += Particle.SizeInBytes;
+            }
+        }
+
         [DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
         public static extern void memcpy(IntPtr dest, IntPtr src, int count);
 

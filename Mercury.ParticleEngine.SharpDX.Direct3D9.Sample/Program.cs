@@ -17,7 +17,7 @@
             var renderSize = new Size2(1024, 768);
             const bool windowed = true;
 
-            const int numParticles = 2000000;
+            const int numParticles = 2000;
 
             var form = new RenderForm("Mercury Particle Engine - SharpDX.Direct3D9 Sample") {
                 Size = new System.Drawing.Size(renderSize.Width, renderSize.Height)
@@ -46,6 +46,7 @@
                 },
                 ReclaimFrequency = 5f,
                 BlendMode = BlendMode.Alpha,
+                RenderingOrder = RenderingOrder.BackToFront,
                 TextureKey = "Cloud",
                 Modifiers = new ModifierCollection {
                     new DragModifier {
@@ -59,7 +60,7 @@
                         FinalScale = 256f
                     },
                     new RotationModifier {
-                        Frequency = 60f,
+                        Frequency = 15f,
                         RotationRate = 1f
                     },
                     new OpacityInterpolator2 {

@@ -74,6 +74,7 @@
     <Compile Include="Range.cs" />
     <Compile Include="RangeF.cs" />
     <Compile Include="ReleaseParameters.cs" />
+    <Compile Include="RenderingOrder.cs" />
     <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
