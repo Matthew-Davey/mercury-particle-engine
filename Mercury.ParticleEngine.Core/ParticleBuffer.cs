@@ -55,7 +55,7 @@
 
         public void CopyToReverse(IntPtr destination) {
             int offset = 0;
-            for (var i = ActiveSizeInBytes - Particle.SizeInBytes; i > 0; i -= Particle.SizeInBytes) {
+            for (var i = ActiveSizeInBytes - Particle.SizeInBytes; i >= 0; i -= Particle.SizeInBytes) {
                 memcpy(IntPtr.Add(destination, offset), IntPtr.Add(NativePointer, i), Particle.SizeInBytes);
                 offset += Particle.SizeInBytes;
             }
