@@ -10,7 +10,7 @@
             Buffer = new ParticleBuffer(capacity);
             Profile = profile;
             Modifiers = new ModifierCollection();
-            ModifierExecutionStrategy = ModifierExecutionStrategy.Parallel;
+            ModifierExecutionStrategy = ModifierExecutionStrategy.Serial;
             Parameters = new ReleaseParameters();
             ReclaimFrequency = 60f;
         }
