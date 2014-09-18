@@ -33,5 +33,12 @@
                 Radiate = radiate
             };
         }
+
+        static public Profile Spray(Axis direction, float spread) {
+            return new SprayProfile {
+                Direction = direction,
+                Spread = spread
+            };
+        }
     }
 }

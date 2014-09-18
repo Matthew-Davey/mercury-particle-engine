@@ -86,6 +86,10 @@
             return new Vector(this, magnitude);
         }
 
+        public U Map<U>(Func<float, float, U> map) {
+            return map(_x, _y);
+        }
+
         /// <summary>
         /// Returns the hash code for this instance.
         /// </summary>

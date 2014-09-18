@@ -68,6 +68,7 @@
     <Compile Include="Particle.cs" />
     <Compile Include="Profiles\BoxFillProfile.cs" />
     <Compile Include="Profiles\RingProfile.cs" />
+    <Compile Include="Profiles\SprayProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParticleBuffer.cs" />
     <Compile Include="FastRand.cs" />
