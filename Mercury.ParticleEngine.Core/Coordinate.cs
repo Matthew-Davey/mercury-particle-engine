@@ -8,8 +8,11 @@
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct Coordinate : IEquatable<Coordinate> {
+        internal readonly float _x;
+        internal readonly float _y;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="Coordinate"/> struct.
+        /// Initializes a new instance of the <see cref="Coordinate"/> structure.
         /// </summary>
         /// <param name="x">The value of the point on the first number line (the abscissa).</param>
         /// <param name="y">The value of the point on the second number line (the ordinate).</param>
@@ -17,9 +20,6 @@
             _x = x;
             _y = y;
         }
-
-        internal readonly float _x;
-        internal readonly float _y;
 
         /// <summary>
         /// Gets the cartesian origin O.
@@ -54,6 +54,58 @@
             var y = _y + vector._y;
 
             return new Coordinate(x, y);
+        }
+
+        /// <summary>
+        /// Copies the X and Y components of the coordinate to the specified memory location.
+        /// </summary>
+        /// <param name="destination">The memory location to copy the coordinate to.</param>
+        public unsafe void CopyTo(float* destination) {
+            destination[0] = _x;
+            destination[1] = _y;
+        }
+
+        /// <summary>
+        /// Destructures the coordinate, exposing the individual X and Y components.
+        /// </summary>
+        public void Destructure(out float x, out float y) {
+            x = _x;
+            y = _y;
+        }
+
+        /// <summary>
+        /// Exposes the individual X and Y components of the coordinate to the specified matching function.
+        /// </summary>
+        /// <param name="callback">The function which matches the individual X and Y components.</param>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// Thrown if the value passed to the <paramref name="callback"/> parameter is <c>null</c>.
+        /// </exception>
+        public void Match(Action<float, float> callback) {
+            if (callback == null)
+                throw new ArgumentNullException("callback");
+
+            callback(_x, _y);
+        }
+
+        /// <summary>
+        /// Exposes the individual X and Y components of the coordinate to the specified mapping function and returns the
+        /// result;
+        /// </summary>
+        /// <typeparam name="T">The type being mapped to.</typeparam>
+        /// <param name="map">
+        /// A function which maps the X and Y values to an instance of <typeparamref name="T"/>.
+        /// </param>
+        /// <returns>
+        /// The result of the <paramref name="map"/> function when passed the individual X and Y components.
+        /// </returns>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// Thrown if the value passed to the <paramref name="map"/> parameter is <c>null</c>.
+        /// </exception>
+        public T Map<T>(Func<float, float, T> map) {
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            return map(_x, _y);
         }
 
         /// <summary>
