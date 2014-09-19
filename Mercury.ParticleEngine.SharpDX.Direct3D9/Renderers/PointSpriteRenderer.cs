@@ -12,6 +12,7 @@
         private readonly VertexBuffer _vertexBuffer;
         private readonly VertexDeclaration _vertexDeclaration;
         private readonly Effect _effect;
+        private readonly EffectHandle _technique;
         private readonly EffectHandle _matrixParameter;
         private readonly EffectHandle _textureParameter;
 
@@ -48,6 +49,7 @@
             };
 
             _effect = Effect.FromString(device, Resources.PointSpriteShader, ShaderFlags.PartialPrecision);
+            _technique = _effect.GetTechnique(0);
             _matrixParameter = _effect.GetParameter(null, "WVPMatrix");
             _textureParameter = _effect.GetParameter(null, "SpriteTexture");
             _vertexDeclaration = new VertexDeclaration(device, vertexElements);
@@ -59,8 +61,6 @@
 
             if (emitter.ActiveParticles > _size)
                 throw new Exception("Cannot render this emitter, vertex buffer not big enough");
-
-            var technique = _effect.GetTechnique(0);
 
             _effect.SetValue(_matrixParameter, worldViewProjection);
             _effect.SetTexture(_textureParameter, _textureLookup[emitter.TextureKey]);
@@ -78,9 +78,11 @@
                 }
             }
 
+            _vertexBuffer.Unlock();
+
             SetupBlend(emitter.BlendMode);
 
-            _effect.Technique = technique;
+            _effect.Technique = _technique;
             _effect.Begin(FX.DoNotSaveState);
             _effect.BeginPass(0);
 
