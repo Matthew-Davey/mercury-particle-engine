@@ -12,6 +12,8 @@
         private readonly VertexBuffer _vertexBuffer;
         private readonly VertexDeclaration _vertexDeclaration;
         private readonly Effect _effect;
+        private readonly EffectHandle _matrixParameter;
+        private readonly EffectHandle _textureParameter;
 
         private bool _enableFastFade;
         public bool EnableFastFade {
@@ -46,7 +48,8 @@
             };
 
             _effect = Effect.FromString(device, Resources.PointSpriteShader, ShaderFlags.PartialPrecision);
-
+            _matrixParameter = _effect.GetParameter(null, "WVPMatrix");
+            _textureParameter = _effect.GetParameter(null, "SpriteTexture");
             _vertexDeclaration = new VertexDeclaration(device, vertexElements);
         }
 
@@ -59,8 +62,8 @@
 
             var technique = _effect.GetTechnique(0);
 
-            _effect.SetValue("WVPMatrix", worldViewProjection);
-            _effect.SetTexture(_effect.GetParameter(null, "SpriteTexture"), _textureLookup[emitter.TextureKey]);
+            _effect.SetValue(_matrixParameter, worldViewProjection);
+            _effect.SetTexture(_textureParameter, _textureLookup[emitter.TextureKey]);
 
             using (var dataStream = _vertexBuffer.Lock(0, emitter.ActiveParticles * Particle.SizeInBytes, LockFlags.Discard)) {
                 switch (emitter.RenderingOrder) {
@@ -92,28 +95,28 @@
         private void SetupBlend(BlendMode blendMode) {
             switch (blendMode) {
                 case BlendMode.Alpha:
-                    _device.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
-                    _device.SetRenderState(RenderState.BlendOperationAlpha, BlendOperation.Add);
-                    _device.SetRenderState(RenderState.SourceBlendAlpha, Blend.SourceAlpha);
+                    _device.SetRenderState(RenderState.BlendOperation,        BlendOperation.Add);
+                    _device.SetRenderState(RenderState.BlendOperationAlpha,   BlendOperation.Add);
+                    _device.SetRenderState(RenderState.SourceBlendAlpha,      Blend.SourceAlpha);
                     _device.SetRenderState(RenderState.DestinationBlendAlpha, Blend.InverseSourceAlpha);
-                    _device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
-                    _device.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
+                    _device.SetRenderState(RenderState.SourceBlend,           Blend.SourceAlpha);
+                    _device.SetRenderState(RenderState.DestinationBlend,      Blend.InverseSourceAlpha);
                     return;
                 case BlendMode.Add:
-                    _device.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
-                    _device.SetRenderState(RenderState.BlendOperationAlpha, BlendOperation.Add);
-                    _device.SetRenderState(RenderState.SourceBlendAlpha, Blend.SourceAlpha);
+                    _device.SetRenderState(RenderState.BlendOperation,        BlendOperation.Add);
+                    _device.SetRenderState(RenderState.BlendOperationAlpha,   BlendOperation.Add);
+                    _device.SetRenderState(RenderState.SourceBlendAlpha,      Blend.SourceAlpha);
                     _device.SetRenderState(RenderState.DestinationBlendAlpha, Blend.InverseSourceAlpha);
-                    _device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
-                    _device.SetRenderState(RenderState.DestinationBlend, Blend.One);
+                    _device.SetRenderState(RenderState.SourceBlend,           Blend.SourceAlpha);
+                    _device.SetRenderState(RenderState.DestinationBlend,      Blend.One);
                     return;
                 case BlendMode.Subtract:
-                    _device.SetRenderState(RenderState.BlendOperation, BlendOperation.ReverseSubtract);
-                    _device.SetRenderState(RenderState.BlendOperationAlpha, BlendOperation.Add);
-                    _device.SetRenderState(RenderState.SourceBlendAlpha, Blend.SourceAlpha);
+                    _device.SetRenderState(RenderState.BlendOperation,        BlendOperation.ReverseSubtract);
+                    _device.SetRenderState(RenderState.BlendOperationAlpha,   BlendOperation.Add);
+                    _device.SetRenderState(RenderState.SourceBlendAlpha,      Blend.SourceAlpha);
                     _device.SetRenderState(RenderState.DestinationBlendAlpha, Blend.InverseSourceAlpha);
-                    _device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
-                    _device.SetRenderState(RenderState.DestinationBlend, Blend.One);
+                    _device.SetRenderState(RenderState.SourceBlend,           Blend.SourceAlpha);
+                    _device.SetRenderState(RenderState.DestinationBlend,      Blend.One);
                     return;
             }
         }
@@ -126,6 +129,9 @@
         protected void Dispose(bool disposing) {
             if (disposing) {
                 _vertexBuffer.Dispose();
+                _vertexDeclaration.Dispose();
+                _matrixParameter.Dispose();
+                _textureParameter.Dispose();
                 _effect.Dispose();
             }
         }
