@@ -163,5 +163,9 @@
         static public bool operator !=(Colour x, Colour y) {
             return !x.Equals(y);
         }
+
+        static public Colour operator -(Colour a, Colour b) {
+            return new Colour(a._h - b._h, a._s - b._s, a._l - b._l);
+        }
     }
 }
