@@ -16,7 +16,7 @@ namespace Mercury.ParticleEngine.Modifiers {
 
                 var m = (10000f * Mass * particle->Mass) / distance2;
 
-                m = (float)Math.Max(Math.Min(m, MaxSpeed), -MaxSpeed) * elapsedSeconds;
+                m = Math.Max(Math.Min(m, MaxSpeed), -MaxSpeed) * elapsedSeconds;
 
                 distx = (distx / distance) * m;
                 disty = (disty / distance) * m;
