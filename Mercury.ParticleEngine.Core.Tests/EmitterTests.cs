@@ -27,10 +27,11 @@
                 var subject = new Emitter(100, TimeSpan.FromSeconds(1), Profile.Point()) {
                     Parameters = new ReleaseParameters {
                         Quantity = 1
+                    },
+                    Modifiers = new Modifier[] {
+                        new AssertionModifier(particle => particle.Age <= 1f)
                     }
                 };
-
-                subject.Modifiers.Add(new AssertionModifier(particle => particle.Age <= 1f));
 
                 subject.Trigger(new Coordinate(0f, 0f));
                 subject.Update(0.5f);

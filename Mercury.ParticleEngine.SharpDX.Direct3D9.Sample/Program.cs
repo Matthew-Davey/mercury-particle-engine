@@ -46,7 +46,7 @@
                 BlendMode = BlendMode.Alpha,
                 RenderingOrder = RenderingOrder.BackToFront,
                 TextureKey = "Cloud",
-                Modifiers = new ModifierCollection {
+                Modifiers = new Modifier[] {
                     new DragModifier {
                         Frequency       = 10f,
                         DragCoefficient = 0.47f,
@@ -82,7 +82,7 @@
                 BlendMode = BlendMode.Add,
                 RenderingOrder = RenderingOrder.FrontToBack,
                 TextureKey = "Particle",
-                Modifiers = new ModifierCollection {
+                Modifiers = new Modifier[] {
                     new LinearGravityModifier(Axis.Down, 30f) {
                         Frequency = 15f
                     },
@@ -96,7 +96,7 @@
                 Parameters = new ReleaseParameters {
                     Colour   = new ColourRange(new Colour(210f, 0.5f, 0.6f), new Colour(230f, 0.7f, 0.8f)),
                     Opacity  = 1f,
-                    Quantity = 5,
+                    Quantity = 1,
                     Speed    = new RangeF(300f, 700f),
                     Scale    = 64f,
                     Mass     = new RangeF(4f, 12f),
@@ -105,7 +105,7 @@
                 BlendMode = BlendMode.Alpha,
                 RenderingOrder = RenderingOrder.FrontToBack,
                 TextureKey = "Ring",
-                Modifiers = new ModifierCollection {
+                Modifiers = new Modifier[] {
                     new LinearGravityModifier(Axis.Down, 100f) {
                         Frequency              = 20f
                     },
