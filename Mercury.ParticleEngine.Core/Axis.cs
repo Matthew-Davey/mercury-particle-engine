@@ -8,8 +8,11 @@
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct Axis : IEquatable<Axis>, IFormattable {
+        internal readonly float _x;
+        internal readonly float _y;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="Axis"/> struct.
+        /// Initializes a new instance of the <see cref="Axis"/> structure.
         /// </summary>
         /// <param name="x">The X component of the unit vector representing the axis.</param>
         /// <param name="y">The Y component of the unit vector representing the axis.</param>
@@ -19,9 +22,6 @@
             _x = x / length;
             _y = y / length;
         }
-
-        internal readonly float _x;
-        internal readonly float _y;
 
         /// <summary>
         /// Gets a directed axis which points to the left.
@@ -52,6 +52,68 @@
         }
 
         /// <summary>
+        /// Multiplies the fixed axis by a magnitude value resulting in a directed vector.
+        /// </summary>
+        /// <param name="magnitude">The magnitude of the vector.</param>
+        /// <returns>A directed vector.</returns>
+        public Vector Multiply(float magnitude)
+        {
+            return new Vector(this, magnitude);
+        }
+
+        /// <summary>
+        /// Copies the X and Y components of the axis to the specified memory location.
+        /// </summary>
+        /// <param name="destination">The memory location to copy the axis to.</param>
+        public unsafe void CopyTo(float* destination) {
+            destination[0] = _x;
+            destination[1] = _y;
+        }
+
+        /// <summary>
+        /// Destructures the axis, exposing the individual X and Y components.
+        /// </summary>
+        public void Destructure(out float x, out float y) {
+            x = _x;
+            y = _y;
+        }
+
+        /// <summary>
+        /// Exposes the individual X and Y components of the axis to the specified matching function.
+        /// </summary>
+        /// <param name="callback">The function which matches the individual X and Y components.</param>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// Thrown if the value passed to the <paramref name="callback"/> parameter is <c>null</c>.
+        /// </exception>
+        public void Match(Action<float, float> callback) {
+            if (callback == null)
+                throw new ArgumentNullException("callback");
+
+            callback(_x, _y);
+        }
+
+        /// <summary>
+        /// Exposes the individual X and Y components of the axis to the specified mapping function and returns the
+        /// result;
+        /// </summary>
+        /// <typeparam name="T">The type being mapped to.</typeparam>
+        /// <param name="map">
+        /// A function which maps the X and Y values to an instance of <typeparamref name="T"/>.
+        /// </param>
+        /// <returns>
+        /// The result of the <paramref name="map"/> function when passed the individual X and Y components.
+        /// </returns>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// Thrown if the value passed to the <paramref name="map"/> parameter is <c>null</c>.
+        /// </exception>
+        public T Map<T>(Func<float, float, T> map) {
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            return map(_x, _y);
+        }
+
+        /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <returns>
@@ -75,19 +137,6 @@
                 return false;
             
             return obj is Axis && Equals((Axis)obj);
-        }
-
-        /// <summary>
-        /// Multiplies the fixed axis by a magnitude value resulting in a directed vector.
-        /// </summary>
-        /// <param name="magnitude">The magnitude of the vector.</param>
-        /// <returns>A directed vector.</returns>
-        public Vector Multiply(float magnitude) {
-            return new Vector(this, magnitude);
-        }
-
-        public U Map<U>(Func<float, float, U> map) {
-            return map(_x, _y);
         }
 
         /// <summary>
