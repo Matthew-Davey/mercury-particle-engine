@@ -12,28 +12,83 @@
         /// <summary>
         /// Gets the value of the hue channel.
         /// </summary>
-        public readonly float H;
+        internal readonly float _h;
 
         /// <summary>
         /// Gets the value of the saturation channel.
         /// </summary>
-        public readonly float S;
+        internal readonly float _s;
         
         /// <summary>
         /// Gets the value of the lightness channel.
         /// </summary>
-        public readonly float L;
+        internal readonly float _l;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Colour"/> struct.
+        /// Initializes a new instance of the <see cref="Colour"/> structure.
         /// </summary>
         /// <param name="h">The value of the hue channel.</param>
         /// <param name="s">The value of the saturation channel.</param>
         /// <param name="l">The value of the lightness channel.</param>
         public Colour(float h, float s, float l) {
-            H = h;
-            S = s;
-            L = l;
+            _h = h;
+            _s = s;
+            _l = l;
+        }
+
+        /// <summary>
+        /// Copies the individual channels of the colour to the specified memory location.
+        /// </summary>
+        /// <param name="destination">The memory location to copy the axis to.</param>
+        public unsafe void CopyTo(float* destination) {
+            destination[0] = _h;
+            destination[1] = _s;
+            destination[2] = _l;
+        }
+
+        /// <summary>
+        /// Destructures the colour, exposing the individual channels.
+        /// </summary>
+        public void Destructure(out float h, out float s, out float l) {
+            h = _h;
+            s = _s;
+            l = _l;
+        }
+
+        /// <summary>
+        /// Exposes the individual channels of the colour to the specified matching function.
+        /// </summary>
+        /// <param name="callback">The function which matches the individual channels of the colour.</param>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// Thrown if the value passed to the <paramref name="callback"/> parameter is <c>null</c>.
+        /// </exception>
+        public void Match(Action<float, float, float> callback) {
+            if (callback == null)
+                throw new ArgumentNullException("callback");
+
+            callback(_h, _s, _l);
+        }
+
+        /// <summary>
+        /// Exposes the individual channels of the colour to the specified mapping function and returns the
+        /// result;
+        /// </summary>
+        /// <typeparam name="T">The type being mapped to.</typeparam>
+        /// <param name="map">
+        /// A function which maps the colour channels to an instance of <typeparamref name="T"/>.
+        /// </param>
+        /// <returns>
+        /// The result of the <paramref name="map"/> function when passed the individual X and Y components.
+        /// </returns>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// Thrown if the value passed to the <paramref name="map"/> parameter is <c>null</c>.
+        /// </exception>
+        public T Map<T>(Func<float, float, float, T> map)
+        {
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            return map(_h, _s, _l);
         }
 
         /// <summary>
@@ -58,9 +113,9 @@
         ///     <c>true</c> if the specified <see cref="Colour"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         public bool Equals(Colour value) {
-            return H.Equals(value.H) &&
-                   S.Equals(value.S) &&
-                   L.Equals(value.L);
+            return _h.Equals(value._h) &&
+                   _s.Equals(value._s) &&
+                   _l.Equals(value._l);
         }
 
         /// <summary>
@@ -70,9 +125,9 @@
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
         public override int GetHashCode() {
-            return H.GetHashCode() ^
-                   S.GetHashCode() ^
-                   L.GetHashCode();
+            return _h.GetHashCode() ^
+                   _s.GetHashCode() ^
+                   _l.GetHashCode();
         }
 
         /// <summary>
@@ -82,7 +137,7 @@
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
         public override string ToString() {
-            return String.Format(CultureInfo.InvariantCulture, "{0}°,{1:P0},{2:P0}", H, S, L);
+            return String.Format(CultureInfo.InvariantCulture, "{0}°,{1:P0},{2:P0}", _h, _s, _l);
         }
 
         /// <summary>

@@ -103,9 +103,9 @@
         }
 
         static public unsafe void NextColour(Colour* colour, ColourRange range) {
-            *colour = new Colour(NextSingle(range.Min.H, range.Max.H),
-                                 NextSingle(range.Min.S, range.Max.S),
-                                 NextSingle(range.Min.L, range.Max.L));
+            *colour = new Colour(NextSingle(range.Min._h, range.Max._h),
+                                 NextSingle(range.Min._s, range.Max._s),
+                                 NextSingle(range.Min._l, range.Max._l));
         }
     }
 }

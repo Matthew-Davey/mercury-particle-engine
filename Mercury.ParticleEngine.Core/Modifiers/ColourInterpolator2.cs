@@ -14,14 +14,14 @@
         public Colour FinalColour;
 
         protected internal override unsafe void Update(float elapsedseconds, Particle* particle, int count) {
-            var delta = new Colour(FinalColour.H - InitialColour.H,
-                                   FinalColour.S - InitialColour.S,
-                                   FinalColour.L - InitialColour.L);
+            var delta = new Colour(FinalColour._h - InitialColour._h,
+                                   FinalColour._s - InitialColour._s,
+                                   FinalColour._l - InitialColour._l);
 
             while (count-- > 0) {
-                particle->Colour[0] = (InitialColour.H + (delta.H * particle->Age));
-                particle->Colour[1] = (InitialColour.S + (delta.S * particle->Age));
-                particle->Colour[2] = (InitialColour.L + (delta.L * particle->Age));
+                particle->Colour[0] = (InitialColour._h + (delta._h * particle->Age));
+                particle->Colour[1] = (InitialColour._s + (delta._s * particle->Age));
+                particle->Colour[2] = (InitialColour._l + (delta._l * particle->Age));
 
                 particle++;
             }

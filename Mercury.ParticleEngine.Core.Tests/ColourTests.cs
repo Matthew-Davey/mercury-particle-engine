@@ -11,9 +11,9 @@
             public void WhenGivenValues_ReturnsInitializedColour() {
                 var colour = new Colour(1f, 1f, 1f);
 
-                colour.H.Should<float>().Be(1f);
-                colour.S.Should<float>().Be(1f);
-                colour.L.Should<float>().Be(1f);
+                colour._h.Should<float>().Be(1f);
+                colour._s.Should<float>().Be(1f);
+                colour._l.Should<float>().Be(1f);
             }
         }
 
