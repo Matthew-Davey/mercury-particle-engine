@@ -65,16 +65,16 @@
             _effect.SetValue(_matrixParameter, worldViewProjection);
             _effect.SetTexture(_textureParameter, _textureLookup[emitter.TextureKey]);
 
-            using (var dataStream = _vertexBuffer.Lock(0, emitter.ActiveParticles * Particle.SizeInBytes, LockFlags.Discard)) {
-                switch (emitter.RenderingOrder) {
-                    case RenderingOrder.FrontToBack: {
-                            emitter.Buffer.CopyTo(dataStream.DataPointer);
-                            break;
-                        }
-                    case RenderingOrder.BackToFront: {
-                            emitter.Buffer.CopyToReverse(dataStream.DataPointer);
-                            break;
-                        }
+            var vertexDataPointer = _vertexBuffer.LockToPointer(0, emitter.Buffer.ActiveSizeInBytes, LockFlags.Discard);
+            
+            switch (emitter.RenderingOrder) {
+                case RenderingOrder.FrontToBack: {
+                    emitter.Buffer.CopyTo(vertexDataPointer);
+                    break;
+                }
+                case RenderingOrder.BackToFront: {
+                    emitter.Buffer.CopyToReverse(vertexDataPointer);
+                    break;
                 }
             }
 
