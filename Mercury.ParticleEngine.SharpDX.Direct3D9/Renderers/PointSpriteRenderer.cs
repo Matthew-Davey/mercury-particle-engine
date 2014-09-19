@@ -134,6 +134,7 @@
                 _vertexDeclaration.Dispose();
                 _matrixParameter.Dispose();
                 _textureParameter.Dispose();
+                _technique.Dispose();
                 _effect.Dispose();
             }
         }
