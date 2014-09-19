@@ -12,18 +12,4 @@
             return new ColourRange(value, value);
         }
     }
-
-    public struct Range<T> {
-        public Range(T min, T max) {
-            Min = min;
-            Max = max;
-        }
-
-        public readonly T Min;
-        public readonly T Max;
-
-        static public implicit operator Range<T>(T value) {
-            return new Range<T>(value, value);
-        }
-    }
 }
