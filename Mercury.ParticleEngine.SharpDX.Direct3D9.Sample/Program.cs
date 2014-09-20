@@ -32,92 +32,104 @@
             var proj = Matrix.OrthoOffCenterLH(worldSize.Width * -0.5f, worldSize.Width * 0.5f, worldSize.Height * 0.5f, worldSize.Height * -0.5f, 0f, 1f);
             var wvp = Matrix.Identity * view * proj;
 
-            var smokeEmitter = new Emitter(2000, TimeSpan.FromSeconds(3), Profile.Point()) {
-                Parameters = new ReleaseParameters {
-                    Colour   = new Colour(0f, 0f, 0.6f),
-                    Opacity  = 1f,
-                    Quantity = 5,
-                    Speed    = new RangeF(0f, 100f),
-                    Scale    = 32f,
-                    Rotation = new RangeF((float)-Math.PI, (float)Math.PI),
-                    Mass     = new RangeF(8f, 12f)
-                },
-                ReclaimFrequency = 5f,
-                BlendMode = BlendMode.Alpha,
-                RenderingOrder = RenderingOrder.BackToFront,
-                TextureKey = "Cloud",
-                Modifiers = new Modifier[] {
-                    new DragModifier {
-                        Frequency       = 10f,
-                        DragCoefficient = 0.47f,
-                        Density         = 0.125f
-                    },
-                    new ScaleInterpolator2 {
-                        Frequency       = 60f,
-                        InitialScale    = 32f,
-                        FinalScale      = 256f
-                    },
-                    new RotationModifier {
-                        Frequency       = 15f,
-                        RotationRate    = 1f
-                    },
-                    new OpacityInterpolator2 {
-                        Frequency       = 25f,
-                        InitialOpacity  = 0.3f,
-                        FinalOpacity    = 0.0f
-                    }
-                },
-            };
-
-            var sparkEmitter = new Emitter(2000, TimeSpan.FromSeconds(2), Profile.Point()) {
-                Parameters = new ReleaseParameters {
-                    Colour   = new Colour(50f, 0.8f, 0.5f),
-                    Opacity  = 1f,
-                    Quantity = 10,
-                    Speed    = new RangeF(0f, 100f),
-                    Scale    = 64f,
-                    Mass     = new RangeF(8f, 12f)
-                },
-                ReclaimFrequency = 5f,
-                BlendMode = BlendMode.Add,
-                RenderingOrder = RenderingOrder.FrontToBack,
-                TextureKey = "Particle",
-                Modifiers = new Modifier[] {
-                    new LinearGravityModifier(Axis.Down, 30f) {
-                        Frequency = 15f
-                    },
-                    new OpacityFastFadeModifier() {
-                        Frequency = 10f
+            var smokeEffect = new ParticleEffect {
+                Emitters = new[] {
+                    new Emitter(2000, TimeSpan.FromSeconds(3), Profile.Point()) {
+                        Parameters = new ReleaseParameters {
+                            Colour   = new Colour(0f, 0f, 0.6f),
+                            Opacity  = 1f,
+                            Quantity = 5,
+                            Speed    = new RangeF(0f, 100f),
+                            Scale    = 32f,
+                            Rotation = new RangeF((float)-Math.PI, (float)Math.PI),
+                            Mass     = new RangeF(8f, 12f)
+                        },
+                        ReclaimFrequency = 5f,
+                        BlendMode = BlendMode.Alpha,
+                        RenderingOrder = RenderingOrder.BackToFront,
+                        TextureKey = "Cloud",
+                        Modifiers = new Modifier[] {
+                            new DragModifier {
+                                Frequency       = 10f,
+                                DragCoefficient = 0.47f,
+                                Density         = 0.125f
+                            },
+                            new ScaleInterpolator2 {
+                                Frequency       = 60f,
+                                InitialScale    = 32f,
+                                FinalScale      = 256f
+                            },
+                            new RotationModifier {
+                                Frequency       = 15f,
+                                RotationRate    = 1f
+                            },
+                            new OpacityInterpolator2 {
+                                Frequency       = 25f,
+                                InitialOpacity  = 0.3f,
+                                FinalOpacity    = 0.0f
+                            }
+                        },
                     }
                 }
             };
 
-            var ringEmitter = new Emitter(2000, TimeSpan.FromSeconds(3), Profile.Spray(Axis.Up, 0.5f)) {
-                Parameters = new ReleaseParameters {
-                    Colour   = new ColourRange(new Colour(210f, 0.5f, 0.6f), new Colour(230f, 0.7f, 0.8f)),
-                    Opacity  = 1f,
-                    Quantity = 1,
-                    Speed    = new RangeF(300f, 700f),
-                    Scale    = 64f,
-                    Mass     = new RangeF(4f, 12f),
-                },
-                ReclaimFrequency = 5f,
-                BlendMode = BlendMode.Alpha,
-                RenderingOrder = RenderingOrder.FrontToBack,
-                TextureKey = "Ring",
-                Modifiers = new Modifier[] {
-                    new LinearGravityModifier(Axis.Down, 100f) {
-                        Frequency              = 20f
-                    },
-                    new OpacityFastFadeModifier() {
-                        Frequency              = 10f,
-                    },
-                    new ContainerModifier {
-                        Frequency              = 15f,
-                        Width                  = worldSize.Width,
-                        Height                 = worldSize.Height,
-                        Position               = new Coordinate(worldSize.Width / 2f, worldSize.Height / 2f),
-                        RestitutionCoefficient = 0.75f
+            var sparkEffect = new ParticleEffect {
+                Emitters = new[] {
+                    new Emitter(2000, TimeSpan.FromSeconds(2), Profile.Point()) {
+                        Parameters = new ReleaseParameters {
+                            Colour   = new Colour(50f, 0.8f, 0.5f),
+                            Opacity  = 1f,
+                            Quantity = 10,
+                            Speed    = new RangeF(0f, 100f),
+                            Scale    = 64f,
+                            Mass     = new RangeF(8f, 12f)
+                        },
+                        ReclaimFrequency = 5f,
+                        BlendMode = BlendMode.Add,
+                        RenderingOrder = RenderingOrder.FrontToBack,
+                        TextureKey = "Particle",
+                        Modifiers = new Modifier[] {
+                            new LinearGravityModifier(Axis.Down, 30f) {
+                                Frequency = 15f
+                            },
+                            new OpacityFastFadeModifier() {
+                                Frequency = 10f
+                            }
+                        }
+                    }
+                }
+            };
+
+            var ringEffect = new ParticleEffect {
+                Emitters = new[] {
+                    new Emitter(2000, TimeSpan.FromSeconds(3), Profile.Spray(Axis.Up, 0.5f)) {
+                        Parameters = new ReleaseParameters {
+                            Colour   = new ColourRange(new Colour(210f, 0.5f, 0.6f), new Colour(230f, 0.7f, 0.8f)),
+                            Opacity  = 1f,
+                            Quantity = 1,
+                            Speed    = new RangeF(300f, 700f),
+                            Scale    = 64f,
+                            Mass     = new RangeF(4f, 12f),
+                        },
+                        ReclaimFrequency = 5f,
+                        BlendMode = BlendMode.Alpha,
+                        RenderingOrder = RenderingOrder.FrontToBack,
+                        TextureKey = "Ring",
+                        Modifiers = new Modifier[] {
+                            new LinearGravityModifier(Axis.Down, 100f) {
+                                Frequency              = 20f
+                            },
+                            new OpacityFastFadeModifier() {
+                                Frequency              = 10f,
+                            },
+                            new ContainerModifier {
+                                Frequency              = 15f,
+                                Width                  = worldSize.Width,
+                                Height                 = worldSize.Height,
+                                Position               = new Coordinate(worldSize.Width / 2f, worldSize.Height / 2f),
+                                RestitutionCoefficient = 0.75f
+                            }
+                        }
                     }
                 }
             };
@@ -147,7 +159,7 @@
             var updateTimer = new Stopwatch();
             var renderTimer = new Stopwatch();
 
-            var currentEmitter = smokeEmitter;
+            var currentEffect = smokeEffect;
 
             RenderLoop.Run(form, () => {
                 // ReSharper disable AccessToDisposedClosure
@@ -160,31 +172,31 @@
                 var unprojected = Vector3.Unproject(mouseVector, 0, 0, renderSize.Width, renderSize.Height, 0f, 1f, wvp);
 
                 if (Keyboard.IsKeyDown(Key.D1))
-                    currentEmitter = smokeEmitter;
+                    currentEffect = smokeEffect;
 
                 if (Keyboard.IsKeyDown(Key.D2))
-                    currentEmitter = sparkEmitter;
+                    currentEffect = sparkEffect;
 
                 if (Keyboard.IsKeyDown(Key.D3))
-                    currentEmitter = ringEmitter;
+                    currentEffect = ringEffect;
 
                 if (RenderForm.MouseButtons.HasFlag(System.Windows.Forms.MouseButtons.Left)) {
-                    currentEmitter.Trigger(new Coordinate(unprojected.X, unprojected.Y));
+                    currentEffect.Trigger(new Coordinate(unprojected.X, unprojected.Y));
                 }
 
                 updateTimer.Restart();
-                smokeEmitter.Update(frameTime);
-                sparkEmitter.Update(frameTime);
-                ringEmitter.Update(frameTime);
+                smokeEffect.Update(frameTime);
+                sparkEffect.Update(frameTime);
+                ringEffect.Update(frameTime);
                 updateTimer.Stop();
 
                 device.Clear(ClearFlags.Target, Color.Black, 1f, 0);
                 device.BeginScene();
 
                 renderTimer.Restart();
-                renderer.Render(smokeEmitter, wvp);
-                renderer.Render(sparkEmitter, wvp);
-                renderer.Render(ringEmitter, wvp);
+                renderer.Render(smokeEffect, wvp);
+                renderer.Render(sparkEffect, wvp);
+                renderer.Render(ringEffect, wvp);
                 renderTimer.Stop();
 
                 var updateTime = (float)updateTimer.Elapsed.TotalSeconds;
@@ -192,7 +204,7 @@
 
                 font.DrawText(null, "1 - Smoke, 2 - Sparks, 3 - Rings", 0, 0, Color.White);
                 font.DrawText(null, String.Format("Time:        {0}", totalTimer.Elapsed), 0, 32, Color.White);
-                font.DrawText(null, String.Format("Particles:   {0:n0}", currentEmitter.ActiveParticles), 0, 48, Color.White);
+                font.DrawText(null, String.Format("Particles:   {0:n0}", currentEffect.ActiveParticles), 0, 48, Color.White);
                 font.DrawText(null, String.Format("Update:      {0:n4} ({1,8:P2})", updateTime, updateTime / 0.01666666f), 0, 64, Color.White);
                 font.DrawText(null, String.Format("Render:      {0:n4} ({1,8:P2})", renderTime, renderTime / 0.01666666f), 0, 80, Color.White);
 

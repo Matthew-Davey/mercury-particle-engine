@@ -55,7 +55,13 @@
             _vertexDeclaration = new VertexDeclaration(device, vertexElements);
         }
 
-        public void Render(Emitter emitter, Matrix worldViewProjection) {
+        public void Render(ParticleEffect effect, Matrix worldViewProjection) {
+            for (var i = 0; i < effect.Emitters.Length; i++) {
+                Render(effect.Emitters[i], worldViewProjection);
+            }
+        }
+
+        internal void Render(Emitter emitter, Matrix worldViewProjection) {
             if (emitter.ActiveParticles == 0)
                 return;
 
