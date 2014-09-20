@@ -134,6 +134,48 @@
                 }
             };
 
+            var loadTestEffect = new ParticleEffect {
+                Emitters = new[] {
+                    new Emitter(1000000, TimeSpan.FromSeconds(2), Profile.Point()) {
+                        Parameters = new ReleaseParameters {
+                            Quantity = 10000,
+                            Speed    = new RangeF(0f, 200f),
+                            Scale    = 1f,
+                            Mass     = new RangeF(4f, 12f),
+                            Opacity  = 0.4f
+                        },
+                        ReclaimFrequency = 5f,
+                        BlendMode = BlendMode.Add,
+                        TextureKey = "Pixel",
+                        Modifiers = new Modifier[] {
+                            new LinearGravityModifier(Axis.Down, 30f) {
+                                Frequency = 15f
+                            },
+                            new OpacityFastFadeModifier() {
+                                Frequency = 10f
+                            },
+                            new ContainerModifier {
+                                Frequency              = 30f,
+                                Width                  = worldSize.Width,
+                                Height                 = worldSize.Height,
+                                Position               = new Coordinate(worldSize.Width / 2f, worldSize.Height / 2f),
+                                RestitutionCoefficient = 0.75f
+                            },
+                            new DragModifier {
+                                Frequency       = 10f,
+                                DragCoefficient = 0.47f,
+                                Density         = 0.125f
+                            },
+                            new HueInterpolator2 {
+                                Frequency = 10f,
+                                InitialHue = 0f,
+                                FinalHue = 150f
+                            }
+                        }
+                    }
+                }
+            };
+
             var textureLookup = new Dictionary<String, Texture> {
                 { "Particle", Texture.FromFile(device, "Particle.dds") },
                 { "Pixel",    Texture.FromFile(device, "Pixel.dds")    },
@@ -141,7 +183,7 @@
                 { "Ring",     Texture.FromFile(device, "Ring001.png")  }
             };
 
-            var renderer = new PointSpriteRenderer(device, 2000, textureLookup) {
+            var renderer = new PointSpriteRenderer(device, 1000000, textureLookup) {
                 //EnableFastFade = true
             };
 
@@ -180,6 +222,9 @@
                 if (Keyboard.IsKeyDown(Key.D3))
                     currentEffect = ringEffect;
 
+                if (Keyboard.IsKeyDown(Key.D4))
+                    currentEffect = loadTestEffect;
+
                 if (RenderForm.MouseButtons.HasFlag(System.Windows.Forms.MouseButtons.Left)) {
                     currentEffect.Trigger(new Coordinate(unprojected.X, unprojected.Y));
                 }
@@ -188,6 +233,7 @@
                 smokeEffect.Update(frameTime);
                 sparkEffect.Update(frameTime);
                 ringEffect.Update(frameTime);
+                loadTestEffect.Update(frameTime);
                 updateTimer.Stop();
 
                 device.Clear(ClearFlags.Target, Color.Black, 1f, 0);
@@ -197,12 +243,13 @@
                 renderer.Render(smokeEffect, wvp);
                 renderer.Render(sparkEffect, wvp);
                 renderer.Render(ringEffect, wvp);
+                renderer.Render(loadTestEffect, wvp);
                 renderTimer.Stop();
 
                 var updateTime = (float)updateTimer.Elapsed.TotalSeconds;
                 var renderTime = (float)renderTimer.Elapsed.TotalSeconds;
 
-                font.DrawText(null, "1 - Smoke, 2 - Sparks, 3 - Rings", 0, 0, Color.White);
+                font.DrawText(null, "1 - Smoke, 2 - Sparks, 3 - Rings, 4 - Load Test", 0, 0, Color.White);
                 font.DrawText(null, String.Format("Time:        {0}", totalTimer.Elapsed), 0, 32, Color.White);
                 font.DrawText(null, String.Format("Particles:   {0:n0}", currentEffect.ActiveParticles), 0, 48, Color.White);
                 font.DrawText(null, String.Format("Update:      {0:n4} ({1,8:P2})", updateTime, updateTime / 0.01666666f), 0, 64, Color.White);
