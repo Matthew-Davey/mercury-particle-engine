@@ -203,15 +203,19 @@
 
             var currentEffect = smokeEffect;
 
+            Vector3 mousePosition = Vector3.Zero;
+            Vector3 previousMousePosition = Vector3.Zero;
+
             RenderLoop.Run(form, () => {
                 // ReSharper disable AccessToDisposedClosure
                 var frameTime = ((float)totalTimer.Elapsed.TotalSeconds) - totalTime;
                 totalTime = (float)totalTimer.Elapsed.TotalSeconds;
 
-                var mousePosition = form.PointToClient(RenderForm.MousePosition);
+                var clientMousePosition = form.PointToClient(RenderForm.MousePosition);
+                previousMousePosition = mousePosition;
+                mousePosition = Vector3.Unproject(new Vector3(clientMousePosition.X, clientMousePosition.Y, 0f), 0, 0, renderSize.Width, renderSize.Height, 0f, 1f, wvp);
 
-                var mouseVector = new Vector3(mousePosition.X, mousePosition.Y, 0f);
-                var unprojected = Vector3.Unproject(mouseVector, 0, 0, renderSize.Width, renderSize.Height, 0f, 1f, wvp);
+                var mouseMovementLine = new LineSegment(new Coordinate(previousMousePosition.X, previousMousePosition.Y), new Coordinate(mousePosition.X, mousePosition.Y));
 
                 if (Keyboard.IsKeyDown(Key.D1))
                     currentEffect = smokeEffect;
@@ -226,7 +230,7 @@
                     currentEffect = loadTestEffect;
 
                 if (RenderForm.MouseButtons.HasFlag(System.Windows.Forms.MouseButtons.Left)) {
-                    currentEffect.Trigger(new Coordinate(unprojected.X, unprojected.Y));
+                    currentEffect.Trigger(mouseMovementLine);
                 }
 
                 updateTimer.Restart();

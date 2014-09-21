@@ -27,5 +27,10 @@
                 Emitters[i].Trigger(position);
             }
         }
+
+        public void Trigger(LineSegment line) {
+            for (var i = 0; i < Emitters.Length; i++)
+                Emitters[i].Trigger(line);
+        }
     }
 }

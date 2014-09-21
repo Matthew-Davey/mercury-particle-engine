@@ -24,6 +24,20 @@
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Axis"/> structure.
+        /// </summary>
+        /// <param name="angle">The angle of the axis in radians.</param>
+        public Axis(float angle){
+            var x = (float)Math.Cos(angle);
+            var y = (float)Math.Sin(angle);
+
+            var length = (float)Math.Sqrt((x * x) + (y * y));
+
+            _x = x / length;
+            _y = y / length;
+        }
+
+        /// <summary>
         /// Gets a directed axis which points to the left.
         /// </summary>
         static public Axis Left {

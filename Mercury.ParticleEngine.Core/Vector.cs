@@ -46,6 +46,10 @@
             get { return new Axis(_x, _y); }
         }
 
+        public Vector Multiply(float factor) {
+            return new Vector(_x * factor, _y * factor);
+        }
+
         /// <summary>
         /// Copies the X and Y components of the vector to the specified memory location.
         /// </summary>
@@ -98,8 +102,8 @@
             return map(_x, _y);
         }
 
-        static public Vector operator*(Vector value, float multiplier) {
-            return new Vector(value._x * multiplier, value._y * multiplier);
+        static public Vector operator*(Vector value, float factor) {
+            return value.Multiply(factor);
         }
     }
 }

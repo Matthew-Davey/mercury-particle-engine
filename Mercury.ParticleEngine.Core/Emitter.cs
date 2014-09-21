@@ -84,6 +84,20 @@
         public void Trigger(Coordinate position) {
             var numToRelease = FastRand.NextInteger(Parameters.Quantity);
 
+            Release(position, numToRelease);
+        }
+
+        public void Trigger(LineSegment line) {
+            var numToRelease = FastRand.NextInteger(Parameters.Quantity);
+            var lineVector = line.ToVector();
+
+            for (var i = 0; i < numToRelease; i++) {
+                var offset = lineVector * FastRand.NextSingle();
+                Release(line.Origin.Translate(offset), 1);
+            }
+        }
+
+        private void Release(Coordinate position, int numToRelease) {
             Particle* particle;
             var count = Buffer.Release(numToRelease, out particle);
 

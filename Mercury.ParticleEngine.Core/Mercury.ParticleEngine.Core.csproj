@@ -46,6 +46,7 @@
     <Compile Include="ColourRange.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Emitter.cs" />
+    <Compile Include="LineSegment.cs" />
     <Compile Include="ModifierExecutionStrategy.cs" />
     <Compile Include="Modifiers\ColourInterpolator2.cs" />
     <Compile Include="Modifiers\ContainerModifier.cs" />
