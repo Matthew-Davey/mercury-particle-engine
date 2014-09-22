@@ -5,20 +5,23 @@
 
     public unsafe class Emitter : IDisposable {
         public Emitter(int capacity, TimeSpan term, Profile profile) {
+            if (profile == null)
+                throw new ArgumentNullException("profile");
+
             _term = (float)term.TotalSeconds;
 
-            Buffer = new ParticleBuffer(capacity);
-            Profile = profile;
-            Modifiers = new Modifier[0];
+            Buffer                    = new ParticleBuffer(capacity);
+            Profile                   = profile;
+            Modifiers                 = new Modifier[0];
             ModifierExecutionStrategy = ModifierExecutionStrategy.Serial;
-            Parameters = new ReleaseParameters();
-            ReclaimFrequency = 60f;
+            Parameters                = new ReleaseParameters();
+            ReclaimFrequency          = 60f;
         }
 
         private readonly float _term;
         private float _totalSeconds;
 
-        internal ParticleBuffer Buffer { get; private set; }
+        internal readonly ParticleBuffer Buffer;
 
         public int ActiveParticles {
             get { return Buffer.Count; }
