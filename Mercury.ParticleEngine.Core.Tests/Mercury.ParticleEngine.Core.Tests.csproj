@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertionModifier.cs" />
+    <Compile Include="AxisTests.cs" />
     <Compile Include="ColourTests.cs" />
     <Compile Include="EmitterTests.cs" />
     <Compile Include="Modifiers\ColourInterpolator2Tests.cs" />
