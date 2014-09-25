@@ -20,7 +20,7 @@
                 var axis = new Axis((float)Math.PI / 2f);
 
                 axis.Match((x, y) => {
-                    x.Should().BeInRange(-0.000001f, 0.000000f);
+                    x.Should().BeApproximately(0f, 0.0000001f);
                     y.Should().Be(1f);
                 });
             }
@@ -37,14 +37,16 @@
 
         public class UnsafeCopyToMethod {
             [Fact, Trait("Type", "Axis")]
-            public unsafe void WhenGivenBuffer_CopiesAxisValues() {
+            public void WhenGivenBuffer_CopiesAxisValues() {
                 var result = new float[2];
 
-                fixed (float* p = result) {
-                    Axis.Right.CopyTo(p);
+                unsafe {
+                    fixed (float* p = result) {
+                        Axis.Right.CopyTo(p);
 
-                    p[0].Should().Be(1f);
-                    p[1].Should().Be(0f);
+                        p[0].Should().Be(1f);
+                        p[1].Should().Be(0f);
+                    }
                 }
             }
         }
