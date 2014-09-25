@@ -1,13 +1,12 @@
 ﻿namespace Mercury.ParticleEngine {
     using System;
-    using System.Globalization;
     using System.Runtime.InteropServices;
 
     /// <summary>
     /// An immutable data structure representing a directed fixed axis.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct Axis : IEquatable<Axis>, IFormattable {
+    public struct Axis : IEquatable<Axis> {
         internal readonly float _x;
         internal readonly float _y;
 
@@ -176,30 +175,7 @@
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
         public override string ToString() {
-            return ToString("g", CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
-        /// Formats the value of the current instance using the specified format.
-        /// </summary>
-        /// <param name="format">The format to use.
-        /// -or- A null reference (Nothing in Visual Basic) to use the default format defined for the type of the System.IFormattable implementation.</param>
-        /// <param name="formatProvider">The provider to use to format the value.
-        /// -or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
-        /// <returns>The value of the current instance in the specified format.</returns>
-        public string ToString(string format, IFormatProvider formatProvider) {
-            if (formatProvider != null) {
-                var formatter = formatProvider.GetFormat(GetType()) as ICustomFormatter;
-
-                if (formatter != null)
-                    return formatter.Format(format, this, formatProvider);
-            }
-
-            switch (format.ToLowerInvariant()) {
-                case "x": return _x.ToString("F4");
-                case "y": return _y.ToString("F4");
-                default:  return String.Format("({0:F4}, {1:F4})", _x, _y);
-            }
+            return String.Format("({0}, {1})", _x.ToString("F4"), _y.ToString("F4"));
         }
 
         public static bool operator ==(Axis x, Axis y) {
