@@ -14,3 +14,5 @@ using System.Runtime.InteropServices;
 
 [assembly: InternalsVisibleTo("Mercury.ParticleEngine.Core.Tests")]
 [assembly: InternalsVisibleTo("Mercury.ParticleEngine.SharpDX.Direct3D9")]
+[assembly: InternalsVisibleTo("Mercury.ParticleEngine.OpenTK")]
+[assembly: InternalsVisibleTo("Mercury.ParticleEngine.OpenTK.Sample")]

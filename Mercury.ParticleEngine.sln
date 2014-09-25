@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.ParticleEngine.Shar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.ParticleEngine.SharpDX.Direct3D9.Sample", "Mercury.ParticleEngine.SharpDX.Direct3D9.Sample\Mercury.ParticleEngine.SharpDX.Direct3D9.Sample.csproj", "{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.ParticleEngine.OpenTK", "Mercury.ParticleEngine.OpenTK\Mercury.ParticleEngine.OpenTK.csproj", "{D9EBF3A0-0A3B-415F-B783-B99D55B16DEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.ParticleEngine.OpenTK.Sample", "Mercury.ParticleEngine.OpenTK.Sample\Mercury.ParticleEngine.OpenTK.Sample.csproj", "{B0777715-38F2-4545-A269-CD67A2481E26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A80CE58A-40BF-4766-89D2-3E81C5D9BC63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9EBF3A0-0A3B-415F-B783-B99D55B16DEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9EBF3A0-0A3B-415F-B783-B99D55B16DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9EBF3A0-0A3B-415F-B783-B99D55B16DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9EBF3A0-0A3B-415F-B783-B99D55B16DEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0777715-38F2-4545-A269-CD67A2481E26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0777715-38F2-4545-A269-CD67A2481E26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0777715-38F2-4545-A269-CD67A2481E26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0777715-38F2-4545-A269-CD67A2481E26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
