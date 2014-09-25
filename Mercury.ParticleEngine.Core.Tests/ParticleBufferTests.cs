@@ -6,14 +6,14 @@
     public class ParticleBufferTests {
         public class AvailableProperty
         {
-            [Fact]
+            [Fact, Trait("Type", "ParticleBuffer")]
             public void WhenNoParticlesReleased_ReturnsBufferSize() {
                 var subject = new ParticleBuffer(100);
 
                 subject.Available.Should().Be(100);
             }
 
-            [Fact]
+            [Fact, Trait("Type", "ParticleBuffer")]
             public void WhenSomeParticlesReleased_ReturnsAvailableCount() {
                 var subject = new ParticleBuffer(100);
 
@@ -25,7 +25,7 @@
                 subject.Available.Should().Be(90);
             }
 
-            [Fact]
+            [Fact, Trait("Type", "ParticleBuffer")]
             public void WhenAllParticlesReleased_ReturnsZero() {
                 var subject = new ParticleBuffer(100);
 
@@ -39,13 +39,13 @@
         }
 
         public class CountProperty {
-            [Fact]
+            [Fact, Trait("Type", "ParticleBuffer")]
             public void WhenNoParticlesReleased_ReturnsZero() {
                 var subject = new ParticleBuffer(100);
                 subject.Count.Should().Be(0);
             }
 
-            [Fact]
+            [Fact, Trait("Type", "ParticleBuffer")]
             public void WhenSomeParticlesReleased_ReturnsCount() {
                 var subject = new ParticleBuffer(100);
                 
@@ -57,7 +57,7 @@
                 subject.Count.Should().Be(10);
             }
 
-            [Fact]
+            [Fact, Trait("Type", "ParticleBuffer")]
             public void WhenAllParticlesReleased_ReturnsZero() {
                 var subject = new ParticleBuffer(100);
 
@@ -72,7 +72,7 @@
 
         public class ReleaseMethod
         {
-            [Fact]
+            [Fact, Trait("Type", "ParticleBuffer")]
             public void WhenPassedReasonableQuantity_ReturnsNumberReleased() {
                 var subject = new ParticleBuffer(100);
 
@@ -84,7 +84,7 @@
                 }
             }
 
-            [Fact]
+            [Fact, Trait("Type", "ParticleBuffer")]
             public void WhenPassedImpossibleQuantity_ReturnsNumberActuallyReleased() {
                 var subject = new ParticleBuffer(100);
 
@@ -97,7 +97,7 @@
         }
 
         public class ReclaimMethod {
-            [Fact]
+            [Fact, Trait("Type", "ParticleBuffer")]
             public void WhenPassedReasonableNumber_ReclaimsParticles() {
                 var subject = new ParticleBuffer(100);
                 
@@ -115,7 +115,7 @@
         }
 
         public class CopyToMethod {
-            [Fact]
+            [Fact, Trait("Type", "ParticleBuffer")]
             public void WhenBufferIsSequential_CopiesParticlesInOrder() {
                 unsafe {
                     var subject = new ParticleBuffer(10);
@@ -143,8 +143,37 @@
             }
         }
 
+        public class CopyToReverseMethod {
+            [Fact, Trait("Type", "ParticleBuffer")]
+            public void WhenBufferIsSequential_CopiesParticlesInReverseOrder() {
+                unsafe {
+                    var subject = new ParticleBuffer(10);
+                    Particle* particle;
+                    var count = subject.Release(5, out particle);
+
+                    do {
+                        particle->Age = 1f;
+                        particle++;
+                    }
+                    while (count-- > 0);
+
+                    var destination = new Particle[10];
+
+                    fixed (Particle* buffer = destination) {
+                        subject.CopyToReverse((IntPtr)buffer);
+                    }
+
+                    destination[0].Age.Should().BeApproximately(1f, 0.0001f);
+                    destination[1].Age.Should().BeApproximately(1f, 0.0001f);
+                    destination[2].Age.Should().BeApproximately(1f, 0.0001f);
+                    destination[3].Age.Should().BeApproximately(1f, 0.0001f);
+                    destination[4].Age.Should().BeApproximately(1f, 0.0001f);
+                }
+            }
+        }
+
         public class DisposeMethod {
-            [Fact]
+            [Fact, Trait("Type", "ParticleBuffer")]
             public void IsIdempotent() {
                 var subject = new ParticleBuffer(100);
                 subject.Dispose();
