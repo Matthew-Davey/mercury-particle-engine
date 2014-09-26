@@ -28,26 +28,44 @@
 
             GL.Begin(PrimitiveType.Quads);
 
-            unsafe  {
-                var count = emitter.ActiveParticles;
-                Particle* particle = (Particle*)emitter.Buffer.NativePointer;
-                while (count-- > 0) {
-                    GL.Color4(HslToRgb(particle->Colour));
-
-                    GL.TexCoord2(0, 0);
-                    GL.Vertex2(particle->Position[0] - (particle->Scale / 2f), particle->Position[1] - (particle->Scale / 2f));
-                    GL.TexCoord2(1, 0);
-                    GL.Vertex2(particle->Position[0] + (particle->Scale / 2f), particle->Position[1] - (particle->Scale / 2f));
-                    GL.TexCoord2(1, 1);
-                    GL.Vertex2(particle->Position[0] + (particle->Scale / 2f), particle->Position[1] + (particle->Scale / 2f));
-                    GL.TexCoord2(0, 1);
-                    GL.Vertex2(particle->Position[0] - (particle->Scale / 2f), particle->Position[1] + (particle->Scale / 2f));
-
-                    particle++;
+            unsafe {
+                switch (emitter.RenderingOrder) {
+                    case RenderingOrder.BackToFront: {
+                        var count = 0;
+                        var particle = (Particle*)emitter.Buffer.NativePointer + emitter.ActiveParticles -1;
+                        while (count++ < emitter.ActiveParticles) {
+                            RenderParticle(particle);
+                            particle--;
+                        }
+                        break;
+                    }
+                    default:
+                    case RenderingOrder.FrontToBack: {
+                        var count = emitter.ActiveParticles;
+                        var particle = (Particle*)emitter.Buffer.NativePointer;
+                        while (count-- > 0) {
+                            RenderParticle(particle);
+                            particle++;
+                        }
+                        break;
+                    }
                 }
             }
 
             GL.End();
+        }
+
+        static unsafe void RenderParticle(Particle* particle) {
+            GL.Color4(HslToRgb(particle->Colour));
+
+            GL.TexCoord2(0, 0);
+            GL.Vertex2(particle->Position[0] - (particle->Scale / 2f), particle->Position[1] - (particle->Scale / 2f));
+            GL.TexCoord2(1, 0);
+            GL.Vertex2(particle->Position[0] + (particle->Scale / 2f), particle->Position[1] - (particle->Scale / 2f));
+            GL.TexCoord2(1, 1);
+            GL.Vertex2(particle->Position[0] + (particle->Scale / 2f), particle->Position[1] + (particle->Scale / 2f));
+            GL.TexCoord2(0, 1);
+            GL.Vertex2(particle->Position[0] - (particle->Scale / 2f), particle->Position[1] + (particle->Scale / 2f));
         }
 
         static unsafe Color4 HslToRgb(float* hsl) {
