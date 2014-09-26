@@ -75,11 +75,18 @@
 
             GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
 
-            int textureHandle;
-            GL.GenTextures(1, out textureHandle);
+            var textureLookup = new Dictionary<String, Int32> {
+                { "Cloud", LoadTexture("Cloud001.png") }
+            };
+
+            _renderer = new QuadRenderer(textureLookup);
+        }
+
+        static int LoadTexture(string filePath) {
+            int textureHandle = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, textureHandle);
 
-            var bitmap = new System.Drawing.Bitmap("Cloud001.png");
+            var bitmap = new System.Drawing.Bitmap(filePath);
             var data = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
@@ -90,11 +97,7 @@
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
 
-            var textureLookup = new Dictionary<String, Int32> {
-                { "Cloud", textureHandle }
-            };
-
-            _renderer = new QuadRenderer(textureLookup);
+            return textureHandle;
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e) {
