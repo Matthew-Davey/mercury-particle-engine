@@ -18,13 +18,13 @@
 
         public void Render(Emitter emitter, Matrix4 worldViewProjection) {
             GL.Enable(EnableCap.Texture2D);
-            GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             GL.BindTexture(TextureTarget.Texture2D, _textureIndexLookup[emitter.TextureKey]);
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref worldViewProjection);
+
+            SetupBlend(emitter.BlendMode);
 
             GL.Begin(PrimitiveType.Quads);
 
@@ -53,6 +53,29 @@
             }
 
             GL.End();
+        }
+
+        static void SetupBlend(BlendMode blendMode) {
+            GL.Enable(EnableCap.Blend);
+
+            switch (blendMode) {
+                case BlendMode.Add: {
+                    GL.BlendEquation(BlendEquationMode.FuncAdd);
+                    GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.One);
+                    break;
+                }
+                case BlendMode.Subtract: {
+                    GL.BlendEquation(BlendEquationMode.FuncSubtract);
+                    GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.One);
+                    break;
+                }
+                case BlendMode.Alpha:
+                default: {
+                    GL.BlendEquation(BlendEquationMode.FuncAdd);
+                    GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+                    break;
+                }
+            }
         }
 
         static unsafe void RenderParticle(Particle* particle) {
