@@ -1,4 +1,4 @@
 mercury-particle-engine
 =======================
 
-Mercury Particle Engine
+License: WTFPL (http://www.wtfpl.net/about/)
