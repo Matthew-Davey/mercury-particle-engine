@@ -25,9 +25,7 @@
             _point2 = origin.Translate(vector);
         }
 
-        public Coordinate Origin {
-            get { return _point1; }
-        }
+        public Coordinate Origin => _point1;
 
         public Axis Direction {
             get {
@@ -53,20 +51,20 @@
 
         public void Match(Action<Coordinate, Coordinate> callback) {
             if (callback == null)
-                throw new ArgumentNullException("callback");
+                throw new ArgumentNullException(nameof(callback));
+
+            callback(_point1, _point2);
         }
 
         public T Map<T>(Func<Coordinate, Coordinate, T> map) {
             if (map == null)
-                throw new ArgumentNullException("map");
+                throw new ArgumentNullException(nameof(map));
 
             return map(_point1, _point2);
         }
 
-        public bool Equals(LineSegment other) {
-            return _point1.Equals(other._point1) &&
-                   _point2.Equals(other._point2);
-        }
+        public bool Equals(LineSegment other) => _point1.Equals(other._point1) &&
+                                                 _point2.Equals(other._point2);
 
         public override bool Equals(object obj) {
             if (ReferenceEquals(null, obj))
@@ -83,8 +81,6 @@
             return hashCode;
         }
 
-        public override string ToString() {
-            return String.Format("({0:x}:{0:y},{1:x}:{1:y})", _point1, _point2);
-        }
+        public override string ToString() => $"({_point1:x}:{_point1:y},{_point2:x}:{_point2:y})";
     }
 }

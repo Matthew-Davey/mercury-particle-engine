@@ -16,7 +16,7 @@
             get { return _frequency; }
             set {
                 if (value > 0.0f == false)
-                    throw new ArgumentOutOfRangeException("Frequency", "Frequency must be greater than zero.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Frequency must be greater than zero.");
 
                 _frequency = value;
                 _cycleTime = 1f / _frequency;

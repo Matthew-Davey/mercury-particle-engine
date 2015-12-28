@@ -1,6 +1,5 @@
 ﻿namespace Mercury.ParticleEngine {
     using System;
-    using System.Globalization;
     using System.Runtime.InteropServices;
 
     /// <summary>
@@ -64,7 +63,7 @@
         /// </exception>
         public void Match(Action<float, float, float> callback) {
             if (callback == null)
-                throw new ArgumentNullException("callback");
+                throw new ArgumentNullException(nameof(callback));
 
             callback(_h, _s, _l);
         }
@@ -86,7 +85,7 @@
         public T Map<T>(Func<float, float, float, T> map)
         {
             if (map == null)
-                throw new ArgumentNullException("map");
+                throw new ArgumentNullException(nameof(map));
 
             return map(_h, _s, _l);
         }
@@ -112,11 +111,9 @@
         /// <returns>
         ///     <c>true</c> if the specified <see cref="Colour"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public bool Equals(Colour value) {
-            return _h.Equals(value._h) &&
-                   _s.Equals(value._s) &&
-                   _l.Equals(value._l);
-        }
+        public bool Equals(Colour value) => _h.Equals(value._h) &&
+                                            _s.Equals(value._s) &&
+                                            _l.Equals(value._l);
 
         /// <summary>
         /// Returns a hash code for this instance.
@@ -124,11 +121,9 @@
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode() {
-            return _h.GetHashCode() ^
-                   _s.GetHashCode() ^
-                   _l.GetHashCode();
-        }
+        public override int GetHashCode() => _h.GetHashCode() ^
+                                             _s.GetHashCode() ^
+                                             _l.GetHashCode();
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -136,9 +131,7 @@
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString() {
-            return String.Format(CultureInfo.InvariantCulture, "{0}°,{1:P0},{2:P0}", _h, _s, _l);
-        }
+        public override string ToString() => $"{_h}°,{_s:P0},{_l:P0}";
 
         /// <summary>
         /// Implements the operator ==.
@@ -148,9 +141,7 @@
         /// <returns>
         ///     <c>true</c> if the lvalue <see cref="Colour"/> is equal to the rvalue; otherwise, <c>false</c>.
         /// </returns>
-        static public bool operator ==(Colour x, Colour y) {
-            return x.Equals(y);
-        }
+        static public bool operator ==(Colour x, Colour y) => x.Equals(y);
 
         /// <summary>
         /// Implements the operator !=.
@@ -160,12 +151,8 @@
         /// <returns>
         ///     <c>true</c> if the lvalue <see cref="Colour"/> is not equal to the rvalue; otherwise, <c>false</c>.
         /// </returns>
-        static public bool operator !=(Colour x, Colour y) {
-            return !x.Equals(y);
-        }
+        static public bool operator !=(Colour x, Colour y) => !x.Equals(y);
 
-        static public Colour operator -(Colour a, Colour b) {
-            return new Colour(a._h - b._h, a._s - b._s, a._l - b._l);
-        }
+        static public Colour operator -(Colour a, Colour b) => new Colour(a._h - b._h, a._s - b._s, a._l - b._l);
     }
 }

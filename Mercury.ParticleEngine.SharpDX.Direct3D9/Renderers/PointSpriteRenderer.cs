@@ -29,10 +29,10 @@
 
         public PointSpriteRenderer(Device device, int size, IReadOnlyDictionary<String, Texture> textureLookup) {
             if (device == null)
-                throw new ArgumentNullException("device");
+                throw new ArgumentNullException(nameof(device));
 
             if (textureLookup == null)
-                throw new ArgumentNullException("textureLookup");
+                throw new ArgumentNullException(nameof(textureLookup));
 
             _device = device;
             _size = size;

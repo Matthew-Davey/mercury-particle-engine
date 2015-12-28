@@ -9,7 +9,7 @@
 
         static public void Seed(int seed) {
             if (seed < 1)
-                throw new ArgumentOutOfRangeException("seed", "seed must be greater than zero");
+                throw new ArgumentOutOfRangeException(nameof(seed), "seed must be greater than zero");
             
             _state = seed;
         }
@@ -29,35 +29,27 @@
         /// </summary>
         /// <param name="max">The maximum random integer value to return.</param>
         /// <returns>A random integer value between zero and the specified maximum value.</returns>
-        static public int NextInteger(int max) {
-            return (int)(max * NextSingle());
-        }
+        static public int NextInteger(int max) => (int)(max * NextSingle());
 
         /// <summary>
         /// Gets the next random integer between the specified minimum and maximum values.
         /// </summary>
         /// <param name="min">The inclusive minimum value.</param>
         /// <param name="max">The inclusive maximum value.</param>
-        static public int NextInteger(int min, int max) {
-            return (int)((max - min) * NextSingle()) + min;
-        }
+        static public int NextInteger(int min, int max) => (int)((max - min) * NextSingle()) + min;
 
         /// <summary>
         /// Gets the next random integer between the specified range of values.
         /// </summary>
         /// <param name="range">A range representing the inclusive minimum and maximum values.</param>
         /// <returns>A random integer between the specified minumum and maximum values.</returns>
-        static public int NextInteger(Range range) {
-            return NextInteger(range.X, range.Y);
-        }
+        static public int NextInteger(Range range) => NextInteger(range.X, range.Y);
 
         /// <summary>
         /// Gets the next random single value.
         /// </summary>
         /// <returns>A random single value between 0 and 1.</returns>
-        static public float NextSingle() {
-            return NextInteger() / (float)Int16.MaxValue;
-        }
+        static public float NextSingle() => NextInteger() / (float)Int16.MaxValue;
 
         /// <summary>
         /// Gets the next random single value which is greater than zero and less than or equal to
@@ -65,9 +57,7 @@
         /// </summary>
         /// <param name="max">The maximum random single value to return.</param>
         /// <returns>A random single value between zero and the specified maximum value.</returns>
-        static public float NextSingle(float max) {
-            return max * NextSingle();
-        }
+        static public float NextSingle(float max) => max * NextSingle();
 
         /// <summary>
         /// Gets the next random single value between the specified minimum and maximum values.
@@ -75,26 +65,20 @@
         /// <param name="min">The inclusive minimum value.</param>
         /// <param name="max">The inclusive maximum value.</param>
         /// <returns>A random single value between the specified minimum and maximum values.</returns>
-        static public float NextSingle(float min, float max) {
-            return ((max - min) * NextSingle()) + min;
-        }
+        static public float NextSingle(float min, float max) => ((max - min) * NextSingle()) + min;
 
         /// <summary>
         /// Gets the next random single value between the specified range of values.
         /// </summary>
         /// <param name="range">A range representing the inclusive minimum and maximum values.</param>
         /// <returns>A random single value between the specified minimum and maximum values.</returns>
-        static public float NextSingle(RangeF range) {
-            return NextSingle(range.X, range.Y);
-        }
+        static public float NextSingle(RangeF range) => NextSingle(range.X, range.Y);
 
         /// <summary>
         /// Gets the next random angle value.
         /// </summary>
         /// <returns>A random angle value.</returns>
-        static public float NextAngle() {
-            return NextSingle((float)Math.PI * -1f, (float)Math.PI);
-        }
+        static public float NextAngle() => NextSingle((float)Math.PI * -1f, (float)Math.PI);
 
         static public unsafe void NextUnitVector(Vector* vector) {
             var angle = NextAngle();

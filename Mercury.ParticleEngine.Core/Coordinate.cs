@@ -24,9 +24,7 @@
         /// <summary>
         /// Gets the cartesian origin O.
         /// </summary>
-        static public Coordinate Origin {
-            get { return new Coordinate(0f, 0f); }
-        }
+        static public Coordinate Origin => new Coordinate(0f, 0f);
 
         public Coordinate Add(Coordinate other) {
             var x = _x + other._x;
@@ -82,7 +80,7 @@
         /// </exception>
         public void Match(Action<float, float> callback) {
             if (callback == null)
-                throw new ArgumentNullException("callback");
+                throw new ArgumentNullException(nameof(callback));
 
             callback(_x, _y);
         }
@@ -103,7 +101,7 @@
         /// </exception>
         public T Map<T>(Func<float, float, T> map) {
             if (map == null)
-                throw new ArgumentNullException("map");
+                throw new ArgumentNullException(nameof(map));
 
             return map(_x, _y);
         }
@@ -129,10 +127,8 @@
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        public bool Equals(Coordinate other) {
-            return _x.Equals(other._x) &&
-                   _y.Equals(other._y);
-        }
+        public bool Equals(Coordinate other) => _x.Equals(other._x) &&
+                                                _y.Equals(other._y);
 
         /// <summary>
         /// Returns a hash code for this instance.
@@ -140,10 +136,8 @@
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode() {
-            return _x.GetHashCode() ^
-                   _y.GetHashCode();
-        }
+        public override int GetHashCode() => _x.GetHashCode() ^
+                                             _y.GetHashCode();
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -151,9 +145,7 @@
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString() {
-            return ToString("g", CultureInfo.InvariantCulture);
-        }
+        public override string ToString() => ToString("g", CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Formats the value of the current instance using the specified format.
@@ -174,17 +166,12 @@
             switch (format.ToLowerInvariant()) {
                 case "x": return _x.ToString("F4");
                 case "y": return _y.ToString("F4");
-                default: return String.Format("({0:F4}, {1:F4})", _x, _y);
+                default: return $"({_x:F4}, {_y:F4})";
             }
         }
 
-        static public Coordinate operator +(Coordinate a, Coordinate b) {
-            return a.Add(b);
-        }
-
-        static public Coordinate operator -(Coordinate a, Coordinate b) {
-            return a.Subtract(b);
-        }
+        static public Coordinate operator +(Coordinate a, Coordinate b) => a.Add(b);
+        static public Coordinate operator -(Coordinate a, Coordinate b) => a.Subtract(b);
 
         /// <summary>
         /// Implements the operator +.
@@ -193,8 +180,6 @@
         /// <param name="vector">The second operand.</param>
         /// <returns>A <see cref="Coordinate"/> value representing the the <paramref name="coord"/>
         /// value translated by the <paramref name="vector"/> value.</returns>
-        static public Coordinate operator +(Coordinate coord, Vector vector) {
-            return coord.Translate(vector);
-        }
+        static public Coordinate operator +(Coordinate coord, Vector vector) => coord.Translate(vector);
     }
 }

@@ -15,21 +15,10 @@
             GC.AddMemoryPressure(SizeInBytes);
         }
 
-        public int Available {
-            get { return Size - _tail; }
-        }
-
-        public int Count {
-            get { return _tail; }
-        }
-
-        public int SizeInBytes {
-            get { return Particle.SizeInBytes * Size; }
-        }
-
-        public int ActiveSizeInBytes {
-            get { return Particle.SizeInBytes * _tail; }
-        }
+        public int Available => Size - _tail;
+        public int Count => _tail;
+        public int SizeInBytes => Particle.SizeInBytes * Size;
+        public int ActiveSizeInBytes => Particle.SizeInBytes * _tail;
 
         public unsafe int Release(int releaseQuantity, out Particle* first) {
             var numToRelease = Math.Min(releaseQuantity, Available);
@@ -49,9 +38,7 @@
             memcpy(NativePointer, IntPtr.Add(NativePointer, number * Particle.SizeInBytes), ActiveSizeInBytes);
         }
 
-        public void CopyTo(IntPtr destination) {
-            memcpy(destination, NativePointer, ActiveSizeInBytes);
-        }
+        public void CopyTo(IntPtr destination) => memcpy(destination, NativePointer, ActiveSizeInBytes);
 
         public void CopyToReverse(IntPtr destination) {
             int offset = 0;

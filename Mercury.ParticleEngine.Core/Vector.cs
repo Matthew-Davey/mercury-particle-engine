@@ -34,21 +34,15 @@
         /// <summary>
         /// Gets the length or magnitude of the Euclidean vector.
         /// </summary>
-        public float Magnitude {
-            get { return (float)Math.Sqrt((_x * _x) + (_y * _y)); }
-        }
+        public float Magnitude => (float)Math.Sqrt((_x * _x) + (_y * _y));
 
         /// <summary>
         /// Gets the axis in which the vector is facing.
         /// </summary>
         /// <returns>A <see cref="Axis"/> value representing the direction the vector is facing.</returns>
-        public Axis Axis {
-            get { return new Axis(_x, _y); }
-        }
+        public Axis Axis => new Axis(_x, _y);
 
-        public Vector Multiply(float factor) {
-            return new Vector(_x * factor, _y * factor);
-        }
+        public Vector Multiply(float factor) => new Vector(_x * factor, _y * factor);
 
         /// <summary>
         /// Copies the X and Y components of the vector to the specified memory location.
@@ -76,7 +70,7 @@
         /// </exception>
         public void Match(Action<float, float> callback) {
             if (callback == null)
-                throw new ArgumentNullException("callback");
+                throw new ArgumentNullException(nameof(callback));
 
             callback(_x, _y);
         }
@@ -97,13 +91,11 @@
         /// </exception>
         public T Map<T>(Func<float, float, T> map) {
             if (map == null)
-                throw new ArgumentNullException("map");
+                throw new ArgumentNullException(nameof(map));
 
             return map(_x, _y);
         }
 
-        static public Vector operator*(Vector value, float factor) {
-            return value.Multiply(factor);
-        }
+        static public Vector operator*(Vector value, float factor) => value.Multiply(factor);
     }
 }

@@ -28,7 +28,7 @@
         /// </exception>
         private static string GetFormatPattern(IFormatProvider provider) {
             if (provider == null)
-                throw new ArgumentNullException("provider");
+                throw new ArgumentNullException(nameof(provider));
 
             var numberFormat = NumberFormatInfo.GetInstance(provider);
 
@@ -75,9 +75,7 @@
         ///     ]]>
         ///     </code>
         /// </example>
-        static public Range Union(Range x, Range y) {
-            return new Range(Math.Min(x.X, y.X), Math.Max(x.Y, y.Y));
-        }
+        static public Range Union(Range x, Range y) => new Range(Math.Min(x.X, y.X), Math.Max(x.Y, y.Y));
 
         /// <summary>
         /// Gets or sets the inclusive minimum value in the interval.
@@ -108,17 +106,13 @@
         /// Gets a value indicating whether or not the interval is degenerate. A degenerate interval
         /// is one which contains only a float distinct boundary (X == Y, Diameter == 0).
         /// </summary>
-        public bool IsDegenerate {
-            get { return X.Equals(Y); }
-        }
+        public bool IsDegenerate => X.Equals(Y);
 
         /// <summary>
         /// Gets a value indicating whether or not the interval is proper. A proper interval is one
         /// which is neither empty or degenerate.
         /// </summary>
-        public bool IsProper {
-            get { return !X.Equals(Y); }
-        }
+        public bool IsProper => !X.Equals(Y);
 
         /// <summary>
         /// Gets the interior of the interval. The interior is the largest proper interval contained
@@ -155,9 +149,7 @@
         /// <param name="value">The floating point value.</param>
         /// <returns><c>true</c> if the specified value is contained within the closed interval;
         /// else <c>false</c>.</returns>
-        public bool Contains(int value) {
-            return value >= X && value <= Y;
-        }
+        public bool Contains(int value) => value >= X && value <= Y;
 
         /// <summary>
         /// Creates a new interval by parsing an ISO 31-11 string representation of a closed interval.
@@ -176,9 +168,7 @@
         /// correct format for an ISO 31-11 closed interval, or if the numbers represented within
         /// the closed interval could not be parsed.
         /// </exception>
-        public static Range Parse(String value) {
-            return Parse(value, CultureInfo.InvariantCulture);
-        }
+        public static Range Parse(String value) => Parse(value, CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Creates a new interval by parsing an ISO 31-11 string representation of an interval.
@@ -195,10 +185,10 @@
         /// </exception>
         public static Range Parse(string value, IFormatProvider format) {
             if (value == null)
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
 
             if (format == null)
-                throw new ArgumentNullException("format");
+                throw new ArgumentNullException(nameof(format));
 
             var regex = new Regex(GetFormatPattern(format));
 
@@ -216,7 +206,7 @@
                 return new Range(x, y);
             }
 
-            throw new FormatException("value is not in the correct format for an ISO 31-11 closed interval in ℝ from.");
+            throw new FormatException("value is not in the correct format for an ISO 31-11 closed interval in ℝ form.");
         }
 
         /// <summary>
@@ -241,10 +231,8 @@
         /// <returns>
         ///     <c>true</c> if the specified <see cref="RangeF"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public bool Equals(Range value) {
-            return X.Equals(value.X) &&
-                   Y.Equals(value.Y);
-        }
+        public bool Equals(Range value) => X.Equals(value.X) &&
+                                           Y.Equals(value.Y);
 
         /// <summary>
         /// Returns a hash code for this instance.
@@ -252,9 +240,7 @@
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode() {
-            return X.GetHashCode() ^ Y.GetHashCode();
-        }
+        public override int GetHashCode() => X.GetHashCode() ^ Y.GetHashCode();
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -262,9 +248,7 @@
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString() {
-            return ToString("G", CultureInfo.InvariantCulture);
-        }
+        public override string ToString() => ToString("G", CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -273,9 +257,7 @@
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(IFormatProvider formatProvider) {
-            return ToString("G", formatProvider);
-        }
+        public string ToString(IFormatProvider formatProvider) => ToString("G", formatProvider);
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -304,9 +286,7 @@
         /// <returns>
         ///     <c>true</c> if the lvalue <see cref="RangeF"/> is equal to the rvalue; otherwise, <c>false</c>.
         /// </returns>
-        public static bool operator ==(Range x, Range y) {
-            return x.Equals(y);
-        }
+        public static bool operator ==(Range x, Range y) => x.Equals(y);
 
         /// <summary>
         /// Implements the operator !=.
@@ -316,12 +296,8 @@
         /// <returns>
         ///     <c>true</c> if the lvalue <see cref="RangeF"/> is not equal to the rvalue; otherwise, <c>false</c>.
         /// </returns>
-        public static bool operator !=(Range x, Range y) {
-            return !x.Equals(y);
-        }
+        public static bool operator !=(Range x, Range y) => !x.Equals(y);
 
-        static public implicit operator Range(int value) {
-            return new Range(value, value);
-        }
+        static public implicit operator Range(int value) => new Range(value, value);
     }
 }

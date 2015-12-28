@@ -39,40 +39,29 @@
         /// <summary>
         /// Gets a directed axis which points to the left.
         /// </summary>
-        static public Axis Left {
-            get { return new Axis(-1f, 0f); }
-        }
+        static public Axis Left => new Axis(-1f, 0f);
 
         /// <summary>
         /// Gets a directed axis which points up.
         /// </summary>
-        static public Axis Up {
-            get { return new Axis(0f, 1f); }
-        }
+        static public Axis Up => new Axis(0f, 1f);
 
         /// <summary>
         /// Gets a directed axis which points to the right.
         /// </summary>
-        static public Axis Right {
-            get { return new Axis(1f, 0f); }
-        }
+        static public Axis Right => new Axis(1f, 0f);
 
         /// <summary>
         /// Gets a directed axis which points down.
         /// </summary>
-        static public Axis Down {
-            get { return new Axis(0f, -1f); }
-        }
+        static public Axis Down => new Axis(0f, -1f);
 
         /// <summary>
         /// Multiplies the fixed axis by a magnitude value resulting in a directed vector.
         /// </summary>
         /// <param name="magnitude">The magnitude of the vector.</param>
         /// <returns>A directed vector.</returns>
-        public Vector Multiply(float magnitude)
-        {
-            return new Vector(this, magnitude);
-        }
+        public Vector Multiply(float magnitude) => new Vector(this, magnitude);
 
         /// <summary>
         /// Copies the X and Y components of the axis to the specified memory location.
@@ -100,7 +89,7 @@
         /// </exception>
         public void Match(Action<float, float> callback) {
             if (callback == null)
-                throw new ArgumentNullException("callback");
+                throw new ArgumentNullException(nameof(callback));
 
             callback(_x, _y);
         }
@@ -121,7 +110,7 @@
         /// </exception>
         public T Map<T>(Func<float, float, T> map) {
             if (map == null)
-                throw new ArgumentNullException("map");
+                throw new ArgumentNullException(nameof(map));
 
             return map(_x, _y);
         }
@@ -133,10 +122,8 @@
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(Axis other) {
-            return _x.Equals(other._x) &&
-                   _y.Equals(other._y);
-        }
+        public bool Equals(Axis other) => _x.Equals(other._x) &&
+                                          _y.Equals(other._y);
 
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.
@@ -174,20 +161,10 @@
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString() {
-            return String.Format("({0}, {1})", _x.ToString("F4"), _y.ToString("F4"));
-        }
+        public override string ToString() => $"({_x.ToString("F4")}, {_y.ToString("F4")})";
 
-        public static bool operator ==(Axis x, Axis y) {
-            return x.Equals(y);
-        }
-
-        public static bool operator !=(Axis x, Axis y) {
-            return !x.Equals(y);
-        }
-
-        public static Vector operator *(Axis axis, float magnitude) {
-            return new Vector(axis, magnitude);
-        }
+        public static bool operator ==(Axis x, Axis y) => x.Equals(y);
+        public static bool operator !=(Axis x, Axis y) => !x.Equals(y);
+        public static Vector operator *(Axis axis, float magnitude) => new Vector(axis, magnitude);
     }
 }

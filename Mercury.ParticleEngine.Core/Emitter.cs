@@ -6,7 +6,7 @@
     public unsafe class Emitter : IDisposable {
         public Emitter(int capacity, TimeSpan term, Profile profile) {
             if (profile == null)
-                throw new ArgumentNullException("profile");
+                throw new ArgumentNullException(nameof(profile));
 
             _term = (float)term.TotalSeconds;
 
@@ -23,9 +23,7 @@
 
         internal readonly ParticleBuffer Buffer;
 
-        public int ActiveParticles {
-            get { return Buffer.Count; }
-        }
+        public int ActiveParticles => Buffer.Count;
 
         public Modifier[] Modifiers { get; set; }
         public ModifierExecutionStrategy ModifierExecutionStrategy { get; set; }
