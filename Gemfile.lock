@@ -1,0 +1,31 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    albacore (2.5.6)
+      map (~> 6.5)
+      nokogiri (~> 1.5)
+      rake (~> 10)
+      semver2 (~> 3.4)
+    map (6.5.5)
+    mini_portile2 (2.0.0)
+    nokogiri (1.6.7.1)
+      mini_portile2 (~> 2.0.0.rc2)
+    nokogiri (1.6.7.1-x86-mingw32)
+      mini_portile2 (~> 2.0.0.rc2)
+    nuget (2.8.60717.93)
+    rake (10.4.2)
+    semver (1.0.1)
+    semver2 (3.4.2)
+
+PLATFORMS
+  ruby
+  x86-mingw32
+
+DEPENDENCIES
+  albacore (~> 2.5, >= 2.5.6)
+  nuget (~> 2.8, >= 2.8.60717.93)
+  rake (~> 10.4, >= 10.4.2)
+  semver (~> 1.0, >= 1.0.1)
+
+BUNDLED WITH
+   1.10.6

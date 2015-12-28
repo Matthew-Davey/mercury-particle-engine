@@ -1,0 +1,5 @@
+source 'https://rubygems.org'
+gem 'rake', '~> 10.4', '>= 10.4.2'
+gem 'albacore', '~> 2.5', '>= 2.5.6'
+gem 'semver', '~> 1.0', '>= 1.0.1'
+gem 'nuget', '~> 2.8', '>= 2.8.60717.93'

@@ -54,6 +54,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyVersion.cs">
+      <Link>Properties\AssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="AssertionModifier.cs" />
     <Compile Include="AxisTests.cs" />
     <Compile Include="ColourTests.cs" />
